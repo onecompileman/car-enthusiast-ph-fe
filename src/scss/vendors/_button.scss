@@ -1,0 +1,74 @@
+@import "../config";
+
+.btn {
+  height: fit-content !important;
+  border-radius: 0;
+  box-shadow: 2px 3px 2px rgb(0, 0, 0);
+  // min-width: 140px;
+  text-decoration: none !important;
+}
+
+.btn-primary {
+  background-color: $primary !important;
+  color: $foreground;
+  border-color: $foreground;
+  transition: 0.2s linear;
+
+  &:hover {
+    background-color: $white !important;
+    border-color: $primary;
+    color: $primary;
+  }
+}
+
+.btn-secondary {
+  background-color: $white !important;
+  color: $foreground;
+  border-color: $foreground;
+  transition: 0.2s linear;
+
+   &:hover {
+    background-color: $white !important;
+    border-color: $foreground;
+    color: $foreground;
+  }
+}
+
+.btn-danger {
+  background-color: $pink !important;
+  color: $foreground;
+  border-color: $foreground;
+  transition: 0.2s linear;
+
+  &:hover {
+    background-color: $white !important;
+    border-color: $pink;
+    color: $pink;
+  }
+}
+
+// .btn-success {
+//   background-color: $success !important;
+//   color: $white;
+//   border-color: $foreground;
+//   transition: 0.2s linear;
+
+//   &:hover {
+//     background-color: $white !important;
+//     border-color: $success;
+//     color: $success;
+//   }
+// }
+
+.btn-info {
+  background-color: $info !important;
+  color: $white;
+  border-color: $foreground;
+  transition: 0.2s linear;
+
+  &:hover {
+    background-color: $white !important;
+    border-color: $info;
+    color: $info;
+  }
+}

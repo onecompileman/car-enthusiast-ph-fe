@@ -1,0 +1,12 @@
+.logo {
+  font-family: $font-logo;
+  font-size: 21px;
+  letter-spacing: 1px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.logo em {
+  color: var(--accent);
+  font-style: normal;
+}

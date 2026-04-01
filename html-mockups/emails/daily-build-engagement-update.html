@@ -1,0 +1,38 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Daily Build Update</title>
+  </head>
+  <body style="margin:0;padding:0;background:#0f1115;font-family:Inter,Arial,Helvetica,sans-serif;color:#f5f7fa;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#0f1115;padding:28px 12px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#171a20;border:1px solid #2a303a;border-radius:16px;overflow:hidden;">
+            <tr>
+              <td style="padding:18px 20px;background:#111111;color:#ffffff;">
+                <div style="font-family:'Bebas Neue',Arial,sans-serif;font-size:28px;letter-spacing:1px;">CEPH<span style="color:#ff5a4f;">.</span></div>
+                <div style="margin-top:4px;font-size:12px;color:#a2aab8;letter-spacing:0.05em;text-transform:uppercase;">Daily Build Activity</div>
+              </td>
+            </tr>
+            <tr><td style="padding:22px 20px 8px 20px;font-size:22px;font-weight:800;line-height:1.25;color:#f5f7fa;">Hi {{first_name}}, here is your daily update.</td></tr>
+            <tr><td style="padding:0 20px 14px 20px;font-size:14px;line-height:1.7;color:#a2aab8;">In the last 24 hours, your builds got:</td></tr>
+            <tr>
+              <td style="padding:0 20px 10px 20px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #2a303a;border-radius:10px;overflow:hidden;">
+                  <tr><td style="padding:12px 14px;border-bottom:1px solid #2a303a;font-size:14px;color:#f5f7fa;">Views</td><td align="right" style="padding:12px 14px;border-bottom:1px solid #2a303a;font-size:14px;font-weight:700;color:#f5f7fa;">{{daily_views}}</td></tr>
+                  <tr><td style="padding:12px 14px;border-bottom:1px solid #2a303a;font-size:14px;color:#f5f7fa;">Saved</td><td align="right" style="padding:12px 14px;border-bottom:1px solid #2a303a;font-size:14px;font-weight:700;color:#f5f7fa;">{{daily_saves}}</td></tr>
+                  <tr><td style="padding:12px 14px;font-size:14px;color:#f5f7fa;">Hearts</td><td align="right" style="padding:12px 14px;font-size:14px;font-weight:700;color:#f5f7fa;">{{daily_hearts}}</td></tr>
+                </table>
+              </td>
+            </tr>
+            <tr><td style="padding:6px 20px 16px 20px;font-size:14px;color:#a2aab8;">Top build: <strong style="color:#f5f7fa;">{{top_build_title}}</strong></td></tr>
+            <tr><td style="padding:0 20px 20px 20px;"><a href="{{app_url}}/my-builds.html" style="display:inline-block;padding:12px 16px;background:#ff9b3d;color:#1a1205;text-decoration:none;border-radius:999px;font-size:13px;font-weight:700;">View My Builds</a></td></tr>
+            <tr><td style="padding:0 20px 22px 20px;font-size:12px;color:#6e7786;line-height:1.6;">You are receiving this daily digest because build activity notifications are enabled.</td></tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Browse Builds | Car Enthusiast PH</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #F4F4F5;
+      --surface: #FFFFFF;
+      --surface-2: #EFEFEF;
+      --text: #111111;
+      --text-2: #6B7280;
+      --text-3: #9CA3AF;
+      --accent: #DC2626;
+      --border: #E4E4E7;
+      --img-bg: #E7E7E8;
+      --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+      --shadow: 0 6px 20px rgba(0,0,0,0.08);
+      --shadow-lg: 0 14px 32px rgba(0,0,0,0.12);
+      --r: 14px;
+      --r-sm: 10px;
+      --r-pill: 999px;
+    }
+
+    body[data-theme="dark"] {
+      --bg: #0F1115;
+      --surface: #171A20;
+      --surface-2: #1D2129;
+      --text: #F5F7FA;
+      --text-2: #A2AAB8;
+      --text-3: #6E7786;
+      --accent: #FF5A4F;
+      --accent-orange: #FF9B3D;
+      --accent-orange-2: #FFB457;
+      --border: #2A303A;
+      --img-bg: #222833;
+      --shadow-sm: 0 1px 4px rgba(0,0,0,0.24);
+      --shadow: 0 10px 28px rgba(0,0,0,0.28);
+      --shadow-lg: 0 16px 38px rgba(0,0,0,0.34);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: var(--r-pill);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      line-height: 1;
+    }
+    .tag-red { background: #FEE2E2; color: #DC2626; }
+    .tag-blue { background: #DBEAFE; color: #2563EB; }
+    .tag-green { background: #D1FAE5; color: #059669; }
+    .tag-yellow { background: #FEF3C7; color: #D97706; }
+    .tag-gray { background: #F3F4F6; color: #6B7280; }
+    .tag-dark { background: #1F1F1F; color: #FAFAFA; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 9px 16px;
+      border-radius: var(--r-pill);
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      transition: all 0.18s ease;
+      text-decoration: none;
+    }
+    .btn-outline { background: transparent; color: var(--text-2); border: 1px solid var(--border); }
+    .btn-outline:hover { color: var(--text); border-color: #999; background: var(--surface); }
+    .btn-solid { background: var(--text); color: #fff; }
+    .btn-solid:hover { background: #333; }
+    .theme-toggle { min-width: 102px; }
+    .theme-icon {
+      width: 15px;
+      height: 15px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
+    .nav-l, .nav-r { display: flex; align-items: center; gap: 12px; }
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 21px;
+      letter-spacing: 1px;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .logo em { color: var(--accent); font-style: normal; }
+    .nav-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .nav-pill {
+      padding: 8px 14px;
+      border-radius: var(--r-pill);
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-2);
+      font-size: 12px;
+      text-decoration: none;
+      transition: all 0.18s ease;
+    }
+    .nav-pill.active {
+      background: var(--text);
+      color: #fff;
+      border-color: var(--text);
+    }
+
+    .hero {
+      margin: 18px 32px 0;
+      background: linear-gradient(145deg, var(--surface) 0%, color-mix(in srgb, var(--surface) 72%, var(--surface-2)) 100%);
+      border: 1px solid var(--border);
+      border-radius: calc(var(--r) + 4px);
+      padding: 28px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+      overflow: hidden;
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      right: -80px;
+      top: -100px;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(220,38,38,0.09) 0%, transparent 72%);
+      pointer-events: none;
+    }
+    .hero-copy {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      justify-content: center;
+    }
+    .hero-copy h1 {
+      font-size: clamp(32px, 4.2vw, 54px);
+      line-height: 0.98;
+      letter-spacing: -0.05em;
+      font-weight: 800;
+      max-width: 12ch;
+    }
+    .hero-copy p {
+      color: var(--text-2);
+      font-size: 15px;
+      line-height: 1.75;
+      max-width: 54ch;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+    .stat-chip {
+      min-width: 128px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 12px 14px;
+    }
+    .stat-chip .v { font-size: 22px; font-weight: 800; }
+    .stat-chip .l { font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 3px; }
+
+    .hero-preview {
+      position: relative;
+      min-height: 280px;
+      background: linear-gradient(155deg, color-mix(in srgb, var(--surface) 60%, var(--bg)) 0%, var(--surface-2) 100%);
+      border: 1px solid var(--border);
+      border-radius: calc(var(--r) + 2px);
+      padding: 20px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .hero-preview img {
+      width: 100%;
+      max-width: 480px;
+      display: block;
+      border-radius: 10px;
+    }
+    .floating-note {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 190px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
+    .floating-note h3 { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+    .floating-note p { font-size: 12px; color: var(--text-2); line-height: 1.6; }
+
+    .controls-wrap {
+      margin: 18px 32px 0;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .filters-card,
+    .results-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+
+    .card-head {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .card-head h2 { font-size: 16px; font-weight: 800; }
+    .card-head span { font-size: 12px; color: var(--text-3); }
+
+    .filters-body {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .field-group label {
+      font-size: 11px;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+    }
+    .field-group input,
+    .field-group select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg);
+      color: var(--text);
+      font: inherit;
+      outline: none;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+    .field-group input:focus,
+    .field-group select:focus {
+      border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
+    }
+    .quick-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .quick-tag {
+      padding: 8px 12px;
+      border-radius: var(--r-pill);
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-2);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+    .quick-tag.active {
+      background: var(--text);
+      border-color: var(--text);
+      color: #fff;
+    }
+
+    .results-head {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .results-meta h2 { font-size: 18px; font-weight: 800; }
+    .results-meta p { font-size: 12px; color: var(--text-3); margin-top: 3px; }
+    .sort-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sort-wrap label {
+      font-size: 11px;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+    }
+    .sort-wrap select {
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg);
+      color: var(--text);
+      font: inherit;
+    }
+
+    .build-grid {
+      padding: 18px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 16px;
+    }
+    .build-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      box-shadow: var(--shadow-sm);
+    }
+    .build-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+      border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
+    }
+    .build-card.hide { display: none; }
+    .build-media {
+      position: relative;
+      height: 170px;
+      background: var(--img-bg);
+      overflow: hidden;
+    }
+    .build-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+    .build-card:hover .build-media img { transform: scale(1.04); }
+    .build-media .save-pill {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(17,17,17,0.78);
+      color: #fff;
+      padding: 6px 9px;
+      border-radius: var(--r-pill);
+      font-size: 11px;
+      font-weight: 700;
+      backdrop-filter: blur(8px);
+    }
+    .build-body {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+    .build-title-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .build-title-row h3 { font-size: 15px; font-weight: 800; line-height: 1.3; }
+    .build-title-row .year { font-size: 12px; color: var(--text-3); font-weight: 700; }
+    .build-sub { font-size: 12px; color: var(--text-2); line-height: 1.6; }
+    .build-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .build-specs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+    .spec-box {
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 10px;
+    }
+    .spec-box .k {
+      font-size: 10px;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+    }
+    .spec-box .v { font-size: 13px; font-weight: 800; margin-top: 5px; }
+    .build-foot {
+      padding: 12px 14px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      border-top: 1px solid var(--border);
+      background: color-mix(in srgb, var(--bg) 72%, transparent);
+    }
+    .builder-meta { font-size: 11px; color: var(--text-3); }
+    .builder-meta strong { display: block; color: var(--text); font-size: 12px; margin-bottom: 2px; }
+    .build-cost { text-align: right; }
+    .build-cost .amount { font-size: 16px; font-weight: 800; }
+    .build-cost .label { font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .empty-results {
+      padding: 42px 18px 48px;
+      text-align: center;
+      color: var(--text-3);
+      display: none;
+    }
+    .empty-results.show { display: block; }
+    .empty-results h3 { color: var(--text); font-size: 18px; margin-bottom: 8px; }
+    .empty-results p { font-size: 13px; line-height: 1.7; max-width: 42ch; margin: 0 auto; }
+
+    body[data-theme="dark"] .tag-red { background: #3B1215; color: #FF918A; }
+    body[data-theme="dark"] .tag-blue { background: #10243C; color: #7CB8FF; }
+    body[data-theme="dark"] .tag-green { background: #0F2C22; color: #5EE9B5; }
+    body[data-theme="dark"] .tag-yellow { background: #342611; color: #FFC978; }
+    body[data-theme="dark"] .tag-gray { background: #222833; color: #B8C0CD; }
+    body[data-theme="dark"] .tag-dark { background: #F3F4F6; color: #151922; }
+    body[data-theme="dark"] .btn-outline {
+      color: var(--accent-orange-2);
+      border-color: color-mix(in srgb, var(--accent-orange) 45%, var(--border));
+      background: color-mix(in srgb, var(--accent-orange) 10%, transparent);
+    }
+    body[data-theme="dark"] .btn-outline:hover {
+      color: #1A1205;
+      border-color: var(--accent-orange-2);
+      background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-2) 100%);
+    }
+    body[data-theme="dark"] .btn-solid {
+      background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-2) 100%);
+      color: #1A1205;
+      box-shadow: 0 8px 22px rgba(255, 155, 61, 0.28);
+    }
+    body[data-theme="dark"] .btn-solid:hover {
+      background: linear-gradient(135deg, #FFB457 0%, #FFC66E 100%);
+      color: #140D03;
+    }
+    body[data-theme="dark"] .nav-pill.active,
+    body[data-theme="dark"] .quick-tag.active {
+      background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-2) 100%);
+      color: #1A1205;
+      border-color: transparent;
+      box-shadow: 0 8px 20px rgba(255, 155, 61, 0.22);
+    }
+    body[data-theme="dark"] .hero::before {
+      background: radial-gradient(circle, rgba(255, 155, 61, 0.12) 0%, transparent 72%);
+    }
+    body[data-theme="dark"] .build-media .save-pill {
+      background: rgba(245,247,250,0.14);
+      color: var(--text);
+    }
+
+    @media (max-width: 1180px) {
+      .hero,
+      .controls-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-copy h1 {
+        max-width: none;
+      }
+
+    }
+
+    @media (max-width: 992px) {
+      .build-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .build-card {
+        width: 100%;
+        max-width: 450px;
+        justify-self: center;
+      }
+    }
+
+    @media (max-width: 900px) {
+      nav {
+        padding: 16px 20px;
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-l,
+      .nav-r,
+      .nav-pills {
+        flex-wrap: wrap;
+      }
+
+      .hero,
+      .controls-wrap {
+        margin-left: 20px;
+        margin-right: 20px;
+      }
+
+      .hero {
+        padding: 22px;
+      }
+
+      .floating-note {
+        position: static;
+        width: 100%;
+        margin-top: 14px;
+      }
+
+    }
+
+    @media (max-width: 640px) {
+      nav {
+        padding: 14px 12px;
+      }
+
+      .hero,
+      .controls-wrap {
+        margin-left: 12px;
+        margin-right: 12px;
+      }
+
+      .hero {
+        padding: 16px;
+      }
+
+      .card-head,
+      .results-head,
+      .filters-body,
+      .build-grid {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+
+      .build-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .build-specs {
+        grid-template-columns: 1fr;
+      }
+
+      .build-foot {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .build-cost {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="animate__animated animate__fadeIn" style="animation-duration:0.4s;">
+    <div class="nav-l">
+      <a href="#" class="logo">CEPH<em>.</em></a>
+      <div class="nav-pills">
+        <a class="nav-pill active" href="#">Browse Builds</a>
+        <a class="nav-pill" href="build-share.html">Featured Build</a>
+        <a class="nav-pill" href="#">Newly Added</a>
+        <a class="nav-pill" href="#">Top Saved</a>
+      </div>
+    </div>
+    <div class="nav-r">
+      <button class="btn btn-outline theme-toggle" id="themeToggle" type="button" aria-pressed="false" aria-label="Switch to dark theme">
+        <span class="theme-icon" id="themeToggleIcon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2"/><path d="M12 21v2"/><path d="M4.22 4.22l1.42 1.42"/><path d="M18.36 18.36l1.42 1.42"/><path d="M1 12h2"/><path d="M21 12h2"/><path d="M4.22 19.78l1.42-1.42"/><path d="M18.36 5.64l1.42-1.42"/></svg>
+        </span>
+        <span id="themeToggleLabel">Dark Mode</span>
+      </button>
+      <a class="btn btn-outline" href="#">Saved Builds</a>
+      <a class="btn btn-solid" href="#">Share Your Build</a>
+    </div>
+  </nav>
+
+  <section class="hero animate__animated animate__fadeInUp" style="animation-duration:0.45s;">
+    <div class="hero-copy">
+      <h1>Browse curated builds by make, model, and style.</h1>
+      <p>Discover daily drivers, stance setups, full aero track cars, and performance-focused projects from the local enthusiast scene. Search directly for a make and model, then refine by build style.</p>
+      <div class="hero-stats">
+        <div class="stat-chip"><div class="v">248</div><div class="l">Public Builds</div></div>
+        <div class="stat-chip"><div class="v">39</div><div class="l">Makes Listed</div></div>
+        <div class="stat-chip"><div class="v">₱1.2M</div><div class="l">Highest Build</div></div>
+      </div>
+    </div>
+    <div class="hero-preview">
+      <img src="https://placehold.co/780x420/E6E6E6/9D9D9D?text=Featured+Build+Lineup" alt="Featured build lineup" />
+      <div class="floating-note animate__animated animate__fadeIn" style="animation-delay:0.2s;animation-duration:0.45s;">
+        <h3>Search Ready</h3>
+        <p>Type a make like Honda, Toyota, BMW, or Nissan, then narrow by model like FK8, GR86, M3, Evo, or MX-5.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="controls-wrap animate__animated animate__fadeInUp" style="animation-delay:0.08s;animation-duration:0.45s;">
+    <aside class="filters-card">
+      <div class="card-head">
+        <h2>Search & Filters</h2>
+        <button class="btn btn-outline" id="resetFilters" type="button">Reset</button>
+      </div>
+      <div class="filters-body">
+        <div class="field-group">
+          <label for="makeSearch">Search Make</label>
+          <input id="makeSearch" type="text" placeholder="Honda, Toyota, Mazda..." />
+        </div>
+        <div class="field-group">
+          <label for="modelSearch">Search Model</label>
+          <input id="modelSearch" type="text" placeholder="FK8, BRZ, M3, 370Z..." />
+        </div>
+        <div class="field-group">
+          <label for="styleFilter">Build Style</label>
+          <select id="styleFilter">
+            <option value="all">All Styles</option>
+            <option value="street">Street</option>
+            <option value="track">Track</option>
+            <option value="stance">Stance</option>
+            <option value="show">Show Car</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Popular Makes</label>
+          <div class="quick-tags" id="makeTags">
+            <button class="quick-tag" type="button" data-make="Honda">Honda</button>
+            <button class="quick-tag" type="button" data-make="Toyota">Toyota</button>
+            <button class="quick-tag" type="button" data-make="Nissan">Nissan</button>
+            <button class="quick-tag" type="button" data-make="BMW">BMW</button>
+            <button class="quick-tag" type="button" data-make="Subaru">Subaru</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="results-card">
+      <div class="results-head">
+        <div class="results-meta">
+          <h2>Available Builds</h2>
+          <p><span id="resultsCount">8</span> builds matching your filters</p>
+        </div>
+        <div class="sort-wrap">
+          <label for="sortFilter">Sort by</label>
+          <select id="sortFilter">
+            <option value="saved">Most Saved</option>
+            <option value="cost-high">Build Cost: High to Low</option>
+            <option value="cost-low">Build Cost: Low to High</option>
+            <option value="recent">Most Recent</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="build-grid" id="buildGrid">
+        <article class="build-card animate__animated animate__fadeInUp" style="animation-delay:0.03s;animation-duration:0.35s;" data-make="Honda" data-model="Civic Type R FK8" data-style="track" data-cost="685000" data-saved="312" data-recent="2026-03-01">
+          <div class="build-media">
+            <img src="https://placehold.co/600x400/E2E2E2/999?text=Honda+FK8+Track+Build" alt="Honda Civic Type R FK8 track build" />
+            <span class="save-pill">312 saves</span>
+          </div>
+          <div class="build-body">
+            <div class="build-title-row">
+              <h3>Honda Civic Type R FK8</h3>
+              <span class="year">2020</span>
+            </div>
+            <p class="build-sub">Full aero street-track setup with forged wheels, carbon hood, APR wing, tuned K20C, and brake package.</p>
+            <div class="build-tags">
+              <span class="tag tag-red">Track</span>
+              <span class="tag tag-blue">Turbo</span>
+              <span class="tag tag-dark">Aero</span>
+            </div>
+            <div class="build-specs">
+              <div class="spec-box"><div class="k">Power</div><div class="v">320 whp</div></div>
+              <div class="spec-box"><div class="k">Wheels</div><div class="v">Rays CE28</div></div>
+            </div>
+          </div>
+          <div class="build-foot">
+            <div class="builder-meta"><strong>@mk_builds</strong>Quezon City, PH</div>
+            <div class="build-cost"><div class="amount">₱685K</div><div class="label">Build Cost</div></div>
+          </div>
+        </article>
+
+        <article class="build-card animate__animated animate__fadeInUp" style="animation-delay:0.06s;animation-duration:0.35s;" data-make="Toyota" data-model="GR86" data-style="street" data-cost="420000" data-saved="248" data-recent="2026-03-10">
+          <div class="build-media">
+            <img src="https://placehold.co/600x400/E2E2E2/999?text=Toyota+GR86+Street+Build" alt="Toyota GR86 street build" />
+            <span class="save-pill">248 saves</span>
+          </div>
+          <div class="build-body">
+            <div class="build-title-row">
+              <h3>Toyota GR86 Premium</h3>
+              <span class="year">2023</span>
+            </div>
+            <p class="build-sub">OEM+ street build with TE37 wheels, coilovers, front lip, carbon ducktail, and subtle interior trim.</p>
+            <div class="build-tags">
+              <span class="tag tag-green">Street</span>
+              <span class="tag tag-yellow">NA</span>
+              <span class="tag tag-gray">OEM+</span>
+            </div>
+            <div class="build-specs">
+              <div class="spec-box"><div class="k">Power</div><div class="v">245 hp</div></div>
+              <div class="spec-box"><div class="k">Suspension</div><div class="v">HKS Hipermax</div></div>
+            </div>
+          </div>
+          <div class="build-foot">
+            <div class="builder-meta"><strong>@adrian.garage</strong>Pasig City, PH</div>
+            <div class="build-cost"><div class="amount">₱420K</div><div class="label">Build Cost</div></div>
+          </div>
+        </article>
+
+        <article class="build-card animate__animated animate__fadeInUp" style="animation-delay:0.09s;animation-duration:0.35s;" data-make="BMW" data-model="M3 E92" data-style="show" data-cost="960000" data-saved="201" data-recent="2026-02-18">
+          <div class="build-media">
+            <img src="https://placehold.co/600x400/E2E2E2/999?text=BMW+E92+Show+Car" alt="BMW E92 M3 show build" />
+            <span class="save-pill">201 saves</span>
+          </div>
+          <div class="build-body">
+            <div class="build-title-row">
+              <h3>BMW M3 E92 Widebody</h3>
+              <span class="year">2011</span>
+            </div>
+            <p class="build-sub">Luxury show-car setup with Liberty Walk body kit, air suspension, forged three-piece wheels, and Alcantara interior.</p>
+            <div class="build-tags">
+              <span class="tag tag-yellow">Show</span>
+              <span class="tag tag-blue">Widebody</span>
+              <span class="tag tag-dark">Air</span>
+            </div>
+            <div class="build-specs">
+              <div class="spec-box"><div class="k">Power</div><div class="v">420 hp</div></div>
+              <div class="spec-box"><div class="k">Suspension</div><div class="v">Air Lift 3P</div></div>
+            </div>
+          </div>
+          <div class="build-foot">
+            <div class="builder-meta"><strong>@germanmetal</strong>Makati, PH</div>
+            <div class="build-cost"><div class="amount">₱960K</div><div class="label">Build Cost</div></div>
+          </div>
+        </article>
+
+        <article class="build-card animate__animated animate__fadeInUp" style="animation-delay:0.12s;animation-duration:0.35s;" data-make="Nissan" data-model="370Z" data-style="stance" data-cost="510000" data-saved="178" data-recent="2026-01-30">
+          <div class="build-media">
+            <img src="https://placehold.co/600x400/E2E2E2/999?text=Nissan+370Z+Stance+Build" alt="Nissan 370Z stance build" />
+            <span class="save-pill">178 saves</span>
+          </div>
+          <div class="build-body">
+            <div class="build-title-row">
+              <h3>Nissan 370Z Nismo</h3>
+              <span class="year">2016</span>
+            </div>
+            <p class="build-sub">Aggressive stance fitment with Work Meister wheels, overfenders, titanium exhaust, and custom rear diffuser.</p>
+            <div class="build-tags">
+              <span class="tag tag-blue">Stance</span>
+              <span class="tag tag-red">VQ</span>
+              <span class="tag tag-gray">Static</span>
+            </div>
+            <div class="build-specs">
+              <div class="spec-box"><div class="k">Wheels</div><div class="v">Work Meister</div></div>
+              <div class="spec-box"><div class="k">Exhaust</div><div class="v">Armytrix</div></div>
+            </div>
+          </div>
+          <div class="build-foot">
+            <div class="builder-meta"><strong>@zchassis.ian</strong>Cebu, PH</div>
+            <div class="build-cost"><div class="amount">₱510K</div><div class="label">Build Cost</div></div>
+          </div>
+        </article>
+
+        <article class="build-card animate__animated animate__fadeInUp" style="animation-delay:0.15s;animation-duration:0.35s;" data-make="Subaru" data-model="WRX STI VA" data-style="track" data-cost="735000" data-saved="294" data-recent="2026-03-12">
+          <div class="build-media">
+            <img src="https://placehold.co/600x400/E2E2E2/999?text=Subaru+STI+Track+Build" alt="Subaru WRX STI track build" />
+            <span class="save-pill">294 saves</span>
+          </div>
+          <div class="build-body">
+            <div class="build-title-row">
+              <h3>Subaru WRX STI VA</h3>
+              <span class="year">2018</span>
+            </div>
+            <p class="build-sub">Track-focused AWD setup with forged internals, Ohlins DFV, carbon wing, and endurance brake package.</p>
+            <div class="build-tags">
+              <span class="tag tag-red">Track</span>
+              <span class="tag tag-blue">AWD</span>
+              <span class="tag tag-dark">Time Attack</span>
+            </div>
+            <div class="build-specs">
+              <div class="spec-box"><div class="k">Power</div><div class="v">410 whp</div></div>
+              <div class="spec-box"><div class="k">Turbo</div><div class="v">Garrett GTX</div></div>
+            </div>
+          </div>
+          <div class="build-foot">
+            <div class="builder-meta"><strong>@boosted.ralph</strong>Davao, PH</div>
+            <div class="build-cost"><div class="amount">₱735K</div><div class="label">Build Cost</div></div>
+          </div>
+        </article>
+
+        <article class="build-card animate__animated animate__fadeInUp" style="animation-delay:0.18s;animation-duration:0.35s;" data-make="Mazda" data-model="MX-5 ND" data-style="street" data-cost="310000" data-saved="156" data-recent="2026-02-25">
+          <div class="build-media">
+            <img src="https://placehold.co/600x400/E2E2E2/999?text=Mazda+MX-5+ND+Street+Build" alt="Mazda MX-5 ND street build" />
+            <span class="save-pill">156 saves</span>
+          </div>
+          <div class="build-body">
+            <div class="build-title-row">
+              <h3>Mazda MX-5 ND Roadster</h3>
+              <span class="year">2022</span>
+            </div>
+            <p class="build-sub">Lightweight canyon setup with Advan wheels, front splitter, axle-back exhaust, and understated roadster styling.</p>
+            <div class="build-tags">
+              <span class="tag tag-green">Street</span>
+              <span class="tag tag-yellow">NA</span>
+              <span class="tag tag-gray">Roadster</span>
+            </div>
+            <div class="build-specs">
+              <div class="spec-box"><div class="k">Weight</div><div class="v">1,050 kg</div></div>
+              <div class="spec-box"><div class="k">Wheels</div><div class="v">Advan TC4</div></div>
+            </div>
+          </div>
+          <div class="build-foot">
+            <div class="builder-meta"><strong>@ndweekender</strong>Taguig, PH</div>
+            <div class="build-cost"><div class="amount">₱310K</div><div class="label">Build Cost</div></div>
+          </div>
+        </article>
+
+        <article class="build-card animate__animated animate__fadeInUp" style="animation-delay:0.21s;animation-duration:0.35s;" data-make="Mitsubishi" data-model="Lancer Evolution X" data-style="track" data-cost="880000" data-saved="226" data-recent="2026-03-14">
+          <div class="build-media">
+            <img src="https://placehold.co/600x400/E2E2E2/999?text=Evo+X+Circuit+Build" alt="Mitsubishi Evolution X build" />
+            <span class="save-pill">226 saves</span>
+          </div>
+          <div class="build-body">
+            <div class="build-title-row">
+              <h3>Mitsubishi Evolution X</h3>
+              <span class="year">2015</span>
+            </div>
+            <p class="build-sub">Circuit-ready sedan with Varis aero, forged engine setup, motorsport seats, and track-day cooling upgrades.</p>
+            <div class="build-tags">
+              <span class="tag tag-red">Track</span>
+              <span class="tag tag-blue">AWD</span>
+              <span class="tag tag-dark">Forged</span>
+            </div>
+            <div class="build-specs">
+              <div class="spec-box"><div class="k">Power</div><div class="v">480 whp</div></div>
+              <div class="spec-box"><div class="k">Aero</div><div class="v">Varis</div></div>
+            </div>
+          </div>
+          <div class="build-foot">
+            <div class="builder-meta"><strong>@evo.ron</strong>Clark, PH</div>
+            <div class="build-cost"><div class="amount">₱880K</div><div class="label">Build Cost</div></div>
+          </div>
+        </article>
+
+        <article class="build-card animate__animated animate__fadeInUp" style="animation-delay:0.24s;animation-duration:0.35s;" data-make="Toyota" data-model="Corolla Altis" data-style="show" data-cost="265000" data-saved="112" data-recent="2026-01-12">
+          <div class="build-media">
+            <img src="https://placehold.co/600x400/E2E2E2/999?text=Toyota+Altis+Show+Build" alt="Toyota Corolla Altis show build" />
+            <span class="save-pill">112 saves</span>
+          </div>
+          <div class="build-body">
+            <div class="build-title-row">
+              <h3>Toyota Corolla Altis</h3>
+              <span class="year">2021</span>
+            </div>
+            <p class="build-sub">Clean show-car sedan with lip kit, polished wheels, air suspension, and a tan interior detail package.</p>
+            <div class="build-tags">
+              <span class="tag tag-yellow">Show</span>
+              <span class="tag tag-gray">VIP Touch</span>
+              <span class="tag tag-green">Street</span>
+            </div>
+            <div class="build-specs">
+              <div class="spec-box"><div class="k">Suspension</div><div class="v">Air Lift</div></div>
+              <div class="spec-box"><div class="k">Wheels</div><div class="v">SSR Vienna</div></div>
+            </div>
+          </div>
+          <div class="build-foot">
+            <div class="builder-meta"><strong>@altisdaily</strong>Bacolod, PH</div>
+            <div class="build-cost"><div class="amount">₱265K</div><div class="label">Build Cost</div></div>
+          </div>
+        </article>
+      </div>
+
+      <div class="empty-results" id="emptyResults">
+        <h3>No builds found</h3>
+        <p>Try a different make or model keyword, switch the build style, or hit reset to browse all public builds again.</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const THEME_KEY = 'ceph-build-theme';
+    const themeToggle = document.getElementById('themeToggle');
+    const themeToggleLabel = document.getElementById('themeToggleLabel');
+    const themeToggleIcon = document.getElementById('themeToggleIcon');
+
+    function getThemeIcon(theme) {
+      if (theme === 'dark') {
+        return '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3c0 4.97 4.03 9 9 9 .27 0 .53-.01.79-.03z"/></svg>';
+      }
+      return '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2"/><path d="M12 21v2"/><path d="M4.22 4.22l1.42 1.42"/><path d="M18.36 18.36l1.42 1.42"/><path d="M1 12h2"/><path d="M21 12h2"/><path d="M4.22 19.78l1.42-1.42"/><path d="M18.36 5.64l1.42-1.42"/></svg>';
+    }
+
+    function applyTheme(theme) {
+      document.body.setAttribute('data-theme', theme);
+      themeToggle.setAttribute('aria-pressed', String(theme === 'dark'));
+      themeToggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+      themeToggleLabel.textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+      themeToggleIcon.innerHTML = getThemeIcon(theme);
+    }
+
+    function initTheme() {
+      const storedTheme = localStorage.getItem(THEME_KEY);
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      applyTheme(storedTheme || (prefersDark ? 'dark' : 'light'));
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const nextTheme = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      localStorage.setItem(THEME_KEY, nextTheme);
+      applyTheme(nextTheme);
+    });
+
+    initTheme();
+
+    const makeSearch = document.getElementById('makeSearch');
+    const modelSearch = document.getElementById('modelSearch');
+    const styleFilter = document.getElementById('styleFilter');
+    const sortFilter = document.getElementById('sortFilter');
+    const resetFilters = document.getElementById('resetFilters');
+    const resultsCount = document.getElementById('resultsCount');
+    const buildGrid = document.getElementById('buildGrid');
+    const emptyResults = document.getElementById('emptyResults');
+    const buildCards = Array.from(buildGrid.querySelectorAll('.build-card'));
+    const makeTags = Array.from(document.querySelectorAll('#makeTags .quick-tag'));
+
+    function formatCurrency(value) {
+      return new Intl.NumberFormat('en-PH').format(value);
+    }
+
+    function renderSort(cards) {
+      const sortedCards = [...cards];
+      const sortValue = sortFilter.value;
+
+      sortedCards.sort((a, b) => {
+        if (sortValue === 'cost-high') {
+          return Number(b.dataset.cost) - Number(a.dataset.cost);
+        }
+        if (sortValue === 'cost-low') {
+          return Number(a.dataset.cost) - Number(b.dataset.cost);
+        }
+        if (sortValue === 'recent') {
+          return new Date(b.dataset.recent) - new Date(a.dataset.recent);
+        }
+        return Number(b.dataset.saved) - Number(a.dataset.saved);
+      });
+
+      sortedCards.forEach(card => buildGrid.appendChild(card));
+    }
+
+    function syncMakeTags() {
+      const activeMake = makeSearch.value.trim().toLowerCase();
+      makeTags.forEach(tag => {
+        tag.classList.toggle('active', activeMake !== '' && activeMake === tag.dataset.make.toLowerCase());
+      });
+    }
+
+    function filterBuilds() {
+      const makeTerm = makeSearch.value.trim().toLowerCase();
+      const modelTerm = modelSearch.value.trim().toLowerCase();
+      const styleValue = styleFilter.value;
+
+      const visibleCards = buildCards.filter(card => {
+        const matchesMake = makeTerm === '' || card.dataset.make.toLowerCase().includes(makeTerm);
+        const matchesModel = modelTerm === '' || card.dataset.model.toLowerCase().includes(modelTerm);
+        const matchesStyle = styleValue === 'all' || card.dataset.style === styleValue;
+        const isVisible = matchesMake && matchesModel && matchesStyle;
+        card.classList.toggle('hide', !isVisible);
+        return isVisible;
+      });
+
+      renderSort(visibleCards);
+      resultsCount.textContent = String(visibleCards.length);
+      emptyResults.classList.toggle('show', visibleCards.length === 0);
+      syncMakeTags();
+    }
+
+    makeSearch.addEventListener('input', filterBuilds);
+    modelSearch.addEventListener('input', filterBuilds);
+    styleFilter.addEventListener('change', filterBuilds);
+    sortFilter.addEventListener('change', filterBuilds);
+
+    makeTags.forEach(tag => {
+      tag.addEventListener('click', () => {
+        const nextValue = makeSearch.value.trim().toLowerCase() === tag.dataset.make.toLowerCase() ? '' : tag.dataset.make;
+        makeSearch.value = nextValue;
+        filterBuilds();
+      });
+    });
+
+    resetFilters.addEventListener('click', () => {
+      makeSearch.value = '';
+      modelSearch.value = '';
+      styleFilter.value = 'all';
+      sortFilter.value = 'saved';
+      filterBuilds();
+    });
+
+    filterBuilds();
+  </script>
+</body>
+</html>

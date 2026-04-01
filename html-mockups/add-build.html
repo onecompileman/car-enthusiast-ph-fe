@@ -1,0 +1,1442 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Build Wizard | Car Enthusiast PH</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #F4F4F5;
+      --surface: #FFFFFF;
+      --surface-2: #EFEFEF;
+      --text: #111111;
+      --text-2: #6B7280;
+      --text-3: #9CA3AF;
+      --accent: #DC2626;
+      --border: #E4E4E7;
+      --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+      --shadow: 0 12px 32px rgba(0,0,0,0.12);
+      --r: 14px;
+      --r-pill: 999px;
+    }
+
+    body[data-theme="dark"] {
+      --bg: #0F1115;
+      --surface: #171A20;
+      --surface-2: #1D2129;
+      --text: #F5F7FA;
+      --text-2: #A2AAB8;
+      --text-3: #6E7786;
+      --accent: #FF5A4F;
+      --accent-orange: #FF9B3D;
+      --accent-orange-2: #FFB457;
+      --border: #2A303A;
+      --shadow-sm: 0 1px 4px rgba(0,0,0,0.24);
+      --shadow: 0 16px 38px rgba(0,0,0,0.34);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      min-height: 58px;
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 21px;
+      letter-spacing: 1px;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .logo em { color: var(--accent); font-style: normal; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: var(--r-pill);
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      text-decoration: none;
+      transition: all 0.18s ease;
+    }
+    .btn-outline { background: transparent; color: var(--text-2); border: 1px solid var(--border); }
+    .btn-outline:hover { color: var(--text); border-color: #999; background: var(--surface); }
+    .btn-solid { background: var(--text); color: #fff; }
+    .btn-solid:hover { background: #333; }
+    .btn-accent { background: var(--accent); color: #fff; }
+    .btn-accent:hover { filter: brightness(1.06); }
+    .btn[disabled] { opacity: 0.55; cursor: not-allowed; }
+
+    .page {
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      padding: 20px 28px;
+      display: block;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .wizard-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .wizard-head h1 {
+      font-size: clamp(30px, 4vw, 44px);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      font-weight: 800;
+    }
+    .wizard-head p { font-size: 13px; color: var(--text-2); margin-top: 7px; max-width: 68ch; line-height: 1.7; }
+
+    .stepper {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .step {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px;
+      background: color-mix(in srgb, var(--surface) 85%, var(--bg));
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      min-height: 56px;
+    }
+    .step .num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .step .meta { display: grid; gap: 2px; }
+    .step .meta strong { font-size: 12px; }
+    .step .meta span { font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; }
+    .step.active {
+      border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 14%, transparent);
+    }
+    .step.active .num { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    .step-pane { display: none; }
+    .step-pane.active { display: block; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .field { display: grid; gap: 7px; margin-bottom: 10px; }
+    .field label {
+      font-size: 11px;
+      color: var(--text-3);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg);
+      color: var(--text);
+      padding: 11px 13px;
+      font: inherit;
+      outline: none;
+      transition: border-color 0.18s, box-shadow 0.18s;
+    }
+    .field textarea { min-height: 96px; resize: vertical; }
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
+    }
+
+    .hint { font-size: 11px; color: var(--text-3); margin-top: -4px; }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .photo-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px;
+      background: color-mix(in srgb, var(--surface) 84%, var(--bg));
+      display: grid;
+      gap: 8px;
+      position: relative;
+    }
+    .photo-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .photo-card h3 { font-size: 13px; font-weight: 800; }
+    .ref-wrap { position: relative; }
+    .ref-btn {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-2);
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .ref-btn:hover { color: var(--text); }
+    .ref-popover {
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      width: 230px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      padding: 7px;
+      z-index: 5;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-4px);
+      transition: opacity 0.16s ease, transform 0.16s ease;
+      pointer-events: none;
+    }
+    .ref-popover img {
+      width: 100%;
+      height: 126px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      display: block;
+      background: var(--surface-2);
+    }
+    .ref-popover p {
+      margin-top: 6px;
+      color: var(--text-2);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+    .ref-wrap:hover .ref-popover,
+    .ref-wrap.open .ref-popover {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .photo-preview {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      border-radius: 10px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      display: block;
+    }
+    .photo-status { font-size: 11px; color: var(--text-2); }
+
+    .gallery-uploader {
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 8px;
+      background: color-mix(in srgb, var(--surface) 86%, var(--bg));
+    }
+    .gallery-grid {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 8px;
+    }
+    .gallery-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--surface);
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 76px;
+      object-fit: cover;
+      display: block;
+      background: var(--surface-2);
+    }
+    .gallery-item span {
+      display: block;
+      font-size: 10px;
+      color: var(--text-2);
+      padding: 5px 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .stage-wrap {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: linear-gradient(150deg, color-mix(in srgb, var(--surface) 62%, var(--bg)) 0%, var(--surface-2) 100%);
+      padding: 12px;
+    }
+    .stage-tabs {
+      display: inline-flex;
+      gap: 5px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--bg);
+      padding: 3px;
+      margin-bottom: 10px;
+    }
+    .stage-tab {
+      border: none;
+      background: transparent;
+      color: var(--text-2);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .stage-tab.active {
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hotspot-stage {
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--surface-2);
+      min-height: 260px;
+      cursor: crosshair;
+    }
+    .hotspot-stage img {
+      width: 100%;
+      height: 100%;
+      min-height: 260px;
+      object-fit: cover;
+      display: block;
+    }
+    .hotspot-dot {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.9);
+      background: rgba(17,17,17,0.78);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #fff;
+      font-weight: 800;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.28);
+      pointer-events: none;
+      z-index: 3;
+    }
+    .hotspot-label {
+      position: absolute;
+      transform: translate(-50%, calc(-100% - 12px));
+      background: rgba(17,17,17,0.84);
+      color: #fff;
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: 10px;
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .mod-box {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px;
+      margin-top: 10px;
+      background: color-mix(in srgb, var(--surface) 86%, var(--bg));
+    }
+    .mod-box h3 { font-size: 14px; font-weight: 800; margin-bottom: 8px; }
+    .mod-add {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      align-items: start;
+    }
+    .mod-actions { display: flex; justify-content: flex-end; }
+    .mod-list {
+      margin-top: 10px;
+      display: grid;
+      gap: 8px;
+    }
+    .mod-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+      display: grid;
+      gap: 8px;
+      background: var(--surface);
+    }
+    .mod-item.active {
+      border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 14%, transparent);
+    }
+    .mod-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .mod-row strong { font-size: 13px; }
+    .mod-row span { font-size: 11px; color: var(--text-2); }
+
+    .perf-box {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px;
+      margin-top: 10px;
+      background: color-mix(in srgb, var(--surface) 86%, var(--bg));
+    }
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      color: var(--text-2);
+      font-size: 13px;
+    }
+
+    .review-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .review-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px;
+      background: color-mix(in srgb, var(--surface) 85%, var(--bg));
+    }
+    .review-card h3 { font-size: 13px; font-weight: 800; margin-bottom: 6px; }
+    .review-card p,
+    .review-card li { font-size: 12px; color: var(--text-2); line-height: 1.6; }
+    .review-card ul { padding-left: 16px; }
+
+    .wizard-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+      border-top: 1px dashed var(--border);
+      padding-top: 12px;
+    }
+
+    .status-msg {
+      min-height: 18px;
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--text-2);
+    }
+
+    .empty {
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-3);
+    }
+
+    .preview-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(12, 14, 18, 0.68);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 900;
+    }
+    .preview-modal.show { display: flex; }
+    .preview-dialog {
+      width: min(980px, 100%);
+      max-height: 92vh;
+      overflow: auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 14px;
+    }
+    .preview-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .preview-top h2 { font-size: 22px; font-weight: 800; }
+
+    .preview-stage {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--surface-2);
+      position: relative;
+      min-height: 320px;
+    }
+    .preview-stage img {
+      width: 100%;
+      min-height: 320px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .preview-switch {
+      margin-top: 10px;
+      display: inline-flex;
+      gap: 6px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 3px;
+      background: var(--bg);
+    }
+
+    .preview-mods {
+      margin-top: 10px;
+      border-top: 1px dashed var(--border);
+      padding-top: 10px;
+      display: grid;
+      gap: 6px;
+    }
+    .preview-mods .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-2);
+      border-bottom: 1px solid color-mix(in srgb, var(--border) 65%, transparent);
+      padding-bottom: 5px;
+    }
+
+    body[data-theme="dark"] .btn-outline {
+      color: var(--accent-orange-2);
+      border-color: color-mix(in srgb, var(--accent-orange) 45%, var(--border));
+      background: color-mix(in srgb, var(--accent-orange) 10%, transparent);
+    }
+    body[data-theme="dark"] .btn-outline:hover {
+      color: #1A1205;
+      border-color: var(--accent-orange-2);
+      background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-2) 100%);
+    }
+    body[data-theme="dark"] .btn-solid,
+    body[data-theme="dark"] .btn-accent {
+      background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-2) 100%);
+      color: #1A1205;
+    }
+    body[data-theme="dark"] .btn-solid:hover,
+    body[data-theme="dark"] .btn-accent:hover {
+      background: linear-gradient(135deg, #FFB457 0%, #FFC66E 100%);
+      color: #140D03;
+    }
+    body[data-theme="dark"] .step.active .num { color: #140D03; }
+
+    @media (max-width: 900px) {
+      nav { padding: 14px 20px; flex-wrap: wrap; }
+      .stepper { grid-template-columns: 1fr 1fr; }
+      .photo-grid { grid-template-columns: 1fr; }
+      .review-grid { grid-template-columns: 1fr; }
+      .mod-add { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      nav { padding: 12px; }
+      .page { padding: 12px; }
+      .card { padding: 14px; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .stepper { grid-template-columns: 1fr; }
+      .preview-stage,
+      .preview-stage img,
+      .hotspot-stage,
+      .hotspot-stage img { min-height: 220px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="animate__animated animate__fadeIn" style="animation-duration:0.4s;">
+    <a class="logo" href="index.html">CEPH<em>.</em></a>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn btn-outline" id="themeToggle" type="button" aria-pressed="false" aria-label="Switch to dark theme">
+        <span id="themeToggleIcon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2"/><path d="M12 21v2"/><path d="M4.22 4.22l1.42 1.42"/><path d="M18.36 18.36l1.42 1.42"/><path d="M1 12h2"/><path d="M21 12h2"/><path d="M4.22 19.78l1.42-1.42"/><path d="M18.36 5.64l1.42-1.42"/></svg>
+        </span>
+        <span id="themeToggleLabel">Dark Mode</span>
+      </button>
+      <a class="btn btn-outline" href="browse-builds.html">Browse Builds</a>
+      <a class="btn btn-outline" href="account-settings.html">Account Settings</a>
+    </div>
+  </nav>
+
+  <main class="page">
+    <section class="card animate__animated animate__fadeInUp" style="animation-duration:0.45s;">
+      <div class="wizard-head">
+        <div>
+          <h1>Build Wizard</h1>
+          <p>Create your build in guided steps. Front slant, side view, and rear slant photos are required before publishing.</p>
+        </div>
+      </div>
+
+      <div class="stepper" id="stepper">
+        <div class="step active" data-step="1"><span class="num">1</span><div class="meta"><strong>Build Info</strong><span>Details</span></div></div>
+        <div class="step" data-step="2"><span class="num">2</span><div class="meta"><strong>Photos</strong><span>Required views</span></div></div>
+        <div class="step" data-step="3"><span class="num">3</span><div class="meta"><strong>Visual Mods</strong><span>Hotspots</span></div></div>
+        <div class="step" data-step="4"><span class="num">4</span><div class="meta"><strong>Performance</strong><span>Add or skip</span></div></div>
+        <div class="step" data-step="5"><span class="num">5</span><div class="meta"><strong>Review</strong><span>Save / Publish</span></div></div>
+      </div>
+
+      <form id="buildWizardForm">
+        <div class="step-pane active" data-pane="1">
+          <div class="grid-2">
+            <div class="field">
+              <label for="title">Build Title</label>
+              <input id="title" name="title" type="text" placeholder="FK8 Full Aero Daily" />
+            </div>
+            <div class="field">
+              <label for="year">Year</label>
+              <input id="year" name="year" type="number" min="1980" max="2035" placeholder="2020" />
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label for="make">Make</label>
+              <input id="make" name="make" type="text" placeholder="Honda" />
+            </div>
+            <div class="field">
+              <label for="model">Model</label>
+              <input id="model" name="model" type="text" placeholder="Civic Type R FK8" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="summary">Build Summary</label>
+            <textarea id="summary" name="summary" placeholder="Describe your build goals and overall setup..."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="approxCost">Approx Build Cost (PHP)</label>
+            <input id="approxCost" name="approxCost" type="number" min="0" step="1000" placeholder="685000" />
+          </div>
+        </div>
+
+        <div class="step-pane" data-pane="2">
+          <div class="photo-grid">
+            <div class="photo-card">
+              <div class="photo-head">
+                <h3>Front Slant (Required)</h3>
+                <div class="ref-wrap">
+                  <button class="ref-btn" type="button" aria-expanded="false">Reference</button>
+                  <div class="ref-popover" role="tooltip">
+                    <img src="https://placehold.co/640x400/1D2129/F5F7FA?text=Front+Slant+Reference" alt="Front slant reference angle" />
+                    <p>Capture 3/4 front with bumper, hood line, and one full side visible.</p>
+                  </div>
+                </div>
+              </div>
+              <img id="frontPreview" class="photo-preview" alt="Front slant preview" src="https://placehold.co/600x380/E8E8E8/999?text=Front+Slant+Required" />
+              <input id="frontInput" type="file" accept="image/*" />
+              <div class="photo-status" id="frontStatus">No image selected</div>
+            </div>
+            <div class="photo-card">
+              <div class="photo-head">
+                <h3>Side View (Required)</h3>
+                <div class="ref-wrap">
+                  <button class="ref-btn" type="button" aria-expanded="false">Reference</button>
+                  <div class="ref-popover" role="tooltip">
+                    <img src="https://placehold.co/640x400/1D2129/F5F7FA?text=Side+View+Reference" alt="Side view reference angle" />
+                    <p>Keep the car centered and level so wheel fitment and stance are clear.</p>
+                  </div>
+                </div>
+              </div>
+              <img id="sidePreview" class="photo-preview" alt="Side view preview" src="https://placehold.co/600x380/E8E8E8/999?text=Side+View+Required" />
+              <input id="sideInput" type="file" accept="image/*" />
+              <div class="photo-status" id="sideStatus">No image selected</div>
+            </div>
+            <div class="photo-card">
+              <div class="photo-head">
+                <h3>Rear Slant (Required)</h3>
+                <div class="ref-wrap">
+                  <button class="ref-btn" type="button" aria-expanded="false">Reference</button>
+                  <div class="ref-popover" role="tooltip">
+                    <img src="https://placehold.co/640x400/1D2129/F5F7FA?text=Rear+Slant+Reference" alt="Rear slant reference angle" />
+                    <p>Use 3/4 rear showing diffuser, tail lights, and one side profile.</p>
+                  </div>
+                </div>
+              </div>
+              <img id="rearPreview" class="photo-preview" alt="Rear slant preview" src="https://placehold.co/600x380/E8E8E8/999?text=Rear+Slant+Required" />
+              <input id="rearInput" type="file" accept="image/*" />
+              <div class="photo-status" id="rearStatus">No image selected</div>
+            </div>
+          </div>
+
+          <div class="gallery-uploader">
+            <div class="field" style="margin-bottom:0;">
+              <label for="galleryInput">Gallery Images (Up to 10)</label>
+              <input id="galleryInput" type="file" accept="image/*" multiple />
+              <div class="hint">You can upload up to 10 additional gallery images.</div>
+            </div>
+            <div class="gallery-grid" id="galleryGrid"></div>
+          </div>
+        </div>
+
+        <div class="step-pane" data-pane="3">
+          <div class="stage-wrap">
+            <div class="stage-tabs" id="stageTabs">
+              <button class="stage-tab" type="button" data-view="front">Front Slant</button>
+              <button class="stage-tab active" type="button" data-view="side">Side View</button>
+              <button class="stage-tab" type="button" data-view="rear">Rear Slant</button>
+            </div>
+            <div class="hint" style="margin-bottom:8px;">Pick a mod from the list, click "Place Hotspot", then click on the car image.</div>
+            <div class="hotspot-stage" id="hotspotStage">
+              <img id="hotspotImage" alt="Hotspot placement image" src="https://placehold.co/980x560/E8E8E8/999?text=Upload+Required+View+Images+First" />
+            </div>
+          </div>
+
+          <div class="mod-box">
+            <h3>Visual Mods Hotspots</h3>
+            <div class="mod-add">
+              <div class="field">
+                <label for="modName">Mod Name</label>
+                <input id="modName" type="text" placeholder="APR GTC-300 Wing" />
+              </div>
+              <div class="field">
+                <label for="modPart">Part Type</label>
+                <input id="modPart" type="text" placeholder="Spoiler" />
+              </div>
+              <div class="field" style="grid-column:1 / -1;">
+                <label for="modDesc">Description</label>
+                <textarea id="modDesc" placeholder="Short details about fitment, finish, and install."></textarea>
+              </div>
+              <div class="field">
+                <label for="modShop">Shop / Source</label>
+                <input id="modShop" type="text" placeholder="JDM Select Manila" />
+              </div>
+              <div class="field">
+                <label for="modPrice">Price Range Estimate (PHP)</label>
+                <input id="modPrice" type="text" placeholder="25,000 - 32,000" />
+              </div>
+              <div class="field" style="grid-column:1 / -1;">
+                <label for="modImage">Mod Image (Optional)</label>
+                <input id="modImage" type="file" accept="image/*" />
+              </div>
+              <div class="mod-actions" style="grid-column:1 / -1;">
+                <button class="btn btn-outline" id="addModBtn" type="button">Add Visual Mod</button>
+              </div>
+            </div>
+            <div class="mod-list" id="modList"></div>
+          </div>
+        </div>
+
+        <div class="step-pane" data-pane="4">
+          <div class="perf-box">
+            <h3 style="font-size:14px;font-weight:800;margin-bottom:8px;">Performance Mods</h3>
+            <label class="toggle-row"><input id="skipPerformance" type="checkbox" /> No performance mods for this build</label>
+            <div class="mod-add" id="perfFormWrap">
+              <div class="field">
+                <label for="perfName">Mod Name</label>
+                <input id="perfName" type="text" placeholder="Hondata FlashPro" />
+              </div>
+              <div class="field">
+                <label for="perfPrice">Price Range Estimate (PHP)</label>
+                <input id="perfPrice" type="text" placeholder="35,000 - 42,000" />
+              </div>
+              <div class="field" style="grid-column:1 / -1;">
+                <label for="perfDesc">Description</label>
+                <textarea id="perfDesc" placeholder="What this mod improved and current setup notes."></textarea>
+              </div>
+              <div class="field">
+                <label for="perfShop">Shop / Source</label>
+                <input id="perfShop" type="text" placeholder="SpeedLab" />
+              </div>
+              <div class="mod-actions">
+                <button class="btn btn-outline" id="addPerfBtn" type="button">Add Performance Mod</button>
+              </div>
+            </div>
+            <div class="mod-list" id="perfList"></div>
+          </div>
+        </div>
+
+        <div class="step-pane" data-pane="5">
+          <div class="review-grid">
+            <div class="review-card">
+              <h3>Build Overview</h3>
+              <p id="reviewMain">No details yet.</p>
+            </div>
+            <div class="review-card">
+              <h3>Photo Coverage</h3>
+              <ul id="reviewPhotos"></ul>
+            </div>
+            <div class="review-card">
+              <h3>Hotspot Mods</h3>
+              <ul id="reviewMods"></ul>
+            </div>
+            <div class="review-card">
+              <h3>Performance Mods</h3>
+              <ul id="reviewPerf"></ul>
+            </div>
+            <div class="review-card">
+              <h3>Gallery Count</h3>
+              <p id="reviewGallery">0 image(s)</p>
+            </div>
+          </div>
+          <div class="actions" style="margin-top:10px;">
+            <button type="button" class="btn btn-outline" id="previewBuildBtn">Preview View Build</button>
+            <button type="button" class="btn btn-outline" id="saveDraftBtn">Save as Draft</button>
+            <button type="button" class="btn btn-accent" id="publishBtn">Publish Build</button>
+          </div>
+          <div class="status-msg" id="statusMsg"></div>
+        </div>
+
+        <div class="wizard-actions">
+          <button type="button" class="btn btn-outline" id="prevStepBtn" disabled>Back</button>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <a href="browse-builds.html" class="btn btn-outline">Cancel</a>
+            <button type="button" class="btn btn-solid" id="nextStepBtn">Next</button>
+          </div>
+        </div>
+      </form>
+    </section>
+
+  </main>
+
+  <div class="preview-modal" id="previewModal" aria-hidden="true">
+    <div class="preview-dialog">
+      <div class="preview-top">
+        <h2 id="previewTitle">Build Preview</h2>
+        <button class="btn btn-outline" id="closePreviewBtn" type="button">Close Preview</button>
+      </div>
+      <div class="preview-stage" id="previewStage">
+        <img id="previewStageImg" alt="Preview car view" src="https://placehold.co/980x560/E8E8E8/999?text=No+Image" />
+      </div>
+      <div class="preview-switch" id="previewSwitch">
+        <button class="stage-tab" type="button" data-view="front">Front</button>
+        <button class="stage-tab active" type="button" data-view="side">Side</button>
+        <button class="stage-tab" type="button" data-view="rear">Rear</button>
+      </div>
+      <div class="preview-mods" id="previewMods"></div>
+    </div>
+  </div>
+
+  <script>
+    const THEME_KEY = 'ceph-build-theme';
+    const BUILDS_KEY = 'ceph-user-builds';
+
+    const themeToggle = document.getElementById('themeToggle');
+    const themeToggleLabel = document.getElementById('themeToggleLabel');
+    const themeToggleIcon = document.getElementById('themeToggleIcon');
+
+    const form = document.getElementById('buildWizardForm');
+    const stepEls = Array.from(document.querySelectorAll('.step'));
+    const paneEls = Array.from(document.querySelectorAll('.step-pane'));
+    const prevStepBtn = document.getElementById('prevStepBtn');
+    const nextStepBtn = document.getElementById('nextStepBtn');
+
+    const requiredInputs = {
+      front: document.getElementById('frontInput'),
+      side: document.getElementById('sideInput'),
+      rear: document.getElementById('rearInput')
+    };
+    const requiredPreviews = {
+      front: document.getElementById('frontPreview'),
+      side: document.getElementById('sidePreview'),
+      rear: document.getElementById('rearPreview')
+    };
+    const requiredStatuses = {
+      front: document.getElementById('frontStatus'),
+      side: document.getElementById('sideStatus'),
+      rear: document.getElementById('rearStatus')
+    };
+
+    const galleryInput = document.getElementById('galleryInput');
+    const galleryGrid = document.getElementById('galleryGrid');
+    const refWraps = Array.from(document.querySelectorAll('.ref-wrap'));
+
+    const stageTabs = document.getElementById('stageTabs');
+    const hotspotStage = document.getElementById('hotspotStage');
+    const hotspotImage = document.getElementById('hotspotImage');
+
+    const modNameInput = document.getElementById('modName');
+    const modPartInput = document.getElementById('modPart');
+    const modDescInput = document.getElementById('modDesc');
+    const modShopInput = document.getElementById('modShop');
+    const modPriceInput = document.getElementById('modPrice');
+    const modImageInput = document.getElementById('modImage');
+    const addModBtn = document.getElementById('addModBtn');
+    const modList = document.getElementById('modList');
+
+    const skipPerformanceInput = document.getElementById('skipPerformance');
+    const perfNameInput = document.getElementById('perfName');
+    const perfPriceInput = document.getElementById('perfPrice');
+    const perfDescInput = document.getElementById('perfDesc');
+    const perfShopInput = document.getElementById('perfShop');
+    const addPerfBtn = document.getElementById('addPerfBtn');
+    const perfList = document.getElementById('perfList');
+    const perfFormWrap = document.getElementById('perfFormWrap');
+
+    const reviewMain = document.getElementById('reviewMain');
+    const reviewPhotos = document.getElementById('reviewPhotos');
+    const reviewMods = document.getElementById('reviewMods');
+    const reviewPerf = document.getElementById('reviewPerf');
+    const reviewGallery = document.getElementById('reviewGallery');
+
+    const previewModal = document.getElementById('previewModal');
+    const previewTitle = document.getElementById('previewTitle');
+    const previewStage = document.getElementById('previewStage');
+    const previewStageImg = document.getElementById('previewStageImg');
+    const previewSwitch = document.getElementById('previewSwitch');
+    const previewMods = document.getElementById('previewMods');
+    const previewBuildBtn = document.getElementById('previewBuildBtn');
+    const closePreviewBtn = document.getElementById('closePreviewBtn');
+
+    const saveDraftBtn = document.getElementById('saveDraftBtn');
+    const publishBtn = document.getElementById('publishBtn');
+    const statusMsg = document.getElementById('statusMsg');
+
+    const views = ['front', 'side', 'rear'];
+
+    const state = {
+      step: 1,
+      activeView: 'side',
+      placingModId: null,
+      performanceSkipped: false,
+      requiredPhotos: {
+        front: null,
+        side: null,
+        rear: null
+      },
+      gallery: [],
+      mods: [],
+      performanceMods: []
+    };
+
+    function getThemeIcon(theme) {
+      if (theme === 'dark') {
+        return '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3c0 4.97 4.03 9 9 9 .27 0 .53-.01.79-.03z"/></svg>';
+      }
+      return '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2"/><path d="M12 21v2"/><path d="M4.22 4.22l1.42 1.42"/><path d="M18.36 18.36l1.42 1.42"/><path d="M1 12h2"/><path d="M21 12h2"/><path d="M4.22 19.78l1.42-1.42"/><path d="M18.36 5.64l1.42-1.42"/></svg>';
+    }
+
+    function applyTheme(theme) {
+      document.body.setAttribute('data-theme', theme);
+      themeToggle.setAttribute('aria-pressed', String(theme === 'dark'));
+      themeToggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+      themeToggleLabel.textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+      themeToggleIcon.innerHTML = getThemeIcon(theme);
+    }
+
+    function initTheme() {
+      const storedTheme = localStorage.getItem(THEME_KEY);
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      applyTheme(storedTheme || (prefersDark ? 'dark' : 'light'));
+    }
+
+    function loadBuilds() {
+      try {
+        const raw = localStorage.getItem(BUILDS_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveBuilds(builds) {
+      localStorage.setItem(BUILDS_KEY, JSON.stringify(builds));
+    }
+
+    function gotoStep(step) {
+      state.step = Math.max(1, Math.min(5, step));
+      stepEls.forEach(el => el.classList.toggle('active', Number(el.dataset.step) === state.step));
+      paneEls.forEach(el => el.classList.toggle('active', Number(el.dataset.pane) === state.step));
+      prevStepBtn.disabled = state.step === 1;
+      nextStepBtn.style.display = state.step === 5 ? 'none' : '';
+      if (state.step === 5) {
+        renderReview();
+      }
+    }
+
+    function handleRequiredPhoto(view, file) {
+      if (!file) return;
+      const url = URL.createObjectURL(file);
+      state.requiredPhotos[view] = { file, url, name: file.name };
+      requiredPreviews[view].src = url;
+      requiredStatuses[view].textContent = file.name;
+      refreshStageImage();
+      renderReview();
+    }
+
+    function renderGallery() {
+      galleryGrid.innerHTML = state.gallery.map(item => `
+        <div class="gallery-item">
+          <img src="${item.url}" alt="${item.name}" />
+          <span>${item.name}</span>
+        </div>`).join('');
+      renderReview();
+    }
+
+    function refreshStageImage() {
+      const selected = state.requiredPhotos[state.activeView];
+      hotspotImage.src = selected ? selected.url : 'https://placehold.co/980x560/E8E8E8/999?text=Upload+Required+View+Images+First';
+      renderHotspots();
+    }
+
+    function renderHotspots() {
+      hotspotStage.querySelectorAll('.hotspot-dot,.hotspot-label').forEach(node => node.remove());
+      state.mods.forEach((mod, idx) => {
+        const point = mod.hotspots[state.activeView];
+        if (!point) return;
+
+        const dot = document.createElement('span');
+        dot.className = 'hotspot-dot';
+        dot.style.left = point.x + '%';
+        dot.style.top = point.y + '%';
+        dot.textContent = String(idx + 1);
+
+        const label = document.createElement('span');
+        label.className = 'hotspot-label';
+        label.style.left = point.x + '%';
+        label.style.top = point.y + '%';
+        label.textContent = mod.name;
+
+        hotspotStage.appendChild(dot);
+        hotspotStage.appendChild(label);
+      });
+    }
+
+    function renderMods() {
+      if (state.mods.length === 0) {
+        modList.innerHTML = '<div class="empty">No visual mods added yet.</div>';
+        return;
+      }
+
+      modList.innerHTML = state.mods.map(mod => {
+        const point = mod.hotspots[state.activeView];
+        const hasPoint = point ? `Hotspot ${state.activeView}: ${point.x.toFixed(1)}%, ${point.y.toFixed(1)}%` : `No ${state.activeView} hotspot yet`;
+        const active = state.placingModId === mod.id ? 'active' : '';
+        return `
+          <article class="mod-item ${active}" data-id="${mod.id}">
+            <div class="mod-row">
+              <strong>${mod.name}</strong>
+              <span>${mod.part}</span>
+            </div>
+            <div class="mod-row"><span>${mod.description || 'No description added.'}</span></div>
+            <div class="mod-row"><span>Shop: ${mod.shop || 'Not set'}</span><span>Price: ${mod.priceEstimate || 'Not set'}</span></div>
+            <div class="mod-row"><span>Image: ${mod.imageName || 'None uploaded'}</span></div>
+            <div class="mod-row">
+              <span>${hasPoint}</span>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <button class="btn btn-outline" type="button" data-action="place" data-id="${mod.id}">${state.placingModId === mod.id ? 'Placing...' : 'Place Hotspot'}</button>
+                <button class="btn btn-outline" type="button" data-action="remove" data-id="${mod.id}">Remove</button>
+              </div>
+            </div>
+          </article>`;
+      }).join('');
+
+      modList.querySelectorAll('button[data-action="place"]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.placingModId = btn.dataset.id;
+          statusMsg.textContent = 'Click on the image to place hotspot for selected mod.';
+          renderMods();
+        });
+      });
+
+      modList.querySelectorAll('button[data-action="remove"]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.mods = state.mods.filter(mod => mod.id !== btn.dataset.id);
+          if (state.placingModId === btn.dataset.id) state.placingModId = null;
+          renderMods();
+          renderHotspots();
+          renderReview();
+        });
+      });
+    }
+
+    function addMod() {
+      const name = modNameInput.value.trim() || 'Untitled Visual Mod';
+      const part = modPartInput.value.trim() || 'Unspecified Part';
+      const description = modDescInput.value.trim();
+      const shop = modShopInput.value.trim();
+      const priceEstimate = modPriceInput.value.trim();
+      const imageName = modImageInput.files && modImageInput.files[0] ? modImageInput.files[0].name : '';
+
+      state.mods.push({
+        id: crypto.randomUUID(),
+        name,
+        part,
+        description,
+        shop,
+        priceEstimate,
+        imageName,
+        hotspots: { front: null, side: null, rear: null }
+      });
+      modNameInput.value = '';
+      modPartInput.value = '';
+      modDescInput.value = '';
+      modShopInput.value = '';
+      modPriceInput.value = '';
+      modImageInput.value = '';
+      statusMsg.textContent = '';
+      renderMods();
+      renderReview();
+    }
+
+    function renderPerformanceMods() {
+      if (state.performanceSkipped) {
+        perfList.innerHTML = '<div class="empty">Performance mods skipped for this build.</div>';
+        return;
+      }
+
+      if (state.performanceMods.length === 0) {
+        perfList.innerHTML = '<div class="empty">No performance mods added yet.</div>';
+        return;
+      }
+
+      perfList.innerHTML = state.performanceMods.map(mod => `
+        <article class="mod-item" data-id="${mod.id}">
+          <div class="mod-row"><strong>${mod.name}</strong><span>${mod.priceEstimate || 'No price set'}</span></div>
+          <div class="mod-row"><span>${mod.description || 'No description added.'}</span></div>
+          <div class="mod-row"><span>Shop: ${mod.shop || 'Not set'}</span>
+          <button class="btn btn-outline" type="button" data-action="remove-perf" data-id="${mod.id}">Remove</button></div>
+        </article>
+      `).join('');
+
+      perfList.querySelectorAll('button[data-action="remove-perf"]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.performanceMods = state.performanceMods.filter(mod => mod.id !== btn.dataset.id);
+          renderPerformanceMods();
+          renderReview();
+        });
+      });
+    }
+
+    function addPerformanceMod() {
+      if (state.performanceSkipped) {
+        return;
+      }
+
+      state.performanceMods.push({
+        id: crypto.randomUUID(),
+        name: perfNameInput.value.trim() || 'Untitled Performance Mod',
+        description: perfDescInput.value.trim(),
+        shop: perfShopInput.value.trim(),
+        priceEstimate: perfPriceInput.value.trim()
+      });
+
+      perfNameInput.value = '';
+      perfDescInput.value = '';
+      perfShopInput.value = '';
+      perfPriceInput.value = '';
+      renderPerformanceMods();
+      renderReview();
+    }
+
+    function syncPerformanceSkipState() {
+      state.performanceSkipped = skipPerformanceInput.checked;
+      const disabled = state.performanceSkipped;
+      [perfNameInput, perfPriceInput, perfDescInput, perfShopInput, addPerfBtn].forEach(el => {
+        el.disabled = disabled;
+      });
+      if (disabled) {
+        statusMsg.textContent = 'Performance mods skipped.';
+      } else {
+        statusMsg.textContent = '';
+      }
+      renderPerformanceMods();
+      renderReview();
+    }
+
+    function placeHotspot(evt) {
+      if (!state.placingModId) return;
+      const stageRect = hotspotStage.getBoundingClientRect();
+      const x = ((evt.clientX - stageRect.left) / stageRect.width) * 100;
+      const y = ((evt.clientY - stageRect.top) / stageRect.height) * 100;
+
+      const mod = state.mods.find(item => item.id === state.placingModId);
+      if (!mod) return;
+
+      mod.hotspots[state.activeView] = {
+        x: Math.max(1, Math.min(99, x)),
+        y: Math.max(1, Math.min(99, y))
+      };
+      state.placingModId = null;
+      statusMsg.textContent = 'Hotspot placed.';
+      renderMods();
+      renderHotspots();
+      renderReview();
+    }
+
+    function renderReview() {
+      const title = form.title.value.trim() || 'Untitled Build';
+      const makeModel = `${form.year.value || ''} ${form.make.value || ''} ${form.model.value || ''}`.trim();
+      reviewMain.textContent = `${title}${makeModel ? ` (${makeModel})` : ''}. ${form.summary.value.trim() || 'No summary yet.'}`;
+
+      reviewPhotos.innerHTML = views.map(view => {
+        const p = state.requiredPhotos[view];
+        return `<li>${view}: ${p ? p.name : 'Missing required image'}</li>`;
+      }).join('');
+
+      reviewMods.innerHTML = state.mods.length === 0
+        ? '<li>No visual mods added yet.</li>'
+        : state.mods.map(mod => {
+            const mapped = views.filter(view => Boolean(mod.hotspots[view])).join(', ') || 'no hotspots yet';
+            return `<li>${mod.name} (${mod.part}) - ${mapped}</li>`;
+          }).join('');
+
+      if (state.performanceSkipped) {
+        reviewPerf.innerHTML = '<li>Performance mods skipped.</li>';
+      } else {
+        reviewPerf.innerHTML = state.performanceMods.length === 0
+          ? '<li>No performance mods added yet.</li>'
+          : state.performanceMods.map(mod => `<li>${mod.name} - ${mod.shop || 'No shop'} - ${mod.priceEstimate || 'No estimate'}</li>`).join('');
+      }
+
+      reviewGallery.textContent = `${state.gallery.length} image(s)`;
+    }
+
+    function buildPayload(status) {
+      return {
+        id: crypto.randomUUID(),
+        title: form.title.value.trim(),
+        year: form.year.value.trim(),
+        make: form.make.value.trim(),
+        model: form.model.value.trim(),
+        summary: form.summary.value.trim(),
+        approxCost: form.approxCost.value.trim(),
+        status,
+        updatedAt: new Date().toISOString(),
+        requiredPhotoNames: {
+          front: state.requiredPhotos.front?.name || null,
+          side: state.requiredPhotos.side?.name || null,
+          rear: state.requiredPhotos.rear?.name || null
+        },
+        galleryNames: state.gallery.map(item => item.name),
+        visualMods: state.mods.map(mod => ({
+          name: mod.name,
+          part: mod.part,
+          description: mod.description,
+          imageName: mod.imageName,
+          shop: mod.shop,
+          priceEstimate: mod.priceEstimate,
+          hotspots: mod.hotspots
+        })),
+        performanceSkipped: state.performanceSkipped,
+        performanceMods: state.performanceMods
+      };
+    }
+
+    function saveWithStatus(status) {
+      const builds = loadBuilds();
+      builds.push(buildPayload(status));
+      saveBuilds(builds);
+      statusMsg.textContent = status === 'draft' ? 'Build saved as draft.' : 'Build published successfully.';
+    }
+
+    function openPreview() {
+      previewTitle.textContent = form.title.value.trim() || 'Build Preview';
+      refreshPreviewView('side');
+      renderPreviewMods();
+      previewModal.classList.add('show');
+      previewModal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closePreview() {
+      previewModal.classList.remove('show');
+      previewModal.setAttribute('aria-hidden', 'true');
+    }
+
+    function refreshPreviewView(view) {
+      const photo = state.requiredPhotos[view];
+      previewStageImg.src = photo ? photo.url : 'https://placehold.co/980x560/E8E8E8/999?text=Missing+' + view;
+
+      previewStage.querySelectorAll('.hotspot-dot,.hotspot-label').forEach(el => el.remove());
+      state.mods.forEach((mod, idx) => {
+        const point = mod.hotspots[view];
+        if (!point) return;
+
+        const dot = document.createElement('span');
+        dot.className = 'hotspot-dot';
+        dot.style.left = point.x + '%';
+        dot.style.top = point.y + '%';
+        dot.textContent = String(idx + 1);
+
+        const label = document.createElement('span');
+        label.className = 'hotspot-label';
+        label.style.left = point.x + '%';
+        label.style.top = point.y + '%';
+        label.textContent = mod.name;
+
+        previewStage.appendChild(dot);
+        previewStage.appendChild(label);
+      });
+
+      previewSwitch.querySelectorAll('.stage-tab').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.view === view);
+      });
+    }
+
+    function renderPreviewMods() {
+      previewMods.innerHTML = state.mods.length === 0
+        ? '<div class="item-meta">No visual mods added yet.</div>'
+        : state.mods.map(mod => `
+          <div class="row">
+            <span><strong>${mod.name}</strong> (${mod.part})</span>
+            <span>${views.filter(view => Boolean(mod.hotspots[view])).join(', ') || 'no hotspots'}</span>
+          </div>
+        `).join('');
+    }
+
+    requiredInputs.front.addEventListener('change', e => handleRequiredPhoto('front', e.target.files[0]));
+    requiredInputs.side.addEventListener('change', e => handleRequiredPhoto('side', e.target.files[0]));
+    requiredInputs.rear.addEventListener('change', e => handleRequiredPhoto('rear', e.target.files[0]));
+
+    galleryInput.addEventListener('change', e => {
+      const files = Array.from(e.target.files || []).slice(0, 10);
+      state.gallery = files.map(file => ({
+        name: file.name,
+        file,
+        url: URL.createObjectURL(file)
+      }));
+      renderGallery();
+      statusMsg.textContent = files.length === 10 ? 'Gallery capped at 10 images.' : '';
+    });
+
+    refWraps.forEach(wrap => {
+      const btn = wrap.querySelector('.ref-btn');
+      if (!btn) return;
+
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const willOpen = !wrap.classList.contains('open');
+        refWraps.forEach(item => {
+          item.classList.remove('open');
+          const itemBtn = item.querySelector('.ref-btn');
+          if (itemBtn) itemBtn.setAttribute('aria-expanded', 'false');
+        });
+        if (willOpen) {
+          wrap.classList.add('open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    document.addEventListener('click', () => {
+      refWraps.forEach(item => {
+        item.classList.remove('open');
+        const itemBtn = item.querySelector('.ref-btn');
+        if (itemBtn) itemBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    stageTabs.querySelectorAll('.stage-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.activeView = btn.dataset.view;
+        stageTabs.querySelectorAll('.stage-tab').forEach(tab => tab.classList.remove('active'));
+        btn.classList.add('active');
+        refreshStageImage();
+        renderMods();
+      });
+    });
+
+    addModBtn.addEventListener('click', addMod);
+    addPerfBtn.addEventListener('click', addPerformanceMod);
+    skipPerformanceInput.addEventListener('change', syncPerformanceSkipState);
+    hotspotStage.addEventListener('click', placeHotspot);
+
+    prevStepBtn.addEventListener('click', () => {
+      gotoStep(state.step - 1);
+    });
+
+    nextStepBtn.addEventListener('click', () => {
+      gotoStep(state.step + 1);
+    });
+
+    saveDraftBtn.addEventListener('click', () => saveWithStatus('draft'));
+    publishBtn.addEventListener('click', () => saveWithStatus('published'));
+
+    previewBuildBtn.addEventListener('click', () => {
+      openPreview();
+    });
+
+    closePreviewBtn.addEventListener('click', closePreview);
+    previewModal.addEventListener('click', e => {
+      if (e.target === previewModal) closePreview();
+    });
+
+    previewSwitch.querySelectorAll('.stage-tab').forEach(btn => {
+      btn.addEventListener('click', () => refreshPreviewView(btn.dataset.view));
+    });
+
+    themeToggle.addEventListener('click', () => {
+      const nextTheme = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      localStorage.setItem(THEME_KEY, nextTheme);
+      applyTheme(nextTheme);
+    });
+
+    initTheme();
+    refreshStageImage();
+    renderMods();
+    renderPerformanceMods();
+    renderGallery();
+    renderReview();
+  </script>
+</body>
+</html>
