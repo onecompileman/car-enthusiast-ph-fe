@@ -1,0 +1,17 @@
+<div class="cap-build-highlight__preview">
+  <img [src]="highlight.image" [alt]="highlight.imageAlt" />
+  <div class="cap-build-highlight__badge">Build Highlight of the Month</div>
+  <div class="cap-build-highlight__overlay">
+    <div class="cap-build-highlight__overlay-meta">
+      <span class="cap-build-highlight__kicker">{{ highlight.title }}</span>
+      <span class="cap-build-highlight__caption">{{ highlight.caption }}</span>
+    </div>
+    <div class="cap-build-highlight__owner">
+      <div class="cap-build-highlight__owner-avatar">{{ highlight.ownerInitials }}</div>
+      <div>
+        <div class="cap-build-highlight__owner-name">{{ highlight.ownerName }}</div>
+        <div class="cap-build-highlight__owner-label">Build Owner</div>
+      </div>
+    </div>
+  </div>
+</div>

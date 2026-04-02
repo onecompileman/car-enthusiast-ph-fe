@@ -30,3 +30,14 @@ nav {
   top: 0;
   z-index: 200;
 }
+
+body[data-theme="dark"] nav {
+  background: var(--surface);
+  border-bottom-color: var(--border);
+}
+
+body[data-theme="dark"] .nav-link.active {
+  background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-2) 100%);
+  border-color: transparent;
+  color: #1a1205;
+}

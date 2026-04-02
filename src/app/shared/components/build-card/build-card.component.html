@@ -1,0 +1,35 @@
+<article class="cap-build-card">
+  <div class="cap-build-card__media">
+    <img [src]="build.image" [alt]="build.make + ' ' + build.model" loading="lazy" />
+    <span class="cap-build-card__save-pill">{{ build.saves }} saves</span>
+  </div>
+
+  <div class="cap-build-card__body">
+    <div class="cap-build-card__title-row">
+      <h3>{{ build.make }} {{ build.model }}</h3>
+      <span class="cap-build-card__year">{{ build.year }}</span>
+    </div>
+    <p class="cap-build-card__desc">{{ build.description }}</p>
+    <div class="cap-build-card__tags">
+      <span *ngFor="let tag of build.tags" class="tag" [ngClass]="tag.colorClass">
+        {{ tag.label }}
+      </span>
+    </div>
+    <div class="cap-build-card__specs">
+      <div *ngFor="let spec of build.specs" class="cap-build-card__spec">
+        <div class="cap-build-card__spec-key">{{ spec.key }}</div>
+        <div class="cap-build-card__spec-val">{{ spec.value }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cap-build-card__foot">
+    <div class="cap-build-card__builder">
+      <strong>{{ build.builder }}</strong>{{ build.location }}
+    </div>
+    <div class="cap-build-card__cost">
+      <div class="cap-build-card__cost-amount">{{ costDisplay }}</div>
+      <div class="cap-build-card__cost-label">Build Cost</div>
+    </div>
+  </div>
+</article>

@@ -1,0 +1,44 @@
+.cap-review-step {
+  display: block;
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px;
+    background: color-mix(in srgb, var(--surface) 85%, var(--bg));
+
+    h3 {
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    p,
+    li {
+      font-size: 12px;
+      color: var(--text-2);
+      line-height: 1.6;
+    }
+
+    ul {
+      padding-left: 16px;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+}

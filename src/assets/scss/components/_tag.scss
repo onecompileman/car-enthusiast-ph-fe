@@ -1,0 +1,71 @@
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.tag-blue {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.tag-green {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.tag-red {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.tag-yellow {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.tag-gray {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.tag-dark {
+  background: #1f1f1f;
+  color: #fafafa;
+}
+
+body[data-theme="dark"] .tag-blue {
+  background: #10243c;
+  color: #7cb8ff;
+}
+
+body[data-theme="dark"] .tag-green {
+  background: #0f2c22;
+  color: #5ee9b5;
+}
+
+body[data-theme="dark"] .tag-red {
+  background: #3b1215;
+  color: #ff918a;
+}
+
+body[data-theme="dark"] .tag-yellow {
+  background: #342611;
+  color: #ffc978;
+}
+
+body[data-theme="dark"] .tag-gray {
+  background: #222833;
+  color: #b8c0cd;
+}
+
+body[data-theme="dark"] .tag-dark {
+  background: #f3f4f6;
+  color: #151922;
+}

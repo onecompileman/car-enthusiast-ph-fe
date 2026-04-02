@@ -1,10 +1,13 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
-  imports: [CommonModule],
-  declarations: [],
-  exports: [],
+  imports: [CommonModule, BsDropdownModule, RouterModule],
+  declarations: [NavbarComponent],
+  exports: [NavbarComponent],
   providers: [],
 })
 export class CoreModule {

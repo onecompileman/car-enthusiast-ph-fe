@@ -1,0 +1,53 @@
+<aside class="cap-build-filter">
+  <div class="cap-build-filter__head">
+    <h2>Search &amp; Filters</h2>
+    <button class="btn btn-outline" type="button" (click)="reset()">Reset</button>
+  </div>
+  <div class="cap-build-filter__body">
+    <div class="cap-build-filter__field">
+      <label for="makeSearch">Search Make</label>
+      <input
+        id="makeSearch"
+        type="text"
+        placeholder="Honda, Toyota, Mazda..."
+        [(ngModel)]="filter.make"
+        (ngModelChange)="onChange()"
+      />
+    </div>
+
+    <div class="cap-build-filter__field">
+      <label for="modelSearch">Search Model</label>
+      <input
+        id="modelSearch"
+        type="text"
+        placeholder="FK8, BRZ, M3, 370Z..."
+        [(ngModel)]="filter.model"
+        (ngModelChange)="onChange()"
+      />
+    </div>
+
+    <div class="cap-build-filter__field">
+      <label for="styleFilter">Build Style</label>
+      <select id="styleFilter" [(ngModel)]="filter.style" (ngModelChange)="onChange()">
+        <option value="all">All Styles</option>
+        <option value="street">Street</option>
+        <option value="track">Track</option>
+        <option value="stance">Stance</option>
+        <option value="show">Show Car</option>
+      </select>
+    </div>
+
+    <div class="cap-build-filter__field">
+      <label>Popular Makes</label>
+      <div class="cap-build-filter__quick-tags">
+        <button
+          *ngFor="let make of popularMakes"
+          class="cap-build-filter__quick-tag"
+          [class.active]="filter.make.toLowerCase() === make.toLowerCase()"
+          type="button"
+          (click)="selectMake(make)"
+        >{{ make }}</button>
+      </div>
+    </div>
+  </div>
+</aside>

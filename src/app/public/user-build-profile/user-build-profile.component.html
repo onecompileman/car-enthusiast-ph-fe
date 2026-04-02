@@ -1,0 +1,74 @@
+<div class="cap-user-build-profile">
+  <section
+    class="cap-user-build-profile__hero animate__animated animate__fadeInUp"
+    style="animation-duration: 0.45s"
+  >
+    <div class="cap-user-build-profile__cover"></div>
+
+    <div class="cap-user-build-profile__body">
+      <div class="cap-user-build-profile__identity-row">
+        <div class="cap-user-build-profile__identity">
+          <div class="cap-user-build-profile__avatar" aria-label="Profile initials">
+            {{ profile.initials }}
+          </div>
+
+          <div>
+            <h1>{{ profile.name }}</h1>
+            <p>{{ profile.handle }} · {{ profile.location }}</p>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="btn"
+          [ngClass]="isFollowing ? 'btn-outline' : 'btn-accent'"
+          (click)="toggleFollow()"
+        >
+          {{ isFollowing ? 'Following' : 'Follow' }}
+        </button>
+      </div>
+
+      <p class="cap-user-build-profile__bio">{{ profile.bio }}</p>
+
+      <div class="cap-user-build-profile__stats">
+        <article class="cap-user-build-profile__stat">
+          <div class="cap-user-build-profile__stat-value">{{ followersCount }}</div>
+          <div class="cap-user-build-profile__stat-label">Followers</div>
+        </article>
+
+        <article class="cap-user-build-profile__stat">
+          <div class="cap-user-build-profile__stat-value">{{ profile.following }}</div>
+          <div class="cap-user-build-profile__stat-label">Following</div>
+        </article>
+
+        <article class="cap-user-build-profile__stat">
+          <div class="cap-user-build-profile__stat-value">{{ publishedBuilds.length }}</div>
+          <div class="cap-user-build-profile__stat-label">Published Builds</div>
+        </article>
+
+        <article class="cap-user-build-profile__stat">
+          <div class="cap-user-build-profile__stat-value">{{ profile.totalBuildViews }}</div>
+          <div class="cap-user-build-profile__stat-label">Total Build Views</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="cap-user-build-profile__section-head animate__animated animate__fadeInUp"
+    style="animation-delay: 0.06s; animation-duration: 0.45s"
+  >
+    <h2>Published Builds</h2>
+    <span class="cap-user-build-profile__count-pill">{{ publishedCountLabel }}</span>
+  </section>
+
+  <section
+    class="cap-user-build-profile__build-grid animate__animated animate__fadeInUp"
+    style="animation-delay: 0.1s; animation-duration: 0.45s"
+  >
+    <cap-build-card
+      *ngFor="let build of publishedBuilds"
+      [build]="build"
+    ></cap-build-card>
+  </section>
+</div>

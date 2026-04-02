@@ -24,6 +24,9 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/assets/scss"]
+            },
             "outputPath": "dist/car-enthusiast-ph-fe",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -36,6 +39,10 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets"
               }
             ],
             "styles": [
@@ -106,10 +113,15 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets"
               }
             ],
             "styles": [
               "src/styles.scss"
+              
             ],
             "scripts": []
           }

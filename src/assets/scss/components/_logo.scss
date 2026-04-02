@@ -10,3 +10,11 @@
   color: var(--accent);
   font-style: normal;
 }
+
+body[data-theme="dark"] .logo {
+  color: var(--text);
+}
+
+body[data-theme="dark"] .logo em {
+  color: var(--accent-orange-2);
+}

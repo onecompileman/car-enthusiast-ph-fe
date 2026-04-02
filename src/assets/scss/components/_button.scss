@@ -43,3 +43,27 @@
 .btn-accent:hover {
   filter: brightness(1.06);
 }
+
+body[data-theme="dark"] .btn-outline {
+  color: var(--accent-orange-2);
+  border-color: color-mix(in srgb, var(--accent-orange) 45%, var(--border));
+  background: color-mix(in srgb, var(--accent-orange) 10%, transparent);
+}
+
+body[data-theme="dark"] .btn-outline:hover {
+  color: #1a1205;
+  border-color: var(--accent-orange-2);
+  background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-2) 100%);
+}
+
+body[data-theme="dark"] .btn-solid,
+body[data-theme="dark"] .btn-accent {
+  background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-2) 100%);
+  color: #1a1205;
+}
+
+body[data-theme="dark"] .btn-solid:hover,
+body[data-theme="dark"] .btn-accent:hover {
+  background: linear-gradient(135deg, #ffb457 0%, #ffc66e 100%);
+  color: #140d03;
+}

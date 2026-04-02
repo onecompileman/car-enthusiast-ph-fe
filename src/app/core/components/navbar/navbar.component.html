@@ -1,0 +1,40 @@
+<nav class="cap-navbar">
+    <div class="cap-navbar__left">
+      <a class="cap-navbar__logo" [routerLink]="['/']">CEPH<em>.</em></a>
+
+      <div class="cap-navbar__links">
+        <a class="cap-navbar__link" [routerLink]="['/']">Home</a>
+        <a class="cap-navbar__link" [routerLink]="['/browse-builds']">Browse Builds</a>
+        <a class="cap-navbar__link" [routerLink]="['/build-share']">Featured Build</a>
+      </div>
+    </div>
+
+    <div class="cap-navbar__right">
+      <a class="btn btn-outline" [routerLink]="['/register']">Join Community</a>
+      <a class="btn btn-solid" [routerLink]="['/build-share']">Share Your Build</a>
+      <div class="cap-navbar__profile-dropdown" dropdown placement="left">
+        <button
+          class="cap-navbar__profile-icon"
+          type="button"
+          dropdownToggle
+          aria-controls="profile-menu"
+          aria-label="Open profile menu"
+        >
+          <img
+            class="cap-navbar__profile-image"
+            src="/svg/user-profile.svg"
+            alt="User profile icon"
+          />
+        </button>
+
+        <ul id="profile-menu" *dropdownMenu class="dropdown-menu cap-navbar__profile-menu dropdown-menu-left" role="menu">
+          <li role="menuitem">
+            <a class="dropdown-item" routerLink="/">Profile</a>
+          </li>
+          <li role="menuitem">
+            <a class="dropdown-item cap-navbar__logout-item" routerLink="/login">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+</nav>

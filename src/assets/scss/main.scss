@@ -2,14 +2,17 @@
 // Base
 @import './base/resets';
 
-// Vendors
-@import './vendors/button';
-@import './vendors/modal';
-@import './vendors/alert';
-@import './vendors/badge';
-@import './vendors/swal';
-@import './vendors/dropdown-menu';
+//Config
+@import './config/fonts';
+@import './theme/color-theme';
 
 // Components
+@import './components/button';
+@import './components/hero';
 @import './components/input';
-@import './components/card';
+@import './components/logo';
+@import './components/shell';
+@import './components/tag';
+
+// Vendors
+@import './vendors/bootstrap-popover';

@@ -1,0 +1,113 @@
+:host {
+  display: contents;
+}
+
+.cap-build-highlight {
+  &__preview {
+    position: relative;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface-2);
+    overflow: hidden;
+    min-height: 290px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(17, 17, 17, 0.3);
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: var(--img-bg);
+    }
+  }
+
+  &__badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 2;
+    background: var(--accent);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 5px 10px;
+    border-radius: var(--r-pill);
+  }
+
+  &__overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    padding: 36px 14px 14px;
+    background: linear-gradient(to top, rgba(10, 11, 14, 0.92) 0%, transparent 100%);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  &__overlay-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  &__kicker {
+    font-size: 14px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.01em;
+  }
+
+  &__caption {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.62);
+  }
+
+  &__owner {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(17, 17, 17, 0.62);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 999px;
+    padding: 5px 10px 5px 5px;
+  }
+
+  &__owner-avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  &__owner-name {
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  &__owner-label {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.5);
+  }
+}

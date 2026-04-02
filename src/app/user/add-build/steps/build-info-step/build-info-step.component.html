@@ -1,0 +1,33 @@
+<form [formGroup]="form" class="cap-build-info-step">
+  <div class="cap-wizard-grid-2">
+    <div class="cap-wizard-field">
+      <label for="title">Build Title</label>
+      <input id="title" type="text" formControlName="title" placeholder="FK8 Full Aero Daily" />
+    </div>
+    <div class="cap-wizard-field">
+      <label for="year">Year</label>
+      <input id="year" type="number" formControlName="year" min="1980" max="2035" placeholder="2020" />
+    </div>
+  </div>
+
+  <div class="cap-wizard-grid-2">
+    <div class="cap-wizard-field">
+      <label for="make">Make</label>
+      <input id="make" type="text" formControlName="make" placeholder="Honda" />
+    </div>
+    <div class="cap-wizard-field">
+      <label for="model">Model</label>
+      <input id="model" type="text" formControlName="model" placeholder="Civic Type R FK8" />
+    </div>
+  </div>
+
+  <div class="cap-wizard-field">
+    <label for="summary">Build Summary</label>
+    <textarea id="summary" formControlName="summary" placeholder="Describe your build goals and overall setup..."></textarea>
+  </div>
+
+  <div class="cap-wizard-field">
+    <label for="approxCost">Approx Build Cost (PHP)</label>
+    <input id="approxCost" type="number" formControlName="approxCost" min="0" step="1000" placeholder="685000" />
+  </div>
+</form>

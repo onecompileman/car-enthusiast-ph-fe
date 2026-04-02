@@ -1,0 +1,86 @@
+/* Build-info hotspot popover theme for ngx-bootstrap popover. */
+.cap-build-info__hotspot-popover.popover {
+  --bs-popover-bg: #131924;
+  --bs-popover-header-bg: #131924;
+  --bs-popover-header-color: #f5f7fa;
+  --bs-popover-body-color: #a2aab8;
+  --bs-popover-border-color: #303746;
+  --bs-popover-max-width: 300px;
+  background: linear-gradient(160deg, #171f2d 0%, #131924 100%);
+  border: 1px solid #303746;
+  border-radius: 12px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.34);
+
+  .popover-header {
+    background: transparent;
+    color: #f5f7fa;
+    border-bottom: 1px solid #303746;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 9px 12px 8px;
+  }
+
+  .popover-body {
+    color: #a2aab8;
+    font-size: 12px;
+    line-height: 1.6;
+    padding: 9px 12px 11px;
+  }
+}
+
+.popover.cap-build-info__hotspot-popover,
+.cap-build-info__hotspot-popover .popover {
+  --bs-popover-bg: #131924 !important;
+  --bs-popover-header-bg: #131924 !important;
+  --bs-popover-header-color: #f5f7fa !important;
+  --bs-popover-body-color: #a2aab8 !important;
+  --bs-popover-border-color: #303746 !important;
+  background-color: #131924 !important;
+  background-image: linear-gradient(160deg, #171f2d 0%, #131924 100%) !important;
+  border-color: #303746 !important;
+}
+
+.popover.cap-build-info__hotspot-popover .popover-header,
+.popover.cap-build-info__hotspot-popover .popover-body {
+  background-color: transparent !important;
+}
+
+.cap-build-info__hotspot-popover.bs-popover-top > .popover-arrow::before,
+.cap-build-info__hotspot-popover.bs-popover-auto[data-popper-placement^='top'] > .popover-arrow::before {
+  border-top-color: #303746;
+}
+
+.cap-build-info__hotspot-popover.bs-popover-top > .popover-arrow::after,
+.cap-build-info__hotspot-popover.bs-popover-auto[data-popper-placement^='top'] > .popover-arrow::after {
+  border-top-color: #131924;
+}
+
+.cap-build-info__hotspot-popover.bs-popover-bottom > .popover-arrow::before,
+.cap-build-info__hotspot-popover.bs-popover-auto[data-popper-placement^='bottom'] > .popover-arrow::before {
+  border-bottom-color: #303746;
+}
+
+.cap-build-info__hotspot-popover.bs-popover-bottom > .popover-arrow::after,
+.cap-build-info__hotspot-popover.bs-popover-auto[data-popper-placement^='bottom'] > .popover-arrow::after {
+  border-bottom-color: #131924;
+}
+
+.cap-build-info__hotspot-popover.bs-popover-start > .popover-arrow::before,
+.cap-build-info__hotspot-popover.bs-popover-auto[data-popper-placement^='left'] > .popover-arrow::before {
+  border-left-color: #303746;
+}
+
+.cap-build-info__hotspot-popover.bs-popover-start > .popover-arrow::after,
+.cap-build-info__hotspot-popover.bs-popover-auto[data-popper-placement^='left'] > .popover-arrow::after {
+  border-left-color: #131924;
+}
+
+.cap-build-info__hotspot-popover.bs-popover-end > .popover-arrow::before,
+.cap-build-info__hotspot-popover.bs-popover-auto[data-popper-placement^='right'] > .popover-arrow::before {
+  border-right-color: #303746;
+}
+
+.cap-build-info__hotspot-popover.bs-popover-end > .popover-arrow::after,
+.cap-build-info__hotspot-popover.bs-popover-auto[data-popper-placement^='right'] > .popover-arrow::after {
+  border-right-color: #131924;
+}

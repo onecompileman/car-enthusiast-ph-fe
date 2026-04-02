@@ -1,0 +1,18 @@
+<div class="cap-photo-viewer" *ngIf="photo" (click)="closeViewer()">
+  <div class="cap-photo-viewer__dialog" (click)="$event.stopPropagation()">
+    <div class="cap-photo-viewer__toolbar">
+      <div class="cap-photo-viewer__zoom-controls">
+        <button type="button" (click)="zoomOut()" [disabled]="zoom <= 1" aria-label="Zoom out">-</button>
+        <button type="button" (click)="resetZoom()" aria-label="Reset zoom">{{ (zoom * 100).toFixed(0) }}%</button>
+        <button type="button" (click)="zoomIn()" [disabled]="zoom >= 3" aria-label="Zoom in">+</button>
+      </div>
+      <button type="button" class="cap-photo-viewer__close" (click)="closeViewer()" aria-label="Close photo viewer">x</button>
+    </div>
+
+    <div class="cap-photo-viewer__image-wrap" (wheel)="onWheel($event)">
+      <img [src]="photo.src" [alt]="photo.alt" [style.transform]="'scale(' + zoom + ')'" />
+    </div>
+
+    <p *ngIf="photo.caption" class="cap-photo-viewer__caption">{{ photo.caption }}</p>
+  </div>
+</div>

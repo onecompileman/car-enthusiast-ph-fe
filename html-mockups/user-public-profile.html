@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Public Profile | Car Enthusiast PH</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f4f4f5;
+      --surface: #ffffff;
+      --surface-2: #eeeeef;
+      --text: #111111;
+      --text-2: #6b7280;
+      --text-3: #9ca3af;
+      --accent: #dc2626;
+      --border: #e4e4e7;
+      --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.06);
+      --shadow: 0 10px 26px rgba(0, 0, 0, 0.08);
+      --r: 14px;
+      --pill: 999px;
+    }
+
+    body[data-theme="dark"] {
+      --bg: #0f1115;
+      --surface: #171a20;
+      --surface-2: #1d2129;
+      --text: #f5f7fa;
+      --text-2: #a2aab8;
+      --text-3: #6e7786;
+      --accent: #ff5a4f;
+      --accent-orange: #ff9b3d;
+      --accent-orange-2: #ffb457;
+      --border: #2a303a;
+      --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.24);
+      --shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: var(--pill);
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      text-decoration: none;
+      transition: all 0.18s ease;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-2);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { color: var(--text); border-color: #999; background: var(--surface); }
+
+    .btn-accent { background: var(--accent); color: #fff; }
+    .btn-accent:hover { filter: brightness(1.05); }
+
+    .btn-following {
+      background: color-mix(in srgb, var(--surface) 84%, var(--bg));
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      min-height: 58px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 1px;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .logo em { color: var(--accent); font-style: normal; }
+
+    .wrap {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 20px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .profile-hero {
+      background: linear-gradient(140deg, var(--surface) 0%, color-mix(in srgb, var(--surface) 70%, var(--surface-2)) 100%);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .profile-hero__cover {
+      height: 180px;
+      background: radial-gradient(circle at 78% 20%, rgba(255, 90, 79, 0.2), transparent 50%),
+                  linear-gradient(120deg, #1f2937 0%, #111827 55%, #0f1115 100%);
+    }
+
+    .profile-hero__body {
+      padding: 16px;
+      margin-top: -42px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .identity-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .identity {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      border: 3px solid var(--surface);
+      background: linear-gradient(145deg, #f97316, #dc2626);
+      box-shadow: var(--shadow);
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .identity h1 {
+      font-size: clamp(28px, 4.5vw, 44px);
+      line-height: 0.96;
+      letter-spacing: -0.04em;
+      font-weight: 800;
+    }
+
+    .identity p { color: var(--text-2); font-size: 13px; margin-top: 6px; }
+
+    .bio {
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--text-2);
+      max-width: 88ch;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .stat {
+      background: color-mix(in srgb, var(--surface) 84%, var(--bg));
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 12px;
+      text-align: left;
+    }
+
+    .stat .val { font-size: 24px; font-weight: 800; line-height: 1; }
+    .stat .lbl {
+      font-size: 11px;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 6px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 2px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(22px, 3vw, 34px);
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      font-weight: 800;
+    }
+
+    .count {
+      font-size: 12px;
+      color: var(--text-2);
+      border: 1px solid var(--border);
+      border-radius: var(--pill);
+      padding: 7px 10px;
+      background: color-mix(in srgb, var(--surface) 86%, var(--bg));
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .build-card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      min-height: 270px;
+    }
+
+    .cover {
+      width: 100%;
+      height: 158px;
+      object-fit: cover;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-2);
+    }
+
+    .body {
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .title-row h3 { font-size: 15px; font-weight: 800; line-height: 1.3; }
+
+    .badge {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      border-radius: var(--pill);
+      padding: 4px 8px;
+      white-space: nowrap;
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .meta, .desc { font-size: 12px; color: var(--text-2); line-height: 1.6; }
+
+    body[data-theme="dark"] .btn-outline {
+      color: var(--accent-orange-2);
+      border-color: color-mix(in srgb, var(--accent-orange) 45%, var(--border));
+      background: color-mix(in srgb, var(--accent-orange) 10%, transparent);
+    }
+
+    body[data-theme="dark"] .btn-outline:hover {
+      color: #1a1205;
+      border-color: var(--accent-orange-2);
+      background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-2) 100%);
+    }
+
+    body[data-theme="dark"] .btn-accent {
+      background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-2) 100%);
+      color: #1a1205;
+    }
+
+    @media (max-width: 980px) {
+      .stats { grid-template-columns: 1fr 1fr; }
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 680px) {
+      nav { padding: 12px; }
+      .wrap { padding: 12px; }
+      .profile-hero__cover { height: 130px; }
+      .grid { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr; }
+      .identity-row { align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="animate__animated animate__fadeIn" style="animation-duration:0.4s;">
+    <a class="logo" href="index.html">CEPH<em>.</em></a>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn btn-outline" id="themeToggle" type="button" aria-pressed="false" aria-label="Switch to dark theme">
+        <span id="themeToggleIcon">☀</span>
+        <span id="themeToggleLabel">Dark Mode</span>
+      </button>
+      <a class="btn btn-outline" href="browse-builds.html">Browse Builds</a>
+      <a class="btn btn-outline" href="my-builds.html">My Builds</a>
+    </div>
+  </nav>
+
+  <main class="wrap animate__animated animate__fadeInUp" style="animation-duration:0.45s;">
+    <section class="profile-hero">
+      <div class="profile-hero__cover"></div>
+      <div class="profile-hero__body">
+        <div class="identity-row">
+          <div class="identity">
+            <div class="avatar" aria-label="Profile initials">JR</div>
+            <div>
+              <h1 id="userName">Jun Reyes</h1>
+              <p id="userHandle">@junreyes_fk8 · Manila, PH</p>
+            </div>
+          </div>
+          <button id="followBtn" class="btn btn-accent" type="button">Follow</button>
+        </div>
+
+        <p class="bio" id="userBio">
+          Civic Type R owner and track-day regular. I document practical street and weekend setups with alignment notes, cost breakdowns, and lessons learned from each stage so other builders can skip expensive mistakes.
+        </p>
+
+        <div class="stats">
+          <article class="stat">
+            <div class="val" id="followersCount">1420</div>
+            <div class="lbl">Followers</div>
+          </article>
+          <article class="stat">
+            <div class="val">318</div>
+            <div class="lbl">Following</div>
+          </article>
+          <article class="stat">
+            <div class="val" id="publishedCount">0</div>
+            <div class="lbl">Published Builds</div>
+          </article>
+          <article class="stat">
+            <div class="val">5.8M</div>
+            <div class="lbl">Total Build Views</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-head">
+      <h2>Published Builds</h2>
+      <span class="count" id="publishedListCount">0 build(s)</span>
+    </section>
+
+    <section class="grid" id="buildGrid"></section>
+  </main>
+
+  <script>
+    const THEME_KEY = 'ceph-build-theme';
+    const FOLLOWED_OWNERS_KEY = 'ceph-followed-owners';
+    const OWNER_ID = 'owner-jun-reyes-public';
+
+    const builds = [
+      {
+        title: 'FK8 Street Aero Setup',
+        year: '2020',
+        make: 'Honda',
+        model: 'Civic Type R',
+        summary: 'Balanced street setup with splitter, side skirts, and daily-friendly ride height.',
+        budget: 'PHP 320,000',
+        updatedAt: 'Mar 18, 2026',
+        image: '../src/assets/images/fk8.jpg'
+      },
+      {
+        title: 'M3 Weekend Grip Build',
+        year: '2018',
+        make: 'BMW',
+        model: 'M3 F80',
+        summary: 'Focused on brake consistency and suspension geometry for short circuit sessions.',
+        budget: 'PHP 640,000',
+        updatedAt: 'Feb 26, 2026',
+        image: '../src/assets/images/m3.jpg'
+      },
+      {
+        title: 'GR86 Daily + Touge Spec',
+        year: '2023',
+        make: 'Toyota',
+        model: 'GR86',
+        summary: 'Clean wheel and tire package, mild camber, and OEM+ interior functionality.',
+        budget: 'PHP 280,000',
+        updatedAt: 'Jan 12, 2026',
+        image: '../src/assets/images/gr86.jpg'
+      },
+      {
+        title: 'FK8 Rain Setup Notes',
+        year: '2020',
+        make: 'Honda',
+        model: 'Civic Type R',
+        summary: 'Wet-weather alignment and brake pad notes after two monsoon test days.',
+        budget: 'PHP 74,000',
+        updatedAt: 'Dec 8, 2025',
+        image: '../src/assets/images/fk8.jpg'
+      },
+      {
+        title: 'GR86 Track Cooling Revision',
+        year: '2023',
+        make: 'Toyota',
+        model: 'GR86',
+        summary: 'Oil temp management update with ducting tweaks and airflow balancing.',
+        budget: 'PHP 102,000',
+        updatedAt: 'Nov 30, 2025',
+        image: '../src/assets/images/gr86.jpg'
+      },
+      {
+        title: 'M3 Street Comfort Calibration',
+        year: '2018',
+        make: 'BMW',
+        model: 'M3 F80',
+        summary: 'Damper and bushing revision to keep cabin comfort without losing response.',
+        budget: 'PHP 186,000',
+        updatedAt: 'Oct 14, 2025',
+        image: '../src/assets/images/m3.jpg'
+      }
+    ];
+
+    const themeToggle = document.getElementById('themeToggle');
+    const themeToggleLabel = document.getElementById('themeToggleLabel');
+    const themeToggleIcon = document.getElementById('themeToggleIcon');
+    const buildGrid = document.getElementById('buildGrid');
+    const publishedCount = document.getElementById('publishedCount');
+    const publishedListCount = document.getElementById('publishedListCount');
+    const followBtn = document.getElementById('followBtn');
+    const followersCount = document.getElementById('followersCount');
+
+    function getThemeIcon(theme) {
+      return theme === 'dark' ? '☾' : '☀';
+    }
+
+    function applyTheme(theme) {
+      document.body.setAttribute('data-theme', theme);
+      themeToggle.setAttribute('aria-pressed', String(theme === 'dark'));
+      themeToggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+      themeToggleLabel.textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+      themeToggleIcon.textContent = getThemeIcon(theme);
+    }
+
+    function initTheme() {
+      const storedTheme = localStorage.getItem(THEME_KEY);
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      applyTheme(storedTheme || (prefersDark ? 'dark' : 'light'));
+    }
+
+    function renderBuilds() {
+      publishedCount.textContent = String(builds.length);
+      publishedListCount.textContent = `${builds.length} build(s)`;
+
+      buildGrid.innerHTML = builds.map((item) => `
+        <article class="build-card">
+          <img class="cover" src="${item.image}" alt="${item.year} ${item.make} ${item.model}" />
+          <div class="body">
+            <div class="title-row">
+              <h3>${item.title}</h3>
+              <span class="badge">published</span>
+            </div>
+            <p class="meta">${item.year} ${item.make} ${item.model}</p>
+            <p class="desc">${item.summary}</p>
+            <p class="meta">Budget: ${item.budget}</p>
+            <p class="meta">Updated: ${item.updatedAt}</p>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function loadFollowedOwners() {
+      try {
+        const raw = localStorage.getItem(FOLLOWED_OWNERS_KEY);
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveFollowedOwners(owners) {
+      localStorage.setItem(FOLLOWED_OWNERS_KEY, JSON.stringify(owners));
+    }
+
+    function isFollowingOwner() {
+      return loadFollowedOwners().includes(OWNER_ID);
+    }
+
+    function renderFollowButton() {
+      const following = isFollowingOwner();
+      const baseFollowers = 1420;
+      const displayFollowers = following ? baseFollowers + 1 : baseFollowers;
+
+      followBtn.textContent = following ? 'Following' : 'Follow';
+      followBtn.classList.toggle('btn-accent', !following);
+      followBtn.classList.toggle('btn-following', following);
+      followersCount.textContent = String(displayFollowers);
+    }
+
+    followBtn.addEventListener('click', () => {
+      const owners = loadFollowedOwners();
+      const idx = owners.indexOf(OWNER_ID);
+      if (idx >= 0) {
+        owners.splice(idx, 1);
+      } else {
+        owners.push(OWNER_ID);
+      }
+      saveFollowedOwners(owners);
+      renderFollowButton();
+    });
+
+    themeToggle.addEventListener('click', () => {
+      const nextTheme = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      localStorage.setItem(THEME_KEY, nextTheme);
+      applyTheme(nextTheme);
+    });
+
+    initTheme();
+    renderFollowButton();
+    renderBuilds();
+  </script>
+</body>
+</html>

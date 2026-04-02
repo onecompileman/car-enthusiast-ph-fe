@@ -1,7 +1,47 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PublicComponent } from './public.component';
+import { HomeComponent } from './home/home.component';
+import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './login/login.component';
+import { BuildListComponent } from './build-list/build-list.component';
+import { BuildInfoComponent } from './build-info/build-info.component';
+import { UserBuildProfileComponent } from './user-build-profile/user-build-profile.component';
 
-const routes: Routes = [];
+const routes: Routes = [{
+  path: '',
+  component: PublicComponent,
+  children: [
+    {
+      path: '',
+      component: HomeComponent
+    },
+    {
+      path: 'register',
+      component: RegisterComponent
+    },
+    {
+      path: 'login',
+      component: LoginComponent
+    },
+    {
+      path: 'browse-builds',
+      component: BuildListComponent
+    },
+    {
+      path: 'build-info',
+      component: BuildInfoComponent
+    },
+    {
+      path: 'build-share',
+      component: BuildInfoComponent
+    },
+    {
+      path: 'user-build-profile',
+      component: UserBuildProfileComponent
+    }
+  ]
+}];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

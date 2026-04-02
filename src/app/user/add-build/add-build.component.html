@@ -1,0 +1,78 @@
+<div class="cap-add-build">
+  <section class="cap-add-build__card animate__animated animate__fadeInUp" style="animation-duration: 0.45s">
+
+    <div class="cap-add-build__head">
+      <h1>Build Wizard</h1>
+      <p>Create your build in guided steps. Front slant, side view, and rear slant photos are required before publishing.</p>
+    </div>
+
+    <!-- ── Stepper ──────────────────────────────────────────────── -->
+    <div class="cap-add-build__stepper">
+      <div
+        *ngFor="let step of steps"
+        class="cap-add-build__step"
+        [class.cap-add-build__step--active]="currentStep === step.num"
+        [class.cap-add-build__step--done]="currentStep > step.num"
+      >
+        <span class="cap-add-build__step-num">{{ step.num }}</span>
+        <div class="cap-add-build__step-meta">
+          <strong>{{ step.label }}</strong>
+          <span>{{ step.sub }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Step Panes ──────────────────────────────────────────── -->
+    <cap-build-info-step
+      *ngIf="currentStep === 1"
+    ></cap-build-info-step>
+
+    <cap-photos-step
+      *ngIf="currentStep === 2"
+    ></cap-photos-step>
+
+    <cap-visual-mods-step
+      *ngIf="currentStep === 3"
+      (statusChange)="onStatusMessage($event)"
+    ></cap-visual-mods-step>
+
+    <cap-performance-step
+      *ngIf="currentStep === 4"
+      (statusChange)="onStatusMessage($event)"
+    ></cap-performance-step>
+
+    <cap-review-step
+      *ngIf="currentStep === 5"
+      (statusChange)="onStatusMessage($event)"
+    ></cap-review-step>
+
+    <!-- ── Wizard Actions ──────────────────────────────────────── -->
+    <div class="cap-add-build__actions">
+      <button
+        type="button"
+        class="btn btn-outline"
+        [disabled]="currentStep === 1"
+        (click)="onPrev()"
+      >
+        Back
+      </button>
+
+      <div class="cap-add-build__actions-right">
+        <a class="btn btn-outline" routerLink="/browse-builds">Cancel</a>
+        <button
+          *ngIf="currentStep < totalSteps"
+          type="button"
+          class="btn btn-solid"
+          (click)="onNext()"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+
+    <div class="cap-add-build__status" *ngIf="statusMessage">
+      {{ statusMessage }}
+    </div>
+
+  </section>
+</div>

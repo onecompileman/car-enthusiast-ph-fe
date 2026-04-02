@@ -1,0 +1,32 @@
+<carousel
+  class="cap-builds-carousel"
+  [isAnimated]="true"
+  [interval]="interval"
+  [noPause]="true"
+  [showIndicators]="true"
+>
+  <slide *ngFor="let slide of slides">
+    <article class="cap-builds-carousel__card">
+      <div class="cap-builds-carousel__media">
+        <img [src]="slide.image" [alt]="slide.title" class="cap-builds-carousel__photo" />
+      </div>
+
+      <div class="cap-builds-carousel__overlay">
+        <div class="cap-builds-carousel__topline">
+          <span class="cap-builds-carousel__tag">{{ slide.tag }}</span>
+          <span *ngIf="slide.stat" class="cap-builds-carousel__stat">{{ slide.stat }}</span>
+        </div>
+
+        <div class="cap-builds-carousel__copy">
+          <p class="cap-builds-carousel__kicker">{{ slide.kicker }}</p>
+          <h4>{{ slide.title }}</h4>
+          <p>{{ slide.subtitle }}</p>
+        </div>
+
+        <div class="cap-builds-carousel__meta">
+          <span>{{ slide.meta }}</span>
+        </div>
+      </div>
+    </article>
+  </slide>
+</carousel>

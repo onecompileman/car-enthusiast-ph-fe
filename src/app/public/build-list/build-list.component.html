@@ -1,0 +1,76 @@
+<div class="cap-build-list">
+  <!-- ── Hero ──────────────────────────────────────────────────────── -->
+  <section
+    class="hero animate__animated animate__fadeInUp"
+    style="animation-duration: 0.45s"
+  >
+    <div class="cap-build-list__hero-copy">
+      <h1>Browse curated builds by make, model, and style.</h1>
+      <p>
+        Discover daily drivers, stance setups, full aero track cars, and
+        performance-focused projects from the local enthusiast scene.
+      </p>
+      <div class="cap-build-list__hero-stats">
+        <div class="cap-build-list__stat-chip">
+          <div class="cap-build-list__stat-val">248</div>
+          <div class="cap-build-list__stat-label">Public Builds</div>
+        </div>
+        <div class="cap-build-list__stat-chip">
+          <div class="cap-build-list__stat-val">39</div>
+          <div class="cap-build-list__stat-label">Makes Listed</div>
+        </div>
+        <div class="cap-build-list__stat-chip">
+          <div class="cap-build-list__stat-val">&#x20B1;1.2M</div>
+          <div class="cap-build-list__stat-label">Highest Build</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cap-build-list__highlight">
+      <cap-build-highlight [highlight]="highlight"></cap-build-highlight>
+    </div>
+  </section>
+
+  <!-- ── Controls ──────────────────────────────────────────────────── -->
+  <section
+    class="cap-build-list__controls animate__animated animate__fadeInUp"
+    style="animation-delay: 0.08s; animation-duration: 0.45s"
+  >
+    <cap-build-search-filter
+      (filterChange)="onFilterChange($event)"
+    ></cap-build-search-filter>
+
+    <div class="cap-build-list__results-card">
+      <div class="cap-build-list__results-head">
+        <div class="cap-build-list__results-meta">
+          <h2>Available Builds</h2>
+          <p>{{ filteredBuilds.length }} builds matching your filters</p>
+        </div>
+        <div class="cap-build-list__sort">
+          <label for="sortSelect">Sort by</label>
+          <select id="sortSelect" [(ngModel)]="sort">
+            <option value="saved">Most Saved</option>
+            <option value="cost-high">Build Cost: High to Low</option>
+            <option value="cost-low">Build Cost: Low to High</option>
+            <option value="recent">Most Recent</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="cap-build-list__grid" *ngIf="filteredBuilds.length > 0">
+        <cap-build-card
+          *ngFor="let build of filteredBuilds"
+          [build]="build"
+        ></cap-build-card>
+      </div>
+
+      <div class="cap-build-list__empty" *ngIf="filteredBuilds.length === 0">
+        <h3>No builds found</h3>
+        <p>
+          Try a different make or model keyword, switch the build style, or use
+          the reset button to browse all public builds.
+        </p>
+      </div>
+    </div>
+  </section>
+</div>

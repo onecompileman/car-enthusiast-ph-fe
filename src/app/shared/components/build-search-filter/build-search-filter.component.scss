@@ -1,0 +1,85 @@
+.cap-build-filter {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+
+  &__head {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    h2 {
+      font-size: 16px;
+      font-weight: 800;
+    }
+  }
+
+  &__body {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    label {
+      font-size: 11px;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg);
+      color: var(--text);
+      font: inherit;
+      outline: none;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+
+      &:focus {
+        border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
+      }
+    }
+  }
+
+  &__quick-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  &__quick-tag {
+    padding: 8px 12px;
+    border-radius: var(--r-pill);
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-2);
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.18s ease;
+
+    &:hover,
+    &.active {
+      background: var(--text);
+      border-color: var(--text);
+      color: var(--bg);
+    }
+  }
+}

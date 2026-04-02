@@ -1,0 +1,52 @@
+<div class="cap-photos-step">
+  <!-- Required views -->
+  <div class="cap-photos-step__grid">
+    <div class="cap-photos-step__card" *ngFor="let slot of slots">
+      <div class="cap-photos-step__card-head">
+        <h3>{{ slot.label }}</h3>
+        <div class="cap-photos-step__ref-wrap">
+          <button
+            type="button"
+            class="cap-photos-step__ref-btn"
+            (click)="toggleRef(slot.view)"
+            [attr.aria-expanded]="activeRefHint === slot.view"
+          >
+            Reference
+          </button>
+          <div class="cap-photos-step__ref-popover" *ngIf="activeRefHint === slot.view">
+            <p>{{ slot.refHint }}</p>
+          </div>
+        </div>
+      </div>
+
+      <img
+        class="cap-photos-step__preview"
+        [src]="previewUrl(slot.view)"
+        [alt]="slot.label + ' preview'"
+      />
+
+      <input type="file" accept="image/*" (change)="onRequiredPhoto(slot.view, $event)" />
+      <div class="cap-photos-step__status">{{ statusText(slot.view) }}</div>
+    </div>
+  </div>
+
+  <!-- Gallery -->
+  <div class="cap-photos-step__gallery-uploader">
+    <div class="cap-wizard-field" style="margin-bottom: 0">
+      <label for="galleryInput">Gallery Images (Up to 10)</label>
+      <input id="galleryInput" type="file" accept="image/*" multiple (change)="onGalleryChange($event)" />
+      <div class="cap-wizard-hint">You can upload up to 10 additional gallery images.</div>
+    </div>
+
+    <div class="cap-photos-step__gallery-grid" *ngIf="gallery.length > 0">
+      <div class="cap-photos-step__gallery-item" *ngFor="let item of gallery">
+        <img [src]="item.url" [alt]="item.name" />
+        <span>{{ item.name }}</span>
+      </div>
+    </div>
+
+    <div *ngIf="galleryCapped" class="cap-photos-step__status" style="margin-top: 4px;">
+      Gallery capped at 10 images.
+    </div>
+  </div>
+</div>
