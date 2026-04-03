@@ -1,4 +1,8 @@
 <form [formGroup]="form" class="cap-build-info-step">
+  <div *ngIf="showErrorMessage" class="alert alert-danger">
+    <strong>Error!</strong> Please fix the errors in the form, before
+    proceeding.
+  </div>
   <div class="cap-wizard-grid-2">
     <div class="cap-wizard-field">
       <label for="title">Build Title</label>
@@ -9,10 +13,9 @@
         placeholder="FK8 Full Aero Daily"
       />
       <div class="cap-wizard-field__message">
-        <small
-          class="cap-wizard-field__error"
-          *ngIf="fC('title')?.errors && fC('title')?.touched && fC('title')?.errors?.['profane']"
-        >Inappropriate language detected.</small>
+        <small class="cap-wizard-field__error" *ngIf="fieldError('title')">{{
+          fieldError("title")
+        }}</small>
       </div>
     </div>
     <div class="cap-wizard-field">
@@ -25,7 +28,11 @@
         max="2035"
         placeholder="2020"
       />
-      <div class="cap-wizard-field__message"></div>
+      <div class="cap-wizard-field__message">
+        <small class="cap-wizard-field__error" *ngIf="fieldError('year')">{{
+          fieldError("year")
+        }}</small>
+      </div>
     </div>
   </div>
 
@@ -34,10 +41,9 @@
       <label for="make">Make</label>
       <input id="make" type="text" formControlName="make" placeholder="Honda" />
       <div class="cap-wizard-field__message">
-        <small
-          class="cap-wizard-field__error"
-          *ngIf="fC('make')?.errors && fC('make')?.touched && fC('make')?.errors?.['profane']"
-        >Inappropriate language detected.</small>
+        <small class="cap-wizard-field__error" *ngIf="fieldError('make')">{{
+          fieldError("make")
+        }}</small>
       </div>
     </div>
     <div class="cap-wizard-field">
@@ -49,10 +55,9 @@
         placeholder="Civic Type R FK8"
       />
       <div class="cap-wizard-field__message">
-        <small
-          class="cap-wizard-field__error"
-          *ngIf="fC('model')?.errors && fC('model')?.touched && fC('model')?.errors?.['profane']"
-        >Inappropriate language detected.</small>
+        <small class="cap-wizard-field__error" *ngIf="fieldError('model')">{{
+          fieldError("model")
+        }}</small>
       </div>
     </div>
   </div>
@@ -65,10 +70,9 @@
       placeholder="Describe your build goals and overall setup..."
     ></textarea>
     <div class="cap-wizard-field__message">
-      <small
-        class="cap-wizard-field__error"
-        *ngIf="fC('summary')?.errors && fC('summary')?.touched && fC('summary')?.errors?.['profane']"
-      >Inappropriate language detected.</small>
+      <small class="cap-wizard-field__error" *ngIf="fieldError('summary')">{{
+        fieldError("summary")
+      }}</small>
     </div>
   </div>
 
@@ -82,7 +86,11 @@
       step="1000"
       placeholder="685000"
     />
-    <div class="cap-wizard-field__message"></div>
+    <div class="cap-wizard-field__message">
+      <small class="cap-wizard-field__error" *ngIf="fieldError('approxCost')">{{
+        fieldError("approxCost")
+      }}</small>
+    </div>
   </div>
 </form>
 
@@ -96,6 +104,8 @@
   ></cap-tag-input>
 
   <div class="cap-wizard-field__message">
-    <small class="cap-wizard-field__error" *ngIf="isTagsHasProfanity()">Inappropriate language detected in tags.</small>
+    <small class="cap-wizard-field__error" *ngIf="isTagsHasProfanity()"
+      >Inappropriate language detected in tags.</small
+    >
   </div>
 </div>

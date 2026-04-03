@@ -80,8 +80,7 @@ export class VisualModsStepComponent {
       description: mod.description,
       shop: mod.shop,
       priceEstimate: mod.priceEstimate,
-      imageName: mod.imageName,
-      imageUrl: mod.imageUrl,
+      photo: mod.photo,
     };
 
     this.modalRef = this.modalService.show(VisualModModalComponent, {
@@ -98,13 +97,19 @@ export class VisualModsStepComponent {
   }
 
   onModalSubmit(event: VisualModModalSubmitEvent): void {
+    const { name, part, description, shop, priceEstimate, photo } = event.values;
     if (event.mode === 'edit' && event.editId) {
-      this.wizard.updateVisualMod(event.editId, event.values);
+      this.wizard.updateVisualMod(event.editId, { name, part, description, shop, priceEstimate, photo });
       this.statusChange.emit('Visual mod updated.');
     } else {
       const mod: VisualMod = {
         id: this.generateId(),
-        ...event.values,
+        name,
+        part,
+        description,
+        shop,
+        priceEstimate,
+        photo,
         hotspots: { front: null, side: null, rear: null },
       };
       this.wizard.addVisualMod(mod);

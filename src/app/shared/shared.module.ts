@@ -14,6 +14,7 @@ import { PhotoViewerComponent } from './components/photo-viewer/photo-viewer.com
 import { TagInputComponent } from './components/tag-input/tag-input.component';
 import { VisualModModalComponent } from './components/visual-mod-modal/visual-mod-modal.component';
 import { PerformanceModModalComponent } from './components/performance-mod-modal/performance-mod-modal.component';
+import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { PerformanceModModalComponent } from './components/performance-mod-modal
     TagInputComponent,
     VisualModModalComponent,
     PerformanceModModalComponent,
+    ConfirmationModalComponent,
   ],
   imports: [
     CommonModule,
@@ -46,6 +48,7 @@ import { PerformanceModModalComponent } from './components/performance-mod-modal
     TagInputComponent,
     VisualModModalComponent,
     PerformanceModModalComponent,
+    ConfirmationModalComponent,
     FormsModule,
     ReactiveFormsModule,
   ],

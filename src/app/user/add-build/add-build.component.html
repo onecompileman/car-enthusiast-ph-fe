@@ -1,9 +1,14 @@
 <div class="cap-add-build">
-  <section class="cap-add-build__card animate__animated animate__fadeInUp" style="animation-duration: 0.45s">
-
+  <section
+    class="cap-add-build__card animate__animated animate__fadeInUp"
+    style="animation-duration: 0.45s"
+  >
     <div class="cap-add-build__head">
       <h1>Share Your Build</h1>
-      <p>Create your build in guided steps. Front slant, side view, and rear slant photos are required before publishing.</p>
+      <p>
+        Create your build in guided steps. Front slant, side view, and rear
+        slant photos are required before publishing.
+      </p>
     </div>
 
     <!-- ── Stepper ──────────────────────────────────────────────── -->
@@ -24,11 +29,15 @@
 
     <!-- ── Step Panes ──────────────────────────────────────────── -->
     <cap-build-info-step
+      (formChange)="steps[0].isValid = $event.valid"
       *ngIf="currentStep === 1"
+      [showErrorMessage]="steps[0].showErrorMessage"
     ></cap-build-info-step>
 
     <cap-photos-step
       *ngIf="currentStep === 2"
+      (isValidStep)="steps[1].isValid = $event"
+      [showErrorMessage]="steps[1].showErrorMessage"
     ></cap-photos-step>
 
     <cap-visual-mods-step
@@ -48,17 +57,17 @@
 
     <!-- ── Wizard Actions ──────────────────────────────────────── -->
     <div class="cap-add-build__actions">
-      <button
-        type="button"
-        class="btn btn-outline"
-        [disabled]="currentStep === 1"
-        (click)="onPrev()"
-      >
-        Back
-      </button>
+      <a class="btn btn-outline" (click)="cancelBuild()">Cancel</a>
 
       <div class="cap-add-build__actions-right">
-        <a class="btn btn-outline" routerLink="/browse-builds">Cancel</a>
+        <button
+          type="button"
+          class="btn btn-outline"
+          [disabled]="currentStep === 1"
+          (click)="onPrev()"
+        >
+          Back
+        </button>
         <button
           *ngIf="currentStep < totalSteps"
           type="button"
@@ -73,6 +82,5 @@
     <div class="cap-add-build__status" *ngIf="statusMessage">
       {{ statusMessage }}
     </div>
-
   </section>
 </div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BuildWizardService } from '../../build-wizard.service';
 import {
   RequiredPhoto,
@@ -21,6 +21,9 @@ interface PhotoSlot {
   styleUrl: './photos-step.component.scss',
 })
 export class PhotosStepComponent {
+  @Input() showErrorMessage = false;
+  @Output() isValidStep = new EventEmitter<boolean>();
+
   readonly slots: PhotoSlot[] = [
     {
       view: 'front',
@@ -61,7 +64,7 @@ export class PhotosStepComponent {
   galleryPhotoMaxSizeMB = 5;
   galleryPhotoMinWidthPx = 800;
   galleryPhotoMinHeightPx = 600;
-  galleryPhotoMaxAspectRatioX = 2;
+  galleryPhotoMaxAspectRatioX = 3;
   galleryPhotoMaxAspectRatioY = 3;
   galleryPhotoFileTypes = [
     'image/jpeg',
@@ -139,6 +142,7 @@ export class PhotosStepComponent {
     if (!file) return;
     const photo: RequiredPhoto = {
       file,
+      blob: file,
       url: URL.createObjectURL(file),
       name: file.name,
     };
@@ -157,6 +161,8 @@ export class PhotosStepComponent {
       photo,
       ...validation,
     });
+
+    this.checkIfValidStep();
   }
 
   async onGalleryChange(event: Event): Promise<void> {
@@ -192,6 +198,22 @@ export class PhotosStepComponent {
 
   toggleRef(view: WizardView): void {
     this.activeRefHint = this.activeRefHint === view ? null : view;
+  }
+
+  private checkIfValidStep(): void {
+    const requiredPhotos = this.wizard.state.requiredPhotos;
+    let isValid = Object.values(requiredPhotos).every(
+      (photo) =>
+        photo !== null && this.getValidationErrors(photo, true).length === 0,
+    );
+
+    isValid =
+      isValid &&
+      this.wizard.state.gallery.every(
+        (photo) => this.getValidationErrors(photo, false).length === 0,
+      );
+
+    this.isValidStep.emit(isValid);
   }
 
   private async validateRequiredPhoto(file: File): Promise<{
@@ -295,31 +317,39 @@ export class PhotosStepComponent {
   }
 
   private async processGalleryFiles(files: File[]): Promise<void> {
+    files = files.slice(0, 10 - this.wizard.state.gallery.length);
+
     const cappedFiles = files.slice(0, 10);
     this.galleryCapped = files.length > 10;
 
-    this.wizard.setGallery(
-      await Promise.all(
-        cappedFiles.map(async (f) => {
-          const photo = {
-            file: f,
-            url: URL.createObjectURL(f),
-            name: f.name,
-          };
+    if (this.wizard.state.gallery.length === 10) {
+      return;
+    }
 
-          const image = await this.getFileAsImage(f);
-          this.galleryPhotoMetaByName.set(photo.name, {
-            width: image.width,
-            height: image.height,
-            type: f.type,
-            sizeMB: f.size / (1024 * 1024),
-          });
+    const galleryItems$ = cappedFiles.map(async (f) => {
+      const photo = {
+        file: f,
+        blob: f,
+        url: URL.createObjectURL(f),
+        name: f.name,
+      };
 
-          const validation = await this.validateGalleryPhoto(f);
-          return { photo, ...validation };
-        }),
-      ),
-    );
+      const image = await this.getFileAsImage(f);
+      this.galleryPhotoMetaByName.set(photo.name, {
+        width: image.width,
+        height: image.height,
+        type: f.type,
+        sizeMB: f.size / (1024 * 1024),
+      });
+
+      const validation = await this.validateGalleryPhoto(f);
+      return { photo, ...validation };
+    });
+    const galleryItems = await Promise.all(galleryItems$);
+
+    this.wizard.setGallery(galleryItems);
+
+    this.checkIfValidStep();
   }
 
   private getValidationErrors(

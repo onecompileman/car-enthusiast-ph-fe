@@ -1,0 +1,21 @@
+.cap-confirmation-modal {
+  &__header,
+  &__footer {
+    border-color: var(--border);
+  }
+
+  &__body {
+    p {
+      margin: 0;
+      color: var(--text-2);
+      line-height: 1.6;
+      font-size: 13px;
+    }
+  }
+
+  &__error {
+    margin-top: 10px;
+    font-size: 12px;
+    color: color-mix(in srgb, #ef5350 75%, var(--accent));
+  }
+}

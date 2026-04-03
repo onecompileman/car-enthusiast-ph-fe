@@ -11,27 +11,55 @@
       <div class="cap-wizard-field">
         <label>Mod Name</label>
         <input type="text" formControlName="name" placeholder="APR GTC-300 Wing" />
+        <div class="cap-wizard-field__message">
+          <small class="cap-wizard-field__error" *ngIf="fieldError('name')">{{
+            fieldError("name")
+          }}</small>
+        </div>
       </div>
       <div class="cap-wizard-field">
         <label>Part Type</label>
         <input type="text" formControlName="part" placeholder="Spoiler" />
+        <div class="cap-wizard-field__message">
+          <small class="cap-wizard-field__error" *ngIf="fieldError('part')">{{
+            fieldError("part")
+          }}</small>
+        </div>
       </div>
       <div class="cap-wizard-field cap-visual-mod-modal__full-width">
         <label>Description</label>
         <textarea formControlName="description" placeholder="Short details about fitment, finish, and install."></textarea>
+        <div class="cap-wizard-field__message">
+          <small class="cap-wizard-field__error" *ngIf="fieldError('description')">{{
+            fieldError("description")
+          }}</small>
+        </div>
       </div>
       <div class="cap-wizard-field">
         <label>Shop / Source</label>
         <input type="text" formControlName="shop" placeholder="JDM Select Manila" />
+        <div class="cap-wizard-field__message">
+          <small class="cap-wizard-field__error" *ngIf="fieldError('shop')">{{
+            fieldError("shop")
+          }}</small>
+        </div>
       </div>
       <div class="cap-wizard-field">
         <label>Price Range Estimate (PHP)</label>
         <input type="text" formControlName="priceEstimate" placeholder="25,000 - 32,000" />
+        <div class="cap-wizard-field__message">
+          <small class="cap-wizard-field__error" *ngIf="fieldError('priceEstimate')">{{
+            fieldError("priceEstimate")
+          }}</small>
+        </div>
       </div>
       <div class="cap-wizard-field cap-visual-mod-modal__full-width">
         <label>Mod Image (Optional)</label>
         <input type="file" accept="image/*" (change)="onImageChange($event)" />
-        <div class="cap-wizard-hint">Upload an image file only. PNG, JPG, WEBP, and GIF are supported.</div>
+        <div class="cap-wizard-hint">Upload an image file only. PNG, JPG, WEBP, HEIC are supported. Maximum file size: {{ maxFileSizeMB }} MB.</div>
+        <div class="cap-wizard-field__message">
+          <small class="cap-wizard-field__error" *ngIf="imageErrorMessage">{{ imageErrorMessage }}</small>
+        </div>
       </div>
 
       <div class="cap-visual-mod-modal__preview cap-visual-mod-modal__full-width" *ngIf="modImageUrl">
@@ -46,7 +74,8 @@
 
   <div class="modal-footer cap-visual-mod-modal__footer">
     <button type="button" class="btn btn-outline" (click)="cancel()">Cancel</button>
-    <button type="button" class="btn btn-outline" (click)="save()">
+    <button type="button" class="btn btn-outline" [disabled]="form.invalid || imageErrorMessage" (click)="save()">
       {{ mode === 'edit' ? 'Save Changes' : 'Add Visual Mod' }}
     </button>
+  </div>
 </div>

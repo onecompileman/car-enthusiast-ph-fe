@@ -20,8 +20,6 @@
     border-radius: 12px;
     padding: 10px;
     background: color-mix(in srgb, var(--surface) 84%, var(--bg));
-    display: grid;
-    gap: 8px;
     overflow: hidden;
   }
 
@@ -83,7 +81,7 @@
     border-radius: 10px;
     background: var(--surface-2);
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
     background-position: center;
     border: 1px solid var(--border);
     display: flex;
@@ -193,8 +191,9 @@
   &__gallery-grid {
     margin-top: 10px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 8px;
+    min-height: 200px;
   }
 
   &__gallery-item {
@@ -203,6 +202,7 @@
     overflow: hidden;
     background: var(--surface);
     position: relative;
+    min-width: 240px;
 
     &:hover .cap-photos-step__gallery-remove {
       opacity: 1;
@@ -210,7 +210,7 @@
 
     .cap-photos-step__gallery-image {
       width: 100%;
-      height: 76px;
+      height: 120px;
       display: block;
       background: var(--surface-2);
       background-repeat: no-repeat;

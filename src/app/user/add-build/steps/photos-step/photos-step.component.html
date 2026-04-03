@@ -1,5 +1,9 @@
 <div class="cap-photos-step">
   <!-- Required views -->
+  <div *ngIf="showErrorMessage" class="alert alert-danger">
+    <strong>Error!</strong> Please fix the errors and upload required photos,
+    before proceeding.
+  </div>
   <div class="cap-photos-step__grid">
     <div class="cap-photos-step__card" *ngFor="let slot of slots">
       <input
@@ -21,7 +25,10 @@
           >
             Reference
           </button>
-          <div class="cap-photos-step__ref-popover" *ngIf="activeRefHint === slot.view">
+          <div
+            class="cap-photos-step__ref-popover"
+            *ngIf="activeRefHint === slot.view"
+          >
             <p>{{ slot.refHint }}</p>
           </div>
         </div>
@@ -43,8 +50,13 @@
         </ul>
       </div>
       <div class="cap-photos-step__status">{{ statusText(slot.view) }}</div>
-      <ul class="cap-photos-step__errors" *ngIf="requiredPhotoErrors(slot.view).length > 0">
-        <li *ngFor="let error of requiredPhotoErrors(slot.view)">{{ error }}</li>
+      <ul
+        class="cap-photos-step__errors"
+        *ngIf="requiredPhotoErrors(slot.view).length > 0"
+      >
+        <li *ngFor="let error of requiredPhotoErrors(slot.view)">
+          {{ error }}
+        </li>
       </ul>
     </div>
   </div>
@@ -77,8 +89,12 @@
 
     <div class="cap-wizard-field" style="margin-bottom: 0">
       <label>Gallery Images (Up to 10)</label>
-      <div class="cap-wizard-hint">You can upload up to 10 additional gallery images.</div>
-      <div class="cap-photos-step__requirements cap-photos-step__requirements--gallery">
+      <div class="cap-wizard-hint">
+        You can upload up to 10 additional gallery images.
+      </div>
+      <div
+        class="cap-photos-step__requirements cap-photos-step__requirements--gallery"
+      >
         <strong>Requirements:</strong>
         <ul>
           <li *ngFor="let line of galleryRequirementLines">{{ line }}</li>
@@ -87,7 +103,10 @@
     </div>
 
     <div class="cap-photos-step__gallery-grid" *ngIf="gallery.length > 0">
-      <div class="cap-photos-step__gallery-item" *ngFor="let item of gallery; let i = index">
+      <div
+        class="cap-photos-step__gallery-item"
+        *ngFor="let item of gallery; let i = index"
+      >
         <div
           class="cap-photos-step__gallery-image"
           role="img"
@@ -99,15 +118,24 @@
           class="cap-photos-step__gallery-remove"
           (click)="removeGalleryItem(i)"
           [attr.aria-label]="'Remove ' + item.photo.name"
-        >×</button>
+        >
+          ×
+        </button>
         <span>{{ item.photo.name }}</span>
-        <ul class="cap-photos-step__errors" *ngIf="galleryPhotoErrors(i).length > 0">
+        <ul
+          class="cap-photos-step__errors"
+          *ngIf="galleryPhotoErrors(i).length > 0"
+        >
           <li *ngFor="let error of galleryPhotoErrors(i)">{{ error }}</li>
         </ul>
       </div>
     </div>
 
-    <div *ngIf="galleryCapped" class="cap-photos-step__status" style="margin-top: 4px;">
+    <div
+      *ngIf="galleryCapped"
+      class="cap-photos-step__status"
+      style="margin-top: 4px"
+    >
       Gallery capped at 10 images.
     </div>
   </div>

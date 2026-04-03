@@ -16,8 +16,7 @@ export interface VisualMod {
   description: string;
   shop: string;
   priceEstimate: string;
-  imageName: string;
-  imageUrl: string;
+  photo: RequiredPhoto | null;
   hotspots: HotspotMap;
 }
 
@@ -31,12 +30,14 @@ export interface PerformanceMod {
 
 export interface RequiredPhoto {
   file: File;
+  blob: Blob;
   url: string;
   name: string;
 }
 
 export interface GalleryPhoto {
   file: File;
+  blob: Blob;
   url: string;
   name: string;
 }

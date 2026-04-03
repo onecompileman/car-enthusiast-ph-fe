@@ -20,8 +20,8 @@
     <span>{{ hotspotLabel() }}</span>
   </div>
 
-  <div class="cap-visual-mod-item__image" *ngIf="mod.imageUrl">
-    <img [src]="mod.imageUrl" [alt]="mod.name + ' image'" />
+  <div class="cap-visual-mod-item__image" *ngIf="mod.photo?.url">
+    <img [src]="mod.photo!.url" [alt]="mod.name + ' image'" />
   </div>
 
   <div class="cap-visual-mod-item__buttons">

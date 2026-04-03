@@ -1,0 +1,168 @@
+/* Global Bootstrap alert theming to match app tokens. */
+
+.alert {
+  border-radius: var(--r);
+  border: 1px solid;
+  padding: 12px 14px;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+
+  /* Default alert */
+  background: linear-gradient(
+    155deg,
+    color-mix(in srgb, var(--surface) 92%, #0b0e14) 0%,
+    color-mix(in srgb, var(--surface-2) 88%, #0b0e14) 100%
+  );
+  border-color: var(--border);
+  color: var(--text-2);
+}
+
+.alert-heading {
+  color: var(--text);
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+/* Primary (Info) */
+.alert-primary {
+  background: linear-gradient(
+    155deg,
+    color-mix(in srgb, #2563eb 10%, var(--surface)) 0%,
+    color-mix(in srgb, #1e40af 8%, var(--surface-2)) 100%
+  );
+  border-color: color-mix(in srgb, #2563eb 30%, var(--border));
+  color: #60a5fa;
+
+  .alert-heading {
+    color: #93c5fd;
+  }
+}
+
+/* Success */
+.alert-success {
+  background: linear-gradient(
+    155deg,
+    color-mix(in srgb, #059669 10%, var(--surface)) 0%,
+    color-mix(in srgb, #047857 8%, var(--surface-2)) 100%
+  );
+  border-color: color-mix(in srgb, #059669 30%, var(--border));
+  color: #6ee7b7;
+
+  .alert-heading {
+    color: #a7f3d0;
+  }
+}
+
+/* Danger */
+.alert-danger {
+  background: linear-gradient(
+    155deg,
+    color-mix(in srgb, var(--accent) 10%, var(--surface)) 0%,
+    color-mix(in srgb, #dc2626 8%, var(--surface-2)) 100%
+  );
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
+  color: #fca5a5;
+
+  .alert-heading {
+    color: #fecaca;
+  }
+}
+
+/* Warning */
+.alert-warning {
+  background: linear-gradient(
+    155deg,
+    color-mix(in srgb, var(--accent-orange) 10%, var(--surface)) 0%,
+    color-mix(in srgb, #d97706 8%, var(--surface-2)) 100%
+  );
+  border-color: color-mix(in srgb, var(--accent-orange) 30%, var(--border));
+  color: #fbbf24;
+
+  .alert-heading {
+    color: #fcd34d;
+  }
+}
+
+/* Light background alerts */
+.alert-light {
+  background: color-mix(in srgb, var(--text) 8%, var(--surface));
+  border-color: var(--border);
+  color: var(--text-2);
+
+  .alert-heading {
+    color: var(--text);
+  }
+}
+
+/* Close button styling */
+.alert .btn-close {
+  filter: invert(1) grayscale(1) brightness(1.25);
+  opacity: 0.6;
+  padding: 0;
+  margin-left: auto;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+/* Dark theme variant (if needed) */
+body[data-theme="dark"] {
+  .alert-primary {
+    background: linear-gradient(
+      155deg,
+      color-mix(in srgb, #3b82f6 12%, var(--surface)) 0%,
+      color-mix(in srgb, #2563eb 10%, var(--surface-2)) 100%
+    );
+    border-color: color-mix(in srgb, #3b82f6 35%, var(--border));
+    color: #93c5fd;
+
+    .alert-heading {
+      color: #bfdbfe;
+    }
+  }
+
+  .alert-success {
+    background: linear-gradient(
+      155deg,
+      color-mix(in srgb, #10b981 12%, var(--surface)) 0%,
+      color-mix(in srgb, #059669 10%, var(--surface-2)) 100%
+    );
+    border-color: color-mix(in srgb, #10b981 35%, var(--border));
+    color: #a7f3d0;
+
+    .alert-heading {
+      color: #d1fae5;
+    }
+  }
+
+  .alert-danger {
+    background: linear-gradient(
+      155deg,
+      color-mix(in srgb, var(--accent-orange) 12%, var(--surface)) 0%,
+      color-mix(in srgb, #ea580c 10%, var(--surface-2)) 100%
+    );
+    border-color: color-mix(in srgb, var(--accent-orange) 35%, var(--border));
+    color: #ffb457;
+
+    .alert-heading {
+      color: #ffd580;
+    }
+  }
+
+  .alert-warning {
+    background: linear-gradient(
+      155deg,
+      color-mix(in srgb, #f59e0b 12%, var(--surface)) 0%,
+      color-mix(in srgb, #d97706 10%, var(--surface-2)) 100%
+    );
+    border-color: color-mix(in srgb, #f59e0b 35%, var(--border));
+    color: #fcd34d;
+
+    .alert-heading {
+      color: #fef3c7;
+    }
+  }
+}
