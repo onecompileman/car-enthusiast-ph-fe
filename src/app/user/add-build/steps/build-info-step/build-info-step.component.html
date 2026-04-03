@@ -2,11 +2,30 @@
   <div class="cap-wizard-grid-2">
     <div class="cap-wizard-field">
       <label for="title">Build Title</label>
-      <input id="title" type="text" formControlName="title" placeholder="FK8 Full Aero Daily" />
+      <input
+        id="title"
+        type="text"
+        formControlName="title"
+        placeholder="FK8 Full Aero Daily"
+      />
+      <div class="cap-wizard-field__message">
+        <small
+          class="cap-wizard-field__error"
+          *ngIf="fC('title')?.errors && fC('title')?.touched && fC('title')?.errors?.['profane']"
+        >Inappropriate language detected.</small>
+      </div>
     </div>
     <div class="cap-wizard-field">
       <label for="year">Year</label>
-      <input id="year" type="number" formControlName="year" min="1980" max="2035" placeholder="2020" />
+      <input
+        id="year"
+        type="number"
+        formControlName="year"
+        min="1980"
+        max="2035"
+        placeholder="2020"
+      />
+      <div class="cap-wizard-field__message"></div>
     </div>
   </div>
 
@@ -14,20 +33,69 @@
     <div class="cap-wizard-field">
       <label for="make">Make</label>
       <input id="make" type="text" formControlName="make" placeholder="Honda" />
+      <div class="cap-wizard-field__message">
+        <small
+          class="cap-wizard-field__error"
+          *ngIf="fC('make')?.errors && fC('make')?.touched && fC('make')?.errors?.['profane']"
+        >Inappropriate language detected.</small>
+      </div>
     </div>
     <div class="cap-wizard-field">
       <label for="model">Model</label>
-      <input id="model" type="text" formControlName="model" placeholder="Civic Type R FK8" />
+      <input
+        id="model"
+        type="text"
+        formControlName="model"
+        placeholder="Civic Type R FK8"
+      />
+      <div class="cap-wizard-field__message">
+        <small
+          class="cap-wizard-field__error"
+          *ngIf="fC('model')?.errors && fC('model')?.touched && fC('model')?.errors?.['profane']"
+        >Inappropriate language detected.</small>
+      </div>
     </div>
   </div>
 
   <div class="cap-wizard-field">
     <label for="summary">Build Summary</label>
-    <textarea id="summary" formControlName="summary" placeholder="Describe your build goals and overall setup..."></textarea>
+    <textarea
+      id="summary"
+      formControlName="summary"
+      placeholder="Describe your build goals and overall setup..."
+    ></textarea>
+    <div class="cap-wizard-field__message">
+      <small
+        class="cap-wizard-field__error"
+        *ngIf="fC('summary')?.errors && fC('summary')?.touched && fC('summary')?.errors?.['profane']"
+      >Inappropriate language detected.</small>
+    </div>
   </div>
 
   <div class="cap-wizard-field">
     <label for="approxCost">Approx Build Cost (PHP)</label>
-    <input id="approxCost" type="number" formControlName="approxCost" min="0" step="1000" placeholder="685000" />
+    <input
+      id="approxCost"
+      type="number"
+      formControlName="approxCost"
+      min="0"
+      step="1000"
+      placeholder="685000"
+    />
+    <div class="cap-wizard-field__message"></div>
   </div>
 </form>
+
+<!-- ── Build Tags ─────────────────────────────────────────── -->
+<div class="cap-build-info-step__tags-box">
+  <label class="cap-build-info-step__tags-label">Build Tags</label>
+  <cap-tag-input
+    [tags]="tags"
+    (tagsChange)="onTagsChange($event)"
+    placeholder="e.g. Track, Aero, JDM — press Enter or comma to add"
+  ></cap-tag-input>
+
+  <div class="cap-wizard-field__message">
+    <small class="cap-wizard-field__error" *ngIf="isTagsHasProfanity()">Inappropriate language detected in tags.</small>
+  </div>
+</div>

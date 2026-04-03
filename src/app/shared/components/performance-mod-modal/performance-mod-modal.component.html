@@ -1,0 +1,32 @@
+<div class="cap-performance-mod-modal">
+  <div class="modal-header cap-performance-mod-modal__header">
+    <h5 class="modal-title">Add Performance Mod</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="cancel()"></button>
+  </div>
+
+  <div class="modal-body cap-performance-mod-modal__body">
+    <form [formGroup]="form" class="cap-performance-mod-modal__form">
+      <div class="cap-wizard-field">
+        <label>Mod Name</label>
+        <input type="text" formControlName="name" placeholder="Hondata FlashPro" />
+      </div>
+      <div class="cap-wizard-field">
+        <label>Price Range Estimate (PHP)</label>
+        <input type="text" formControlName="priceEstimate" placeholder="35,000 - 42,000" />
+      </div>
+      <div class="cap-wizard-field cap-performance-mod-modal__full-width">
+        <label>Description</label>
+        <textarea formControlName="description" placeholder="What this mod improved and current setup notes."></textarea>
+      </div>
+      <div class="cap-wizard-field cap-performance-mod-modal__full-width">
+        <label>Shop / Source</label>
+        <input type="text" formControlName="shop" placeholder="SpeedLab" />
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-footer cap-performance-mod-modal__footer">
+    <button type="button" class="btn btn-outline" (click)="cancel()">Cancel</button>
+    <button type="button" class="btn btn-outline" (click)="save()">Add Performance Mod</button>
+  </div>
+</div>

@@ -2,6 +2,14 @@
   <!-- Required views -->
   <div class="cap-photos-step__grid">
     <div class="cap-photos-step__card" *ngFor="let slot of slots">
+      <input
+        #requiredInput
+        class="cap-photos-step__hidden-input"
+        type="file"
+        accept=".jpg,.jpeg,image/jpeg"
+        (change)="onRequiredPhoto(slot.view, $event)"
+      />
+
       <div class="cap-photos-step__card-head">
         <h3>{{ slot.label }}</h3>
         <div class="cap-photos-step__ref-wrap">
@@ -19,29 +27,83 @@
         </div>
       </div>
 
-      <img
+      <button
+        type="button"
         class="cap-photos-step__preview"
-        [src]="previewUrl(slot.view)"
-        [alt]="slot.label + ' preview'"
-      />
-
-      <input type="file" accept="image/*" (change)="onRequiredPhoto(slot.view, $event)" />
+        [attr.aria-label]="'Upload ' + slot.label"
+        [style.background-image]="'url(' + previewUrl(slot.view) + ')'"
+        (click)="requiredInput.click()"
+      >
+        <span class="cap-photos-step__preview-overlay">Tap to upload JPEG</span>
+      </button>
+      <div class="cap-photos-step__requirements">
+        <strong>Requirements:</strong>
+        <ul>
+          <li *ngFor="let line of requiredPhotoRequirementLines">{{ line }}</li>
+        </ul>
+      </div>
       <div class="cap-photos-step__status">{{ statusText(slot.view) }}</div>
+      <ul class="cap-photos-step__errors" *ngIf="requiredPhotoErrors(slot.view).length > 0">
+        <li *ngFor="let error of requiredPhotoErrors(slot.view)">{{ error }}</li>
+      </ul>
     </div>
   </div>
 
   <!-- Gallery -->
   <div class="cap-photos-step__gallery-uploader">
+    <input
+      #galleryInput
+      class="cap-photos-step__hidden-input"
+      id="galleryInput"
+      type="file"
+      accept="image/*"
+      multiple
+      (change)="onGalleryChange($event)"
+    />
+
+    <button
+      type="button"
+      class="cap-photos-step__gallery-drop"
+      [class.cap-photos-step__gallery-drop--dragging]="isGalleryDragging"
+      (click)="galleryInput.click()"
+      (dragover)="onGalleryDragOver($event)"
+      (dragleave)="onGalleryDragLeave($event)"
+      (drop)="onGalleryDrop($event)"
+      aria-label="Upload gallery images"
+    >
+      <strong>Add Gallery Photos</strong>
+      <span>Drag and drop files here, or tap to browse</span>
+    </button>
+
     <div class="cap-wizard-field" style="margin-bottom: 0">
-      <label for="galleryInput">Gallery Images (Up to 10)</label>
-      <input id="galleryInput" type="file" accept="image/*" multiple (change)="onGalleryChange($event)" />
+      <label>Gallery Images (Up to 10)</label>
       <div class="cap-wizard-hint">You can upload up to 10 additional gallery images.</div>
+      <div class="cap-photos-step__requirements cap-photos-step__requirements--gallery">
+        <strong>Requirements:</strong>
+        <ul>
+          <li *ngFor="let line of galleryRequirementLines">{{ line }}</li>
+        </ul>
+      </div>
     </div>
 
     <div class="cap-photos-step__gallery-grid" *ngIf="gallery.length > 0">
-      <div class="cap-photos-step__gallery-item" *ngFor="let item of gallery">
-        <img [src]="item.url" [alt]="item.name" />
-        <span>{{ item.name }}</span>
+      <div class="cap-photos-step__gallery-item" *ngFor="let item of gallery; let i = index">
+        <div
+          class="cap-photos-step__gallery-image"
+          role="img"
+          [attr.aria-label]="item.photo.name"
+          [style.background-image]="'url(' + item.photo.url + ')'"
+        ></div>
+        <button
+          type="button"
+          class="cap-photos-step__gallery-remove"
+          (click)="removeGalleryItem(i)"
+          [attr.aria-label]="'Remove ' + item.photo.name"
+        >×</button>
+        <span>{{ item.photo.name }}</span>
+        <ul class="cap-photos-step__errors" *ngIf="galleryPhotoErrors(i).length > 0">
+          <li *ngFor="let error of galleryPhotoErrors(i)">{{ error }}</li>
+        </ul>
       </div>
     </div>
 

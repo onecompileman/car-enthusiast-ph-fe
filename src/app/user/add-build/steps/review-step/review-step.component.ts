@@ -31,7 +31,7 @@ export class ReviewStepComponent {
   get photoLines(): string[] {
     return WIZARD_VIEWS.map((view) => {
       const p = this.state.requiredPhotos[view];
-      return `${view}: ${p ? p.name : 'Missing required image'}`;
+      return `${view}: ${p ? p.photo.name : 'Missing required image'}`;
     });
   }
 

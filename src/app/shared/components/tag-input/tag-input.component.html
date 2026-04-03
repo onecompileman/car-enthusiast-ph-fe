@@ -1,0 +1,26 @@
+<div class="cap-tag-input">
+  <div class="cap-wizard-field" style="margin-bottom: 6px">
+    <input
+      type="text"
+      class="cap-tag-input__field"
+      [(ngModel)]="inputValue"
+      (keydown)="onKeydown($event)"
+      (blur)="onBlur()"
+      [placeholder]="atLimit ? 'Maximum tags reached' : placeholder"
+      [disabled]="atLimit"
+    />
+    <div class="cap-wizard-hint" *ngIf="!error">
+      Up to {{ maxTags }} tags. Press Enter or comma to confirm.
+    </div>
+    <div class="cap-tag-input__error" *ngIf="error">{{ error }}</div>
+  </div>
+
+  <div class="cap-tag-input__list" *ngIf="tags.length > 0">
+    <span class="cap-tag-input__chip" *ngFor="let tag of tags; let i = index">
+      {{ tag }}
+      <button type="button" (click)="remove(i)" [attr.aria-label]="'Remove tag ' + tag">×</button>
+    </span>
+  </div>
+
+  <div class="cap-wizard-empty" *ngIf="tags.length === 0">No tags added yet.</div>
+</div>

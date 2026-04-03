@@ -129,68 +129,103 @@
     color: var(--text-2);
     min-height: 18px;
   }
-}
 
-/* ── Shared step-layout helpers (used inside step components) ── */
-.cap-wizard-grid-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  @media (max-width: 900px) {
+    padding: 12px;
 
-  @media (max-width: 640px) {
-    grid-template-columns: 1fr;
-  }
-}
+    &__card {
+      border-radius: 12px;
+      padding: 12px;
+    }
 
-.cap-wizard-field {
-  display: grid;
-  gap: 7px;
-  margin-bottom: 10px;
+    &__head {
+      margin-bottom: 10px;
 
-  label {
-    font-size: 11px;
-    color: var(--text-3);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
+      h1 {
+        font-size: clamp(20px, 6vw, 28px);
+        letter-spacing: -0.02em;
+      }
 
-  input,
-  select,
-  textarea {
-    width: 100%;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: var(--bg);
-    color: var(--text);
-    padding: 11px 13px;
-    font: inherit;
-    outline: none;
-    transition: border-color 0.18s, box-shadow 0.18s;
+      p {
+        font-size: 11px;
+        margin-top: 5px;
+        line-height: 1.5;
+      }
+    }
 
-    &:focus {
-      border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
-      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
+    &__stepper {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+    }
+
+    &__step {
+      min-width: 68px;
+      min-height: 0;
+      border-radius: 10px;
+      padding: 7px 6px;
+      gap: 5px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    &__step-num {
+      width: 20px;
+      height: 20px;
+      font-size: 10px;
+    }
+
+    &__step-meta {
+      strong {
+        font-size: 10px;
+        line-height: 1.1;
+      }
+
+      span {
+        display: none;
+      }
+    }
+
+    &__actions {
+      margin-top: 12px;
+      padding-top: 10px;
+      gap: 8px;
+    }
+
+    &__actions-right {
+      width: 100%;
+      justify-content: flex-end;
+    }
+
+    &__status {
+      margin-top: 8px;
+      font-size: 11px;
+      min-height: 16px;
+    }
+
+    ::ng-deep .btn {
+      font-size: 12px;
+      padding: 8px 11px;
     }
   }
 
-  textarea {
-    min-height: 96px;
-    resize: vertical;
+  @media (max-width: 520px) {
+    &__actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    &__actions-right {
+      justify-content: stretch;
+    }
+
+    .btn {
+      width: 100%;
+    }
   }
-}
-
-.cap-wizard-hint {
-  font-size: 11px;
-  color: var(--text-3);
-  margin-top: -4px;
-}
-
-.cap-wizard-empty {
-  border: 1px dashed var(--border);
-  border-radius: 12px;
-  padding: 16px;
-  text-align: center;
-  font-size: 12px;
-  color: var(--text-3);
 }

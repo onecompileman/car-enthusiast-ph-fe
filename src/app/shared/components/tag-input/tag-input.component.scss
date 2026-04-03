@@ -1,0 +1,45 @@
+.cap-tag-input {
+  display: block;
+
+  &__error {
+    font-size: 11px;
+    color: color-mix(in srgb, #e03e3e 85%, var(--accent));
+    margin-top: -2px;
+  }
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+  }
+
+  &__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: color-mix(in srgb, var(--accent) 12%, var(--surface-2));
+    border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border));
+    border-radius: 999px;
+    padding: 4px 10px 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+
+    button {
+      background: none;
+      border: none;
+      color: var(--text-3);
+      font-size: 15px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        color: var(--text);
+      }
+    }
+  }
+}

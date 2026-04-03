@@ -1,3 +1,17 @@
 .cap-build-info-step {
   display: block;
 }
+
+.cap-build-info-step__tags-box {
+  margin-top: 10px;
+}
+
+.cap-build-info-step__tags-label {
+  display: block;
+  font-size: 11px;
+  color: var(--text-3);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}

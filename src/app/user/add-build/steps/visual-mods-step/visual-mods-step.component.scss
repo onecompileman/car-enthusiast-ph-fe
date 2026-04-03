@@ -1,6 +1,23 @@
 .cap-visual-mods-step {
   display: block;
 
+  &__drawer-toggle,
+  &__drawer-close,
+  &__drawer-backdrop {
+    display: none;
+  }
+
+  &__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+    gap: 12px;
+    align-items: start;
+
+    @media (max-width: 1080px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
   &__stage-wrap {
     border: 1px solid var(--border);
     border-radius: 12px;
@@ -10,7 +27,10 @@
       var(--surface-2) 100%
     );
     padding: 12px;
-    margin-bottom: 12px;
+  }
+
+  &__hint {
+    margin-bottom: 8px;
   }
 
   &__stage-tabs {
@@ -103,27 +123,29 @@
     border-radius: 12px;
     padding: 10px;
     background: color-mix(in srgb, var(--surface) 86%, var(--bg));
+    max-height: 100%;
+    overflow: auto;
 
     h3 {
       font-size: 14px;
       font-weight: 800;
-      margin-bottom: 10px;
+      margin: 0;
     }
   }
 
-  &__mod-add {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-
-    @media (max-width: 900px) {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  &__mod-actions {
+  &__mod-head {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+
+  &__mod-head-actions {
+    display: flex;
+    gap: 6px;
+    align-items: center;
   }
 
   &__mod-list {
@@ -132,34 +154,57 @@
     gap: 8px;
   }
 
-  &__mod-item {
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 10px;
-    display: grid;
-    gap: 8px;
-    background: var(--surface);
-
-    &--active {
-      border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
-      box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 14%, transparent);
-    }
-  }
-
-  &__mod-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-
-    strong {
-      font-size: 13px;
+  @media (max-width: 900px) {
+    &__layout {
+      grid-template-columns: 1fr;
     }
 
-    span {
-      font-size: 11px;
-      color: var(--text-2);
+    &__drawer-toggle {
+      display: inline-flex;
+      margin-bottom: 10px;
+    }
+
+    &__mod-box {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: min(360px, 92vw);
+      height: 100dvh;
+      z-index: 1055;
+      border-radius: 0;
+      border-top: none;
+      border-right: none;
+      transform: translateX(104%);
+      transition: transform 0.24s ease;
+      max-height: none;
+      box-shadow: -14px 0 30px rgba(0, 0, 0, 0.36);
+
+      &--drawer-open {
+        transform: translateX(0);
+      }
+    }
+
+    &__drawer-close {
+      display: inline-flex;
+    }
+
+    &__drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 1054;
+      border: none;
+      padding: 0;
+      margin: 0;
+      background: rgba(5, 9, 16, 0.52);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+
+      &--active {
+        display: block;
+        opacity: 1;
+        pointer-events: auto;
+      }
     }
   }
 }

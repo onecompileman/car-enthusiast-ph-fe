@@ -1,8 +1,12 @@
-import { isPlatformBrowser } from '@angular/common';
-import { Component, EventEmitter, Inject, OnInit, Output, PLATFORM_ID } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { take } from 'rxjs/operators';
 import { BuildWizardService } from '../../build-wizard.service';
 import { PerformanceMod } from '../../build-wizard.model';
+import {
+  PerformanceModModalComponent,
+  PerformanceModModalSubmitEvent,
+} from '../../../../shared/components/performance-mod-modal/performance-mod-modal.component';
 
 @Component({
   selector: 'cap-performance-step',
@@ -10,25 +14,14 @@ import { PerformanceMod } from '../../build-wizard.model';
   templateUrl: './performance-step.component.html',
   styleUrl: './performance-step.component.scss',
 })
-export class PerformanceStepComponent implements OnInit {
+export class PerformanceStepComponent {
   @Output() statusChange = new EventEmitter<string>();
-
-  perfForm!: FormGroup;
+  private modalRef?: BsModalRef<PerformanceModModalComponent>;
 
   constructor(
-    private fb: FormBuilder,
     private wizard: BuildWizardService,
-    @Inject(PLATFORM_ID) private platformId: object
+    private modalService: BsModalService
   ) {}
-
-  ngOnInit(): void {
-    this.perfForm = this.fb.group({
-      name: [''],
-      priceEstimate: [''],
-      description: [''],
-      shop: [''],
-    });
-  }
 
   get performanceMods(): PerformanceMod[] {
     return this.wizard.state.performanceMods;
@@ -44,18 +37,31 @@ export class PerformanceStepComponent implements OnInit {
     this.statusChange.emit(checked ? 'Performance mods skipped.' : '');
   }
 
-  addMod(): void {
+  openAddModModal(): void {
     if (this.performanceSkipped) return;
-    const { name, priceEstimate, description, shop } = this.perfForm.value;
+
+    this.modalRef = this.modalService.show(PerformanceModModalComponent, {
+      class: 'modal-lg modal-dialog-centered',
+      backdrop: true,
+      ignoreBackdropClick: true,
+      keyboard: true,
+    });
+
+    const content = this.modalRef.content;
+    if (!content) return;
+
+    content.submitMod.pipe(take(1)).subscribe((event) => this.addMod(event));
+  }
+
+  addMod(event: PerformanceModModalSubmitEvent): void {
+    if (this.performanceSkipped) return;
+
     const mod: PerformanceMod = {
       id: this.generateId(),
-      name: name?.trim() || 'Untitled Performance Mod',
-      priceEstimate: priceEstimate?.trim() ?? '',
-      description: description?.trim() ?? '',
-      shop: shop?.trim() ?? '',
+      ...event.values,
     };
     this.wizard.addPerformanceMod(mod);
-    this.perfForm.reset();
+    this.statusChange.emit('Performance mod added.');
   }
 
   removeMod(id: string): void {
@@ -63,9 +69,6 @@ export class PerformanceStepComponent implements OnInit {
   }
 
   private generateId(): string {
-    if (isPlatformBrowser(this.platformId) && typeof crypto?.randomUUID === 'function') {
-      return crypto.randomUUID();
-    }
-    return Math.random().toString(36).slice(2);
+    return crypto.randomUUID();
   }
 }

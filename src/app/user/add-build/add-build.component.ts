@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BuildWizardService } from './build-wizard.service';
-import { BuildWizardState } from './build-wizard.model';
+import type { BuildWizardState } from './build-wizard.model';
+import { ImageFilterService } from '../../core/services/image-filter.service';
 
 @Component({
   selector: 'cap-add-build',
@@ -8,7 +9,7 @@ import { BuildWizardState } from './build-wizard.model';
   templateUrl: './add-build.component.html',
   styleUrl: './add-build.component.scss',
 })
-export class AddBuildComponent {
+export class AddBuildComponent implements OnInit {
   currentStep = 1;
   readonly totalSteps = 5;
 
@@ -22,7 +23,14 @@ export class AddBuildComponent {
 
   statusMessage = '';
 
-  constructor(private wizardService: BuildWizardService) {}
+  constructor(
+    private wizardService: BuildWizardService,
+    private imageFilter: ImageFilterService,
+  ) {}
+  
+  ngOnInit(): void {
+    this.imageFilter.loadModel();
+  }
 
   get state(): BuildWizardState {
     return this.wizardService.state;

@@ -3,12 +3,15 @@ import { CommonModule } from '@angular/common';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { RouterModule } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
 
 @NgModule({
   imports: [CommonModule, BsDropdownModule, RouterModule],
   declarations: [NavbarComponent],
   exports: [NavbarComponent],
-  providers: [],
+  providers: [
+    provideHttpClient()
+  ],
 })
 export class CoreModule {
   // Prevent re-import of CoreModule

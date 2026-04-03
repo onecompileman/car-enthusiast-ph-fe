@@ -10,8 +10,17 @@
     h3 {
       font-size: 14px;
       font-weight: 800;
-      margin-bottom: 10px;
+      margin: 0;
     }
+  }
+
+  &__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
   }
 
   &__toggle-row {
@@ -22,26 +31,6 @@
     color: var(--text-2);
     font-size: 13px;
     cursor: pointer;
-  }
-
-  &__mod-add {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-
-    &--disabled {
-      opacity: 0.55;
-      pointer-events: none;
-    }
-
-    @media (max-width: 900px) {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  &__mod-actions {
-    display: flex;
-    justify-content: flex-end;
   }
 
   &__mod-list {

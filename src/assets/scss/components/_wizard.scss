@@ -1,0 +1,138 @@
+.cap-wizard-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  align-items: start;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cap-wizard-field {
+  display: grid;
+  gap: 7px;
+  margin-bottom: 10px;
+
+  label {
+    font-size: 11px;
+    color: var(--text-3);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg);
+    color: var(--text);
+    padding: 11px 13px;
+    font: inherit;
+    outline: none;
+    transition: border-color 0.18s, box-shadow 0.18s, background-color 0.18s;
+
+    &:focus {
+      border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
+    }
+
+    &:disabled {
+      background: color-mix(in srgb, var(--surface-2) 75%, var(--bg));
+      color: var(--text-3);
+      cursor: not-allowed;
+    }
+  }
+
+  input[type='file'] {
+    padding: 9px 11px;
+    background: var(--surface);
+  }
+
+  textarea {
+    min-height: 96px;
+    resize: vertical;
+  }
+
+  &__message {
+    min-height: 16px;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  &__error {
+    font-size: 11px;
+    line-height: 1.35;
+    color: color-mix(in srgb, #ef5350 75%, var(--accent));
+  }
+}
+
+.cap-wizard-hint {
+  font-size: 11px;
+  color: var(--text-3);
+  margin-top: -4px;
+}
+
+.cap-wizard-empty {
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+@media (max-width: 900px) {
+  .cap-wizard-grid-2 {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .cap-wizard-field {
+    gap: 5px;
+    margin-bottom: 8px;
+
+    label {
+      font-size: 10px;
+      letter-spacing: 0.06em;
+    }
+
+    input,
+    select,
+    textarea {
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 12px;
+    }
+
+    textarea {
+      min-height: 78px;
+    }
+
+    input[type='file'] {
+      padding: 7px 9px;
+    }
+
+    &__message {
+      min-height: 14px;
+    }
+
+    &__error {
+      font-size: 10px;
+    }
+  }
+
+  .cap-wizard-hint {
+    font-size: 10px;
+    margin-top: -2px;
+  }
+
+  .cap-wizard-empty {
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 11px;
+  }
+}

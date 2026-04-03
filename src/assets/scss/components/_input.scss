@@ -106,3 +106,17 @@
   font-weight: 700;
   text-decoration: none;
 }
+
+input.ng-invalid.ng-touched {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.text-error {
+  color: var(--accent);
+  font-size: 11px;
+}
+
+input {
+  height: 48px;
+}

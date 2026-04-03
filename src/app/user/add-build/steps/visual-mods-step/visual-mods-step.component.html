@@ -1,114 +1,88 @@
 <div class="cap-visual-mods-step">
+  <div class="cap-visual-mods-step__layout">
+    <div class="cap-visual-mods-step__stage-wrap">
+      <div class="cap-visual-mods-step__stage-tabs">
+        <button
+          *ngFor="let tab of viewTabs"
+          type="button"
+          class="cap-visual-mods-step__stage-tab"
+          [class.cap-visual-mods-step__stage-tab--active]="activeView === tab.view"
+          (click)="setView(tab.view)"
+        >
+          {{ tab.label }}
+        </button>
+      </div>
 
-  <!-- ── Hotspot stage ─────────────────────────────────────────── -->
-  <div class="cap-visual-mods-step__stage-wrap">
-    <div class="cap-visual-mods-step__stage-tabs">
+      <p class="cap-wizard-hint cap-visual-mods-step__hint">
+        Pick a mod from the right list, click "Place Hotspot", then click on the car image.
+      </p>
+
       <button
-        *ngFor="let tab of viewTabs"
         type="button"
-        class="cap-visual-mods-step__stage-tab"
-        [class.cap-visual-mods-step__stage-tab--active]="activeView === tab.view"
-        (click)="setView(tab.view)"
+        class="btn btn-outline cap-visual-mods-step__drawer-toggle"
+        (click)="toggleModDrawer()"
       >
-        {{ tab.label }}
+        Visual Mods ({{ mods.length }})
       </button>
-    </div>
 
-    <p class="cap-wizard-hint" style="margin-bottom: 8px;">
-      Pick a mod from the list, click "Place Hotspot", then click on the car image.
-    </p>
-
-    <div
-      class="cap-visual-mods-step__stage"
-      [class.cap-visual-mods-step__stage--placing]="placingModId"
-      (click)="onStageClick($event)"
-    >
-      <img [src]="stageImageUrl" alt="Hotspot placement image" />
-
-      <ng-container *ngFor="let mod of mods; let i = index">
-        <ng-container *ngIf="mod.hotspots[activeView] as pt">
-          <span
-            class="cap-visual-mods-step__hotspot-dot"
-            [style.left.%]="pt.x"
-            [style.top.%]="pt.y"
-          >{{ i + 1 }}</span>
-          <span
-            class="cap-visual-mods-step__hotspot-label"
-            [style.left.%]="pt.x"
-            [style.top.%]="pt.y"
-          >{{ mod.name }}</span>
-        </ng-container>
-      </ng-container>
-    </div>
-  </div>
-
-  <!-- ── Add mod form ───────────────────────────────────────────── -->
-  <div class="cap-visual-mods-step__mod-box">
-    <h3>Visual Mods Hotspots</h3>
-
-    <form [formGroup]="modForm" class="cap-visual-mods-step__mod-add">
-      <div class="cap-wizard-field">
-        <label>Mod Name</label>
-        <input type="text" formControlName="name" placeholder="APR GTC-300 Wing" />
-      </div>
-      <div class="cap-wizard-field">
-        <label>Part Type</label>
-        <input type="text" formControlName="part" placeholder="Spoiler" />
-      </div>
-      <div class="cap-wizard-field" style="grid-column: 1 / -1">
-        <label>Description</label>
-        <textarea formControlName="description" placeholder="Short details about fitment, finish, and install."></textarea>
-      </div>
-      <div class="cap-wizard-field">
-        <label>Shop / Source</label>
-        <input type="text" formControlName="shop" placeholder="JDM Select Manila" />
-      </div>
-      <div class="cap-wizard-field">
-        <label>Price Range Estimate (PHP)</label>
-        <input type="text" formControlName="priceEstimate" placeholder="25,000 - 32,000" />
-      </div>
-      <div class="cap-wizard-field" style="grid-column: 1 / -1">
-        <label>Mod Image (Optional)</label>
-        <input type="file" accept="image/*" (change)="onModImageChange($event)" />
-      </div>
-      <div class="cap-visual-mods-step__mod-actions" style="grid-column: 1 / -1">
-        <button type="button" class="btn btn-outline" (click)="addMod()">Add Visual Mod</button>
-      </div>
-    </form>
-
-    <!-- Mod list -->
-    <div class="cap-wizard-empty" *ngIf="mods.length === 0">No visual mods added yet.</div>
-
-    <div class="cap-visual-mods-step__mod-list" *ngIf="mods.length > 0">
-      <article
-        class="cap-visual-mods-step__mod-item"
-        *ngFor="let mod of mods"
-        [class.cap-visual-mods-step__mod-item--active]="placingModId === mod.id"
+      <div
+        class="cap-visual-mods-step__stage"
+        [class.cap-visual-mods-step__stage--placing]="placingModId"
+        (click)="onStageClick($event)"
       >
-        <div class="cap-visual-mods-step__mod-row">
-          <strong>{{ mod.name }}</strong>
-          <span>{{ mod.part }}</span>
-        </div>
-        <div class="cap-visual-mods-step__mod-row">
-          <span>{{ mod.description || 'No description added.' }}</span>
-        </div>
-        <div class="cap-visual-mods-step__mod-row">
-          <span>Shop: {{ mod.shop || 'Not set' }}</span>
-          <span>Price: {{ mod.priceEstimate || 'Not set' }}</span>
-        </div>
-        <div class="cap-visual-mods-step__mod-row">
-          <span>Image: {{ mod.imageName || 'None uploaded' }}</span>
-        </div>
-        <div class="cap-visual-mods-step__mod-row">
-          <span>{{ hotspotLabel(mod) }}</span>
-          <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-            <button type="button" class="btn btn-outline" (click)="startPlacing(mod.id)">
-              {{ placingModId === mod.id ? 'Placing…' : 'Place Hotspot' }}
-            </button>
-            <button type="button" class="btn btn-outline" (click)="removeMod(mod.id)">Remove</button>
-          </div>
-        </div>
-      </article>
+        <img [src]="stageImageUrl" alt="Hotspot placement image" />
+
+        <ng-container *ngFor="let mod of mods; let i = index">
+          <ng-container *ngIf="mod.hotspots[activeView] as pt">
+            <span
+              class="cap-visual-mods-step__hotspot-dot"
+              [style.left.%]="pt.x"
+              [style.top.%]="pt.y"
+            >{{ i + 1 }}</span>
+            <span
+              class="cap-visual-mods-step__hotspot-label"
+              [style.left.%]="pt.x"
+              [style.top.%]="pt.y"
+            >{{ mod.name }}</span>
+          </ng-container>
+        </ng-container>
+      </div>
     </div>
+
+    <aside
+      class="cap-visual-mods-step__mod-box"
+      [class.cap-visual-mods-step__mod-box--drawer-open]="isModDrawerOpen"
+    >
+      <div class="cap-visual-mods-step__mod-head">
+        <h3>Visual Mods</h3>
+        <div class="cap-visual-mods-step__mod-head-actions">
+          <button type="button" class="btn btn-outline" (click)="openCreateModModal()">Add Visual Mod</button>
+          <button type="button" class="btn btn-outline cap-visual-mods-step__drawer-close" (click)="closeModDrawer()">Close</button>
+        </div>
+      </div>
+
+      <div class="cap-wizard-empty" *ngIf="mods.length === 0">No visual mods added yet.</div>
+
+      <div class="cap-visual-mods-step__mod-list" *ngIf="mods.length > 0">
+        <cap-visual-mod-item
+          *ngFor="let mod of mods"
+          [mod]="mod"
+          [activeView]="activeView"
+          [isPlacing]="placingModId === mod.id"
+          (edit)="openEditModModal($event)"
+          (place)="startPlacing($event)"
+          (remove)="removeMod($event)"
+        ></cap-visual-mod-item>
+      </div>
+    </aside>
   </div>
+
+  <button
+    type="button"
+    class="cap-visual-mods-step__drawer-backdrop"
+    [class.cap-visual-mods-step__drawer-backdrop--active]="isModDrawerOpen"
+    (click)="closeModDrawer()"
+    aria-label="Close visual mods drawer"
+  ></button>
+
 </div>

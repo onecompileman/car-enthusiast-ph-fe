@@ -1,8 +1,13 @@
-import { isPlatformBrowser } from '@angular/common';
-import { Component, EventEmitter, Inject, OnInit, Output, PLATFORM_ID } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { take } from 'rxjs/operators';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { BuildWizardService } from '../../build-wizard.service';
 import { VisualMod, WizardView } from '../../build-wizard.model';
+import {
+  VisualModModalComponent,
+  VisualModModalEditValue,
+  VisualModModalSubmitEvent,
+} from '../../../../shared/components/visual-mod-modal/visual-mod-modal.component';
 
 @Component({
   selector: 'cap-visual-mods-step',
@@ -10,13 +15,13 @@ import { VisualMod, WizardView } from '../../build-wizard.model';
   templateUrl: './visual-mods-step.component.html',
   styleUrl: './visual-mods-step.component.scss',
 })
-export class VisualModsStepComponent implements OnInit {
+export class VisualModsStepComponent {
   @Output() statusChange = new EventEmitter<string>();
+  private modalRef?: BsModalRef<VisualModModalComponent>;
 
   activeView: WizardView = 'side';
   placingModId: string | null = null;
-  modForm!: FormGroup;
-  modImageName = '';
+  isModDrawerOpen = false;
 
   readonly viewTabs: { view: WizardView; label: string }[] = [
     { view: 'front', label: 'Front Slant' },
@@ -25,20 +30,9 @@ export class VisualModsStepComponent implements OnInit {
   ];
 
   constructor(
-    private fb: FormBuilder,
     private wizard: BuildWizardService,
-    @Inject(PLATFORM_ID) private platformId: object
+    private modalService: BsModalService,
   ) {}
-
-  ngOnInit(): void {
-    this.modForm = this.fb.group({
-      name: [''],
-      part: [''],
-      description: [''],
-      shop: [''],
-      priceEstimate: [''],
-    });
-  }
 
   get mods(): VisualMod[] {
     return this.wizard.state.visualMods;
@@ -46,34 +40,76 @@ export class VisualModsStepComponent implements OnInit {
 
   get stageImageUrl(): string {
     const photo = this.wizard.state.requiredPhotos[this.activeView];
-    return photo?.url ?? 'https://placehold.co/980x560/E8E8E8/999?text=Upload+Required+View+Images+First';
+    return (
+      photo?.photo.url ??
+      'https://placehold.co/980x560/E8E8E8/999?text=Upload+Required+View+Images+First'
+    );
   }
 
   setView(view: WizardView): void {
     this.activeView = view;
   }
 
-  onModImageChange(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    this.modImageName = input.files?.[0]?.name ?? '';
+  toggleModDrawer(): void {
+    this.isModDrawerOpen = !this.isModDrawerOpen;
   }
 
-  addMod(): void {
-    const { name, part, description, shop, priceEstimate } = this.modForm.value;
-    const mod: VisualMod = {
-      id: this.generateId(),
-      name: name?.trim() || 'Untitled Visual Mod',
-      part: part?.trim() || 'Unspecified Part',
-      description: description?.trim() ?? '',
-      shop: shop?.trim() ?? '',
-      priceEstimate: priceEstimate?.trim() ?? '',
-      imageName: this.modImageName,
-      hotspots: { front: null, side: null, rear: null },
+  closeModDrawer(): void {
+    this.isModDrawerOpen = false;
+  }
+
+  openCreateModModal(): void {
+    this.modalRef = this.modalService.show(VisualModModalComponent, {
+      class: 'modal-lg modal-dialog-centered',
+      initialState: {
+        mode: 'create',
+        initialMod: null,
+      },
+      backdrop: true,
+      ignoreBackdropClick: true,
+      keyboard: true,
+    });
+    this.bindModalSubmit();
+  }
+
+  openEditModModal(mod: VisualMod): void {
+    const initialMod: VisualModModalEditValue = {
+      id: mod.id,
+      name: mod.name,
+      part: mod.part,
+      description: mod.description,
+      shop: mod.shop,
+      priceEstimate: mod.priceEstimate,
+      imageName: mod.imageName,
+      imageUrl: mod.imageUrl,
     };
-    this.wizard.addVisualMod(mod);
-    this.modForm.reset();
-    this.modImageName = '';
-    this.statusChange.emit('');
+
+    this.modalRef = this.modalService.show(VisualModModalComponent, {
+      class: 'modal-lg modal-dialog-centered',
+      initialState: {
+        mode: 'edit',
+        initialMod,
+      },
+      backdrop: true,
+      ignoreBackdropClick: true,
+      keyboard: true,
+    });
+    this.bindModalSubmit();
+  }
+
+  onModalSubmit(event: VisualModModalSubmitEvent): void {
+    if (event.mode === 'edit' && event.editId) {
+      this.wizard.updateVisualMod(event.editId, event.values);
+      this.statusChange.emit('Visual mod updated.');
+    } else {
+      const mod: VisualMod = {
+        id: this.generateId(),
+        ...event.values,
+        hotspots: { front: null, side: null, rear: null },
+      };
+      this.wizard.addVisualMod(mod);
+      this.statusChange.emit('Visual mod added.');
+    }
   }
 
   removeMod(id: string): void {
@@ -83,7 +119,10 @@ export class VisualModsStepComponent implements OnInit {
 
   startPlacing(modId: string): void {
     this.placingModId = modId;
-    this.statusChange.emit('Click on the image to place the hotspot for the selected mod.');
+    this.closeModDrawer();
+    this.statusChange.emit(
+      'Click on the image to place the hotspot for the selected mod.',
+    );
   }
 
   onStageClick(event: MouseEvent): void {
@@ -91,25 +130,30 @@ export class VisualModsStepComponent implements OnInit {
 
     const stage = event.currentTarget as HTMLElement;
     const rect = stage.getBoundingClientRect();
-    const x = Math.max(1, Math.min(99, ((event.clientX - rect.left) / rect.width) * 100));
-    const y = Math.max(1, Math.min(99, ((event.clientY - rect.top) / rect.height) * 100));
+    const x = Math.max(
+      1,
+      Math.min(99, ((event.clientX - rect.left) / rect.width) * 100),
+    );
+    const y = Math.max(
+      1,
+      Math.min(99, ((event.clientY - rect.top) / rect.height) * 100),
+    );
 
     this.wizard.placeHotspot(this.placingModId, this.activeView, x, y);
     this.placingModId = null;
     this.statusChange.emit('Hotspot placed.');
   }
 
-  hotspotLabel(mod: VisualMod): string {
-    const point = mod.hotspots[this.activeView];
-    return point
-      ? `Hotspot ${this.activeView}: ${point.x.toFixed(1)}%, ${point.y.toFixed(1)}%`
-      : `No ${this.activeView} hotspot yet`;
+  private generateId(): string {
+    return crypto.randomUUID();
   }
 
-  private generateId(): string {
-    if (isPlatformBrowser(this.platformId) && typeof crypto?.randomUUID === 'function') {
-      return crypto.randomUUID();
-    }
-    return Math.random().toString(36).slice(2);
+  private bindModalSubmit(): void {
+    const content = this.modalRef?.content;
+    if (!content) return;
+
+    content.submitMod
+      .pipe(take(1))
+      .subscribe((event) => this.onModalSubmit(event));
   }
 }

@@ -1,6 +1,16 @@
 <div class="cap-performance-step">
   <div class="cap-performance-step__perf-box">
-    <h3>Performance Mods</h3>
+    <div class="cap-performance-step__head">
+      <h3>Performance Mods</h3>
+      <button
+        type="button"
+        class="btn btn-outline"
+        [disabled]="performanceSkipped"
+        (click)="openAddModModal()"
+      >
+        Add Performance Mod
+      </button>
+    </div>
 
     <label class="cap-performance-step__toggle-row">
       <input
@@ -10,39 +20,6 @@
       />
       No performance mods for this build
     </label>
-
-    <form
-      [formGroup]="perfForm"
-      class="cap-performance-step__mod-add"
-      [class.cap-performance-step__mod-add--disabled]="performanceSkipped"
-    >
-      <div class="cap-wizard-field">
-        <label>Mod Name</label>
-        <input type="text" formControlName="name" placeholder="Hondata FlashPro" [attr.disabled]="performanceSkipped || null" />
-      </div>
-      <div class="cap-wizard-field">
-        <label>Price Range Estimate (PHP)</label>
-        <input type="text" formControlName="priceEstimate" placeholder="35,000 - 42,000" [attr.disabled]="performanceSkipped || null" />
-      </div>
-      <div class="cap-wizard-field" style="grid-column: 1 / -1">
-        <label>Description</label>
-        <textarea formControlName="description" placeholder="What this mod improved and current setup notes." [attr.disabled]="performanceSkipped || null"></textarea>
-      </div>
-      <div class="cap-wizard-field">
-        <label>Shop / Source</label>
-        <input type="text" formControlName="shop" placeholder="SpeedLab" [attr.disabled]="performanceSkipped || null" />
-      </div>
-      <div class="cap-performance-step__mod-actions">
-        <button
-          type="button"
-          class="btn btn-outline"
-          [disabled]="performanceSkipped"
-          (click)="addMod()"
-        >
-          Add Performance Mod
-        </button>
-      </div>
-    </form>
 
     <div class="cap-wizard-empty" *ngIf="!performanceSkipped && performanceMods.length === 0">
       No performance mods added yet.

@@ -1,0 +1,52 @@
+<div class="cap-visual-mod-modal">
+  <div class="modal-header cap-visual-mod-modal__header">
+    <h5 id="visualModModalTitle" class="modal-title">
+      {{ mode === 'edit' ? 'Edit Visual Mod' : 'Add Visual Mod' }}
+    </h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="cancel()"></button>
+  </div>
+
+  <div class="modal-body cap-visual-mod-modal__body">
+    <form [formGroup]="form" class="cap-visual-mod-modal__form">
+      <div class="cap-wizard-field">
+        <label>Mod Name</label>
+        <input type="text" formControlName="name" placeholder="APR GTC-300 Wing" />
+      </div>
+      <div class="cap-wizard-field">
+        <label>Part Type</label>
+        <input type="text" formControlName="part" placeholder="Spoiler" />
+      </div>
+      <div class="cap-wizard-field cap-visual-mod-modal__full-width">
+        <label>Description</label>
+        <textarea formControlName="description" placeholder="Short details about fitment, finish, and install."></textarea>
+      </div>
+      <div class="cap-wizard-field">
+        <label>Shop / Source</label>
+        <input type="text" formControlName="shop" placeholder="JDM Select Manila" />
+      </div>
+      <div class="cap-wizard-field">
+        <label>Price Range Estimate (PHP)</label>
+        <input type="text" formControlName="priceEstimate" placeholder="25,000 - 32,000" />
+      </div>
+      <div class="cap-wizard-field cap-visual-mod-modal__full-width">
+        <label>Mod Image (Optional)</label>
+        <input type="file" accept="image/*" (change)="onImageChange($event)" />
+        <div class="cap-wizard-hint">Upload an image file only. PNG, JPG, WEBP, and GIF are supported.</div>
+      </div>
+
+      <div class="cap-visual-mod-modal__preview cap-visual-mod-modal__full-width" *ngIf="modImageUrl">
+        <img [src]="modImageUrl" [alt]="modImageName || 'Visual mod preview'" />
+        <div class="cap-visual-mod-modal__meta">
+          <strong>{{ modImageName || 'Uploaded image' }}</strong>
+          <button type="button" class="btn btn-outline" (click)="removeSelectedImage()">Remove Image</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-footer cap-visual-mod-modal__footer">
+    <button type="button" class="btn btn-outline" (click)="cancel()">Cancel</button>
+    <button type="button" class="btn btn-outline" (click)="save()">
+      {{ mode === 'edit' ? 'Save Changes' : 'Add Visual Mod' }}
+    </button>
+</div>

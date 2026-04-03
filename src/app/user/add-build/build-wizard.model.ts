@@ -17,6 +17,7 @@ export interface VisualMod {
   shop: string;
   priceEstimate: string;
   imageName: string;
+  imageUrl: string;
   hotspots: HotspotMap;
 }
 
@@ -51,15 +52,25 @@ export interface BuildInfoForm {
 
 export interface BuildWizardState {
   info: BuildInfoForm;
+  tags: string[];
   requiredPhotos: {
-    front: RequiredPhoto | null;
-    side: RequiredPhoto | null;
-    rear: RequiredPhoto | null;
+    front: ValidatedPhoto | null;
+    side: ValidatedPhoto | null;
+    rear: ValidatedPhoto | null;
   };
-  gallery: GalleryPhoto[];
+  gallery: ValidatedPhoto[];
   visualMods: VisualMod[];
   performanceMods: PerformanceMod[];
   performanceSkipped: boolean;
+}
+
+export interface ValidatedPhoto {
+    photo: RequiredPhoto;
+    isCarPhoto: boolean;
+    isValidSize: boolean;
+    isValidType: boolean;
+    isValidDimensions: boolean;
+    isValidAspectRatio: boolean;
 }
 
 export type WizardView = 'front' | 'side' | 'rear';

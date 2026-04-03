@@ -26,7 +26,7 @@ import { UserBuildProfileComponent } from './user-build-profile/user-build-profi
     CommonModule,
     PublicRoutingModule,
     SharedModule,
-    PopoverModule.forRoot(),
+    PopoverModule,
   ],
 })
 export class PublicModule {}

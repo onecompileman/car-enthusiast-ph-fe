@@ -1,0 +1,34 @@
+<article
+  class="cap-visual-mod-item"
+  [class.cap-visual-mod-item--active]="isPlacing"
+>
+  <div class="cap-visual-mod-item__row">
+    <strong>{{ mod.name }}</strong>
+    <span>{{ mod.part }}</span>
+  </div>
+
+  <div class="cap-visual-mod-item__row">
+    <span>{{ mod.description || 'No description added.' }}</span>
+  </div>
+
+  <div class="cap-visual-mod-item__row">
+    <span>Shop: {{ mod.shop || 'Not set' }}</span>
+    <span>Price: {{ mod.priceEstimate || 'Not set' }}</span>
+  </div>
+
+  <div class="cap-visual-mod-item__row">
+    <span>{{ hotspotLabel() }}</span>
+  </div>
+
+  <div class="cap-visual-mod-item__image" *ngIf="mod.imageUrl">
+    <img [src]="mod.imageUrl" [alt]="mod.name + ' image'" />
+  </div>
+
+  <div class="cap-visual-mod-item__buttons">
+    <button type="button" class="btn btn-outline" (click)="onEdit()">Edit</button>
+    <button type="button" class="btn btn-outline" (click)="onPlace()">
+      {{ isPlacing ? 'Placing…' : 'Place Hotspot' }}
+    </button>
+    <button type="button" class="btn btn-outline" (click)="onRemove()">Remove</button>
+  </div>
+</article>
