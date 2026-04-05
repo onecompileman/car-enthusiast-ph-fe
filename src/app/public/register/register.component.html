@@ -31,59 +31,98 @@
 			<p>Start your profile in under a minute.</p>
 		</div>
 
-		<button class="google-btn" type="button" aria-label="Sign up with Google">
+		<button
+			class="google-btn"
+			type="button"
+			aria-label="Sign up with Google"
+			[disabled]="googleLoading"
+			(click)="signUpWithGoogle()"
+		>
+			<i class="fa fa-spin fa-spinner me-2" *ngIf="googleLoading"></i>
 			<img src="/svg/google.svg" alt="" height="16"/>
 			Continue with Google
 		</button>
 
 		<div class="divider">or register with email</div>
 
-		<form class="form-grid" action="#" method="post">
+		@if (errorMessage) {
+			<div class="form-error-banner">{{ errorMessage }}</div>
+		}
+
+		<form class="form-grid" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
 			<div class="inline-grid">
-				<div class="field">
+				<div class="field" [class.field--error]="firstName.invalid && firstName.touched">
 					<label for="firstName">First Name</label>
-					<input id="firstName" name="firstName" type="text" placeholder="Juan" required />
+					<input id="firstName" type="text" formControlName="firstName" placeholder="Juan" />
+					@if (firstName.touched && firstName.hasError('required')) {
+						<span class="field__error">First name is required.</span>
+					}
 				</div>
-				<div class="field">
+				<div class="field" [class.field--error]="lastName.invalid && lastName.touched">
 					<label for="lastName">Last Name</label>
-					<input id="lastName" name="lastName" type="text" placeholder="Dela Cruz" required />
+					<input id="lastName" type="text" formControlName="lastName" placeholder="Dela Cruz" />
+					@if (lastName.touched && lastName.hasError('required')) {
+						<span class="field__error">Last name is required.</span>
+					}
 				</div>
 			</div>
 
-			<div class="field">
+			<div class="field" [class.field--error]="emailAddress.invalid && emailAddress.touched">
 				<label for="regEmail">Email</label>
-				<input id="regEmail" name="email" type="email" placeholder="you@example.com" required />
+				<input id="regEmail" type="email" formControlName="emailAddress" placeholder="you@example.com" autocomplete="email" />
+				@if (emailAddress.touched && emailAddress.hasError('required')) {
+					<span class="field__error">Email is required.</span>
+				} @else if (emailAddress.touched && emailAddress.hasError('email')) {
+					<span class="field__error">Enter a valid email address.</span>
+				}
 			</div>
 
 			<div class="inline-grid">
-				<div class="field">
+				<div class="field" [class.field--error]="password.invalid && password.touched">
 					<label for="regPassword">Password</label>
 					<input
 						id="regPassword"
-						name="password"
 						type="password"
+						formControlName="password"
 						placeholder="Create password"
-						required
+						autocomplete="new-password"
 					/>
+					@if (password.touched && password.hasError('required')) {
+						<span class="field__error">Password is required.</span>
+					}
 				</div>
-				<div class="field">
+				<div
+					class="field"
+					[class.field--error]="(confirmPassword.invalid && confirmPassword.touched) || (form.hasError('passwordMismatch') && confirmPassword.touched)"
+				>
 					<label for="confirmPassword">Confirm Password</label>
 					<input
 						id="confirmPassword"
-						name="confirmPassword"
 						type="password"
+						formControlName="confirmPassword"
 						placeholder="Re-enter password"
-						required
+						autocomplete="new-password"
 					/>
+					@if (confirmPassword.touched && confirmPassword.hasError('required')) {
+						<span class="field__error">Confirm password is required.</span>
+					} @else if (form.hasError('passwordMismatch') && confirmPassword.touched) {
+						<span class="field__error">Passwords do not match.</span>
+					}
 				</div>
 			</div>
 
-			<label class="check">
-				<input type="checkbox" name="terms" required />
+			<label class="check" [class.field--error]="terms.invalid && terms.touched">
+				<input type="checkbox" formControlName="terms" />
 				I agree to the platform Terms and Community Guidelines.
 			</label>
+			@if (terms.touched && terms.hasError('required')) {
+				<span class="field__error">You must agree before registering.</span>
+			}
 
-			<button class="btn btn-solid btn-block" type="submit">Create Account with Email</button>
+			<button class="btn btn-solid btn-block" type="submit" [disabled]="loading">
+				<i class="fa fa-spin fa-spinner me-2" *ngIf="loading"></i>
+				Create Account with Email
+			</button>
 		</form>
 
 		<p class="auth-foot">

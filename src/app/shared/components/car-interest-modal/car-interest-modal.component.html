@@ -1,0 +1,67 @@
+@if (isOpen) {
+  <div class="cap-car-interest-modal__backdrop" (click)="close()"></div>
+  <section class="cap-car-interest-modal" role="dialog" aria-modal="true" aria-labelledby="car-interest-modal-title">
+    <div class="cap-car-interest-modal__head">
+      <div>
+        <h3 id="car-interest-modal-title">Add Car Interest</h3>
+        <p>Select a make/model from the dataset or enter it manually.</p>
+      </div>
+      <button type="button" class="cap-car-interest-modal__close" (click)="close()">Close</button>
+    </div>
+
+    <div class="cap-car-interest-modal__body" [formGroup]="form">
+      <label class="cap-car-interest-modal__toggle-row">
+        <span>
+          <strong>Car not listed?</strong>
+          <small>Switch to manual entry and type your own make/model.</small>
+        </span>
+        <input type="checkbox" formControlName="useManualEntry" />
+      </label>
+
+      @if (!useManualEntry) {
+        <div class="cap-car-interest-modal__inline-grid">
+          <div class="cap-car-interest-modal__field">
+            <label for="carMake">Make</label>
+            <select id="carMake" formControlName="make">
+              <option value="">Select make</option>
+              @for (car of carOptions; track car.make) {
+                <option [value]="car.make">{{ car.make }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="cap-car-interest-modal__field">
+            <label for="carModel">Model</label>
+            <select id="carModel" formControlName="model">
+              <option value="">Select model</option>
+              @for (model of availableModels; track model) {
+                <option [value]="model">{{ model }}</option>
+              }
+            </select>
+          </div>
+        </div>
+      } @else {
+        <div class="cap-car-interest-modal__inline-grid">
+          <div class="cap-car-interest-modal__field">
+            <label for="manualMake">Make</label>
+            <input id="manualMake" type="text" formControlName="manualMake" placeholder="e.g. Toyota" />
+          </div>
+
+          <div class="cap-car-interest-modal__field">
+            <label for="manualModel">Model</label>
+            <input id="manualModel" type="text" formControlName="manualModel" placeholder="e.g. Altezza" />
+          </div>
+        </div>
+      }
+
+      @if (errorMessage) {
+        <span class="cap-car-interest-modal__error">{{ errorMessage }}</span>
+      }
+
+      <div class="cap-car-interest-modal__actions">
+        <button type="button" class="btn btn-outline" (click)="close()">Cancel</button>
+        <button type="button" class="btn btn-solid" (click)="submit()">Add Car Interest</button>
+      </div>
+    </div>
+  </section>
+}

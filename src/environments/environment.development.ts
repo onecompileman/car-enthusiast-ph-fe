@@ -1,4 +1,7 @@
+import firebase from '../../firebase-config.json';
+
 export const environment = {
   production: false,
-  apiBaseUrl: 'http://localhost:3000'
+  apiBaseUrl: 'https://localhost:7188/api',
+  firebase
 };

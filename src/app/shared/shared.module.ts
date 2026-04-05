@@ -15,6 +15,7 @@ import { TagInputComponent } from './components/tag-input/tag-input.component';
 import { VisualModModalComponent } from './components/visual-mod-modal/visual-mod-modal.component';
 import { PerformanceModModalComponent } from './components/performance-mod-modal/performance-mod-modal.component';
 import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
+import { CarInterestModalComponent } from './components/car-interest-modal/car-interest-modal.component';
 
 @NgModule({
   declarations: [
@@ -29,12 +30,13 @@ import { ConfirmationModalComponent } from './components/confirmation-modal/conf
     VisualModModalComponent,
     PerformanceModModalComponent,
     ConfirmationModalComponent,
+    CarInterestModalComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    CarouselModule.forRoot(),
+    CarouselModule,
     ModalModule.forRoot(),
   ],
   exports: [
@@ -49,6 +51,7 @@ import { ConfirmationModalComponent } from './components/confirmation-modal/conf
     VisualModModalComponent,
     PerformanceModModalComponent,
     ConfirmationModalComponent,
+    CarInterestModalComponent,
     FormsModule,
     ReactiveFormsModule,
   ],

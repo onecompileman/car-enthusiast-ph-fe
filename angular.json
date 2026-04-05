@@ -46,7 +46,8 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/ngx-spinner/animations/square-loader.css"
             ],
             "scripts": [],
             "server": "src/main.server.ts",

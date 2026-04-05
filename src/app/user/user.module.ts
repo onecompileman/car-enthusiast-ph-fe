@@ -13,6 +13,7 @@ import { PerformanceStepComponent } from './add-build/steps/performance-step/per
 import { PhotosStepComponent } from './add-build/steps/photos-step/photos-step.component';
 import { ReviewStepComponent } from './add-build/steps/review-step/review-step.component';
 import { provideHttpClient } from '@angular/common/http';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { provideHttpClient } from '@angular/common/http';
     VisualModsStepComponent,
     VisualModItemComponent,
     PhotosStepComponent,
-    ReviewStepComponent
+    ReviewStepComponent,
+    ProfileComponent,
   ],
   imports: [CommonModule, ReactiveFormsModule, SharedModule, UserRoutingModule],
   providers: [provideHttpClient()],

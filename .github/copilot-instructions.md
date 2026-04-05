@@ -31,6 +31,12 @@
 - Use existing Angular routing conventions in `public-routing.module.ts`.
 - Use stable asset paths aligned with current config.
 
+## Loading/async UI pattern
+- For buttons with async actions, add a spinner icon instead of changing button text.
+- Pattern: `<i class="fa fa-spin fa-spinner me-2" *ngIf="loading"></i>` inside the button, alongside the static label.
+- Keep the button label unchanged; only the spinner appears/disappears.
+- Use `[disabled]="loading"` on the button to prevent double-submit.
+
 ## SSR/hydration safety
 - Prefer SSR-safe template patterns.
 - If using libraries that mutate DOM, avoid hydration mismatches.

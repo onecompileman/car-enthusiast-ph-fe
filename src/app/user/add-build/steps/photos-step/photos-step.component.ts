@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { BuildWizardService } from '../../build-wizard.service';
 import {
   RequiredPhoto,
@@ -6,6 +13,7 @@ import {
   WizardView,
 } from '../../build-wizard.model';
 import { ImageFilterService } from '../../../../core/services/image-filter.service';
+import { Subscription } from 'rxjs';
 
 interface PhotoSlot {
   view: WizardView;
@@ -20,7 +28,7 @@ interface PhotoSlot {
   templateUrl: './photos-step.component.html',
   styleUrl: './photos-step.component.scss',
 })
-export class PhotosStepComponent {
+export class PhotosStepComponent implements OnInit, OnDestroy {
   @Input() showErrorMessage = false;
   @Output() isValidStep = new EventEmitter<boolean>();
 
@@ -73,6 +81,8 @@ export class PhotosStepComponent {
     'image/heic',
   ];
 
+  private subscriptions: { [key: string]: Subscription } = {};
+
   private requiredPhotoMetaByName = new Map<
     string,
     { width: number; height: number; type: string; sizeMB: number }
@@ -86,6 +96,14 @@ export class PhotosStepComponent {
     private wizard: BuildWizardService,
     private imageFilter: ImageFilterService,
   ) {}
+
+  ngOnInit(): void {
+    this.getSavedPhotos();
+  }
+  
+  ngOnDestroy(): void {
+    Object.values(this.subscriptions).forEach((sub) => sub.unsubscribe());
+  }
 
   get requiredPhotos() {
     return this.wizard.state.requiredPhotos;
@@ -411,5 +429,42 @@ export class PhotosStepComponent {
     }
 
     return errors;
+  }
+
+  private getSavedPhotos() {
+    this.subscriptions['wizardState'] = this.wizard.state$.subscribe(
+      (state) => {
+        this.isValidStep.emit(this.checkSavedPhotosIfValid());
+      },
+    );
+  }
+
+  private checkSavedPhotosIfValid() {
+    const required = this.wizard.state.requiredPhotos;
+    const gallery = this.wizard.state.gallery;
+
+    const isRequiredPhotosValid =
+      required &&
+      Object.values(required).every(
+        (photo) =>
+          photo !== null &&
+          photo.isValidType &&
+          photo.isValidSize &&
+          photo.isValidDimensions &&
+          photo.isValidAspectRatio &&
+          photo.isCarPhoto,
+      );
+    const isGalleryValid =
+      gallery &&
+      gallery.every(
+        (photo) =>
+          photo.isValidType &&
+          photo.isValidSize &&
+          photo.isValidDimensions &&
+          photo.isValidAspectRatio &&
+          photo.isCarPhoto,
+      );
+
+    return isRequiredPhotosValid && isGalleryValid;
   }
 }

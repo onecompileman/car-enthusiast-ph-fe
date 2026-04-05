@@ -19,10 +19,15 @@
     </div>
 
     <div class="cap-login__carousel">
-      <cap-builds-carousel [slides]="slides" [interval]="5000"></cap-builds-carousel>
+      <cap-builds-carousel
+        [slides]="slides"
+        [interval]="5000"
+      ></cap-builds-carousel>
     </div>
 
-    <p class="cap-login__note">Secure login via Google or your email address.</p>
+    <p class="cap-login__note">
+      Secure login via Google or your email address.
+    </p>
   </section>
 
   <section
@@ -34,45 +39,78 @@
       <p>Access your Car Enthusiast PH account.</p>
     </div>
 
-    <button class="cap-login__google-btn" type="button" aria-label="Sign in with Google">
-      <img src="/svg/google.svg" alt="" height="16"/>
+    <button
+      class="cap-login__google-btn"
+      type="button"
+      aria-label="Sign in with Google"
+      [disabled]="googleLoading"
+      (click)="signInWithGoogle()"
+    >
+      <i class="fa fa-spin fa-spinner me-2" *ngIf="googleLoading"></i>
+      <img src="/svg/google.svg" alt="" height="16" />
       Continue with Google
     </button>
 
     <div class="divider">or continue with email</div>
 
-    <form class="form-grid" action="#" method="post">
-      <div class="field">
+    @if (errorMessage) {
+      <div class="form-error-banner">{{ errorMessage }}</div>
+    }
+
+    <form
+      class="form-grid"
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+      novalidate
+    >
+      <div
+        class="field"
+        [class.field--error]="emailAddress.invalid && emailAddress.touched"
+      >
         <label for="email">Email</label>
         <input
           id="email"
-          name="email"
           type="email"
+          formControlName="emailAddress"
           placeholder="you@example.com"
-          required
+          autocomplete="email"
         />
+        @if (emailAddress.touched && emailAddress.hasError("required")) {
+          <span class="field__error">Email is required.</span>
+        } @else if (emailAddress.touched && emailAddress.hasError("email")) {
+          <span class="field__error">Enter a valid email address.</span>
+        }
       </div>
 
-      <div class="field">
+      <div
+        class="field"
+        [class.field--error]="password.invalid && password.touched"
+      >
         <label for="password">Password</label>
         <input
           id="password"
-          name="password"
           type="password"
+          formControlName="password"
           placeholder="Enter your password"
-          required
+          autocomplete="current-password"
         />
+        @if (password.touched && password.hasError("required")) {
+          <span class="field__error">Password is required.</span>
+        }
       </div>
 
       <div class="form-row">
-        <label class="check"
-          ><input type="checkbox" name="remember" /> Remember me</label
-        >
-        <a href="#">Forgot password?</a>
+        <span></span>
+        <a routerLink="/forgot-password">Forgot password?</a>
       </div>
 
-      <button class="btn btn-solid btn-block" type="submit">
-        Sign In with Email
+      <button
+        class="btn btn-solid btn-block"
+        type="submit"
+        [disabled]="loading"
+      >
+        <i class="fa fa-spin fa-spinner me-2" *ngIf="loading"></i> Sign In with
+        Email
       </button>
     </form>
 
