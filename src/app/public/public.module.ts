@@ -11,6 +11,7 @@ import { SharedModule } from '../shared/shared.module';
 import { BuildInfoComponent } from './build-info/build-info.component';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { UserBuildProfileComponent } from './user-build-profile/user-build-profile.component';
+import { NotFoundComponent } from '../shared/components/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { UserBuildProfileComponent } from './user-build-profile/user-build-profi
     BuildListComponent,
     BuildInfoComponent,
     UserBuildProfileComponent,
+    NotFoundComponent,
   ],
   imports: [
     CommonModule,

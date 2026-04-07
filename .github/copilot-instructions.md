@@ -37,6 +37,12 @@
 - Keep the button label unchanged; only the spinner appears/disappears.
 - Use `[disabled]="loading"` on the button to prevent double-submit.
 
+## Modal implementation pattern
+- For new confirmation-style dialogs, copy the implementation pattern used by `src/app/shared/components/confirmation-modal`.
+- Use `ngx-bootstrap` modal flow (`BsModalService`, `ModalModule`) instead of custom ad-hoc modal plumbing.
+- Keep modal logic reusable in shared components and pass data/callbacks through `initialState`.
+- Match existing button/action behavior and loading/error handling from the current confirmation modal.
+
 ## SSR/hydration safety
 - Prefer SSR-safe template patterns.
 - If using libraries that mutate DOM, avoid hydration mismatches.

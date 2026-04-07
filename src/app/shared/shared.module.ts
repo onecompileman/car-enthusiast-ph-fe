@@ -16,6 +16,7 @@ import { VisualModModalComponent } from './components/visual-mod-modal/visual-mo
 import { PerformanceModModalComponent } from './components/performance-mod-modal/performance-mod-modal.component';
 import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
 import { CarInterestModalComponent } from './components/car-interest-modal/car-interest-modal.component';
+import { TermsCommunityModalComponent } from './components/terms-community-modal/terms-community-modal.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { CarInterestModalComponent } from './components/car-interest-modal/car-i
     PerformanceModModalComponent,
     ConfirmationModalComponent,
     CarInterestModalComponent,
+    TermsCommunityModalComponent,
   ],
   imports: [
     CommonModule,
@@ -52,6 +54,7 @@ import { CarInterestModalComponent } from './components/car-interest-modal/car-i
     PerformanceModModalComponent,
     ConfirmationModalComponent,
     CarInterestModalComponent,
+    TermsCommunityModalComponent,
     FormsModule,
     ReactiveFormsModule,
   ],

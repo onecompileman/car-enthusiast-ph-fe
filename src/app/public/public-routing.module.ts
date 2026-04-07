@@ -7,6 +7,8 @@ import { LoginComponent } from './login/login.component';
 import { BuildListComponent } from './build-list/build-list.component';
 import { BuildInfoComponent } from './build-info/build-info.component';
 import { UserBuildProfileComponent } from './user-build-profile/user-build-profile.component';
+import { NotFoundComponent } from '../shared/components/not-found/not-found.component';
+import { CanAccessLoginRegisterGuard } from '../core/guards/can-access-login-register.guard';
 
 const routes: Routes = [{
   path: '',
@@ -14,15 +16,17 @@ const routes: Routes = [{
   children: [
     {
       path: '',
-      component: HomeComponent
+      component: HomeComponent,
     },
     {
       path: 'register',
-      component: RegisterComponent
+      component: RegisterComponent,
+      canActivate: [CanAccessLoginRegisterGuard]
     },
     {
       path: 'login',
-      component: LoginComponent
+      component: LoginComponent,
+      canActivate: [CanAccessLoginRegisterGuard]
     },
     {
       path: 'browse-builds',
@@ -39,7 +43,8 @@ const routes: Routes = [{
     {
       path: 'user-build-profile',
       component: UserBuildProfileComponent
-    }
+    },
+ 
   ]
 }];
 

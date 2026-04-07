@@ -57,6 +57,12 @@
       <div class="form-error-banner">{{ errorMessage }}</div>
     }
 
+    @if (registered) {
+      <div class="form-success-banner">
+        Registration successful! Please log in with your new account.
+      </div>
+    }
+
     <form
       class="form-grid"
       [formGroup]="form"
@@ -107,7 +113,7 @@
       <button
         class="btn btn-solid btn-block"
         type="submit"
-        [disabled]="loading"
+        [disabled]="loading || form.invalid"
       >
         <i class="fa fa-spin fa-spinner me-2" *ngIf="loading"></i> Sign In with
         Email

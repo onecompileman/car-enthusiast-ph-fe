@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BuildCarouselSlide } from '../../shared/components/builds-carousel/builds-carousel.component';
 import { AuthService } from '../../core/services/auth.service';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -11,21 +11,31 @@ import { NgxSpinnerService } from 'ngx-spinner';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   form: FormGroup;
   loading = false;
   googleLoading = false;
   errorMessage: string | null = null;
+
+  registered = false;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
     private ngxSpinner: NgxSpinnerService,
+    private route: ActivatedRoute,
   ) {
     this.form = this.fb.group({
       emailAddress: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
+    });
+  }
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      if (params['registered']) {
+        this.registered = true;
+      }
     });
   }
 
@@ -41,7 +51,9 @@ export class LoginComponent {
     this.loading = true;
     this.errorMessage = null;
 
-    this.authService.signIn(this.form.value).subscribe({
+    const { emailAddress, password } = this.form.value;
+
+    this.authService.signIn({ email: emailAddress, password }).subscribe({
       next: (res) => {
         this.loading = false;
         if (res.success) {

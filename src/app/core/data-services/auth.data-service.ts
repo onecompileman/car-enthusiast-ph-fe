@@ -14,12 +14,12 @@ export class AuthDataService {
 
   constructor(private http: HttpClient) {}
 
-  register(userData: RegisterModel): Observable<Result<User>> {
+  register(userData: { user: RegisterModel }): Observable<Result<User>> {
     return this.http.post<Result<User>>(`${this.baseUrl}/Register`, userData);
   }
 
   signIn(credentials: {
-    emailAddress: string;
+    email: string;
     password: string;
   }): Observable<Result<TokenResponse>> {
     return this.http.post<Result<TokenResponse>>(
@@ -40,6 +40,13 @@ export class AuthDataService {
     return this.http.post<Result<TokenResponse>>(
       `${this.baseUrl}/SignInViaGoogleToken`,
       { googleBearerToken: googleToken },
+    );
+  }
+
+  updateProfile(formData: FormData): Observable<Result<User>> {
+    return this.http.post<Result<User>>(
+      `${this.baseUrl}/UpdateProfile`,
+      formData,
     );
   }
 }

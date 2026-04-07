@@ -40,7 +40,7 @@ export class VisualModModalComponent implements OnInit {
   modImageName = '';
   modImageUrl = '';
 
-  maxFileSizeMB = 5;
+  maxFileSizeMB = 3;
   imageTypesAllowed = ['image/png', 'image/jpeg', 'image/webp', 'image/heic'];
   imageErrorMessage = '';
 

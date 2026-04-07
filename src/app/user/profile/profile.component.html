@@ -2,7 +2,8 @@
   <section class="cap-profile__hero">
     <h1>Update Your Profile</h1>
     <p>
-      Keep your account details and profile content up to date so other enthusiasts can discover your builds.
+      Keep your account details and profile content up to date so other
+      enthusiasts can discover your builds.
     </p>
   </section>
 
@@ -11,21 +12,35 @@
       <h2>Profile Media</h2>
       <p>Upload your images. Profile photo max 2MB, cover photo max 4MB.</p>
 
-      <div class="cap-profile__cover-preview" [style.background-image]="coverPreview ? 'url(' + coverPreview + ')' : null">
+      <div
+        class="cap-profile__cover-preview"
+        [style.background-image]="
+          coverPreview ? 'url(' + coverPreview + ')' : null
+        "
+      >
         <img
           *ngIf="profilePreview"
           class="cap-profile__avatar-preview"
           [src]="profilePreview"
           alt="Profile preview"
         />
-        <div *ngIf="!profilePreview" class="cap-profile__avatar-placeholder">No Image</div>
+        <div *ngIf="!profilePreview" class="cap-profile__avatar-placeholder">
+          No Image
+        </div>
       </div>
 
-      <div class="cap-profile__form-grid" style="overflow: hidden;">
+      <div class="cap-profile__form-grid" style="overflow: hidden">
         <div class="cap-profile__field">
           <label for="coverPhotoFile">Cover Photo</label>
-          <input id="coverPhotoFile" type="file" accept="image/jpeg,image/png,image/webp,image/heic" (change)="onCoverSelected($event)" />
-          <p class="cap-profile__hint">{{ coverFileName || 'No file selected' }}</p>
+          <input
+            id="coverPhotoFile"
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/heic"
+            (change)="onCoverSelected($event)"
+          />
+          <p class="cap-profile__hint">
+            {{ coverFileName || "No file selected" }}
+          </p>
           @if (coverError) {
             <span class="cap-profile__error">{{ coverError }}</span>
           }
@@ -33,8 +48,15 @@
 
         <div class="cap-profile__field">
           <label for="profilePhotoFile">Profile Photo</label>
-          <input id="profilePhotoFile" type="file" accept="image/jpeg,image/png,image/webp,image/heic" (change)="onProfileSelected($event)" />
-          <p class="cap-profile__hint">{{ profileFileName || 'No file selected' }}</p>
+          <input
+            id="profilePhotoFile"
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/heic"
+            (change)="onProfileSelected($event)"
+          />
+          <p class="cap-profile__hint">
+            {{ profileFileName || "No file selected" }}
+          </p>
           @if (profileError) {
             <span class="cap-profile__error">{{ profileError }}</span>
           }
@@ -50,52 +72,93 @@
         <div class="cap-profile__success">Profile updated successfully.</div>
       }
 
-      <form class="cap-profile__form-grid" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      @if (saveError) {
+        <div class="alert alert-danger mt-2">{{ saveError }}</div>
+      }
+
+      <form
+        class="cap-profile__form-grid"
+        [formGroup]="form"
+        (ngSubmit)="saveProfile()"
+        novalidate
+      >
         <div class="cap-profile__inline-grid">
-          <div class="cap-profile__field" [class.cap-profile__field--error]="firstName.invalid && firstName.touched">
+          <div
+            class="cap-profile__field"
+            [class.cap-profile__field--error]="
+              firstName.invalid && firstName.touched
+            "
+          >
             <label for="firstName">First Name</label>
             <input id="firstName" type="text" formControlName="firstName" />
           </div>
 
-          <div class="cap-profile__field" [class.cap-profile__field--error]="lastName.invalid && lastName.touched">
+          <div
+            class="cap-profile__field"
+            [class.cap-profile__field--error]="
+              lastName.invalid && lastName.touched
+            "
+          >
             <label for="lastName">Last Name</label>
             <input id="lastName" type="text" formControlName="lastName" />
           </div>
         </div>
 
-        <div class="cap-profile__field" [class.cap-profile__field--error]="fullName.invalid && fullName.touched">
-          <label for="fullName">Full Name</label>
-          <input id="fullName" type="text" formControlName="fullName" />
-        </div>
-
-        <div class="cap-profile__field" [class.cap-profile__field--error]="emailAddress.invalid && emailAddress.touched">
+        <div
+          class="cap-profile__field"
+          [class.cap-profile__field--error]="
+            emailAddress.invalid && emailAddress.touched
+          "
+        >
           <label for="emailAddress">Email Address</label>
-          <input id="emailAddress" type="email" formControlName="emailAddress" />
-          @if (emailAddress.touched && emailAddress.hasError('email')) {
+          <input
+            id="emailAddress"
+            type="email"
+            formControlName="emailAddress"
+            readonly
+          />
+          @if (emailAddress.touched && emailAddress.hasError("email")) {
             <span class="cap-profile__error">Enter a valid email address.</span>
           }
         </div>
 
         <div class="cap-profile__field">
           <label for="biography">Biography</label>
-          <textarea id="biography" rows="4" formControlName="biography"></textarea>
+          <textarea
+            id="biography"
+            rows="4"
+            formControlName="biography"
+          ></textarea>
         </div>
 
         <div class="cap-profile__field">
           <div class="cap-profile__section-head">
             <label>Car Interests</label>
-            <button class="btn btn-outline" type="button" (click)="openCarInterestModal()">
+            <button
+              class="btn btn-outline"
+              type="button"
+              (click)="openCarInterestModal()"
+            >
               Add Car Interest
             </button>
           </div>
           <div class="cap-profile__interest-grid">
-            @for (car of selectedCarInterests; track car) {
-              <div class="cap-profile__interest-card cap-profile__interest-card--selected">
+            @for (car of selectedCarInterestItems; track car.id || (car.make + '-' + car.model)) {
+              <div
+                class="cap-profile__interest-card cap-profile__interest-card--selected"
+              >
                 <span>
-                  <strong>{{ car }}</strong>
-                  <small>Included for build update recommendations and alerts.</small>
+                  <strong>{{ car.make }} {{ car.model }}</strong>
+                  <small
+                    >Included for build update recommendations and
+                    alerts.</small
+                  >
                 </span>
-                <button type="button" class="cap-profile__interest-remove" (click)="removeCarInterest(car)">
+                <button
+                  type="button"
+                  class="cap-profile__interest-remove"
+                  (click)="removeCarInterest(car)"
+                >
                   Remove
                 </button>
               </div>
@@ -109,14 +172,20 @@
 
         <label class="cap-profile__toggle-row">
           <span>
-            <strong>Update me when someone posted builds about these cars</strong>
+            <strong
+              >Update me when someone posted builds about these cars</strong
+            >
             <small>Get email alerts when new related builds are posted.</small>
           </span>
           <input type="checkbox" formControlName="notifyCarBuildPosts" />
         </label>
 
         <div class="cap-profile__actions">
-          <button class="btn btn-solid" type="submit">Update Profile</button>
+          <button class="btn btn-solid" [disabled]="isSaving" type="submit">
+            <i class="fa fa-spin fa-spinner me-2" *ngIf="isSaving"></i>
+
+            Update Profile
+          </button>
         </div>
       </form>
     </section>

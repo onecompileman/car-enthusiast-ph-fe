@@ -67,7 +67,12 @@ export class PhotosStepComponent implements OnInit, OnDestroy {
   requiredPhotoMinWidthPx = 1280;
   requiredPhotoMinHeightPx = 600;
   requiredPhotoMinAspectRatio = 1.3;
-  requiredPhotoFileTypes = ['image/jpeg'];
+  requiredPhotoFileTypes = [
+    'image/jpeg',
+    'image/png',
+    'image/webp',
+    'image/heic',
+  ];
 
   galleryPhotoMaxSizeMB = 5;
   galleryPhotoMinWidthPx = 800;
@@ -100,7 +105,7 @@ export class PhotosStepComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getSavedPhotos();
   }
-  
+
   ngOnDestroy(): void {
     Object.values(this.subscriptions).forEach((sub) => sub.unsubscribe());
   }

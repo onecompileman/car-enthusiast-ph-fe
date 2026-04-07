@@ -1,132 +1,233 @@
 <main class="page">
-	<section
-		class="side-panel animate__animated animate__fadeInUp"
-		style="animation-duration: 0.45s"
-	>
-		<div class="side-copy">
-			<span class="tag">Join the Community</span>
-			<h1>Create your Car Enthusiast PH account.</h1>
-			<p>
-				Register to publish your build profile, track your mod history, and
-				request access to exclusive car groups for your platform, style, and
-				region.
-			</p>
-		</div>
+  <section
+    class="side-panel animate__animated animate__fadeInUp"
+    style="animation-duration: 0.45s"
+  >
+    <div class="side-copy">
+      <span class="tag">Join the Community</span>
+      <h1>Create your Car Enthusiast PH account.</h1>
+      <p>
+        Register to publish your build profile, track your mod history, and
+        request access to exclusive car groups for your platform, style, and
+        region.
+      </p>
+    </div>
 
-		<div class="cap-register__carousel">
-			<cap-builds-carousel [slides]="slides" [interval]="5000"></cap-builds-carousel>
-		</div>
+    <div class="cap-register__carousel">
+      <cap-builds-carousel
+        [slides]="slides"
+        [interval]="5000"
+      ></cap-builds-carousel>
+    </div>
 
-		<p class="side-note">
-			Choose Google sign-up or email registration to get started.
-		</p>
-	</section>
+    <p class="side-note">
+      Choose Google sign-up or email registration to get started.
+    </p>
+  </section>
 
-	<section
-		class="auth-card animate__animated animate__fadeInUp"
-		style="animation-delay: 0.08s; animation-duration: 0.45s"
-	>
-		<div class="auth-head">
-			<h2>Create Account</h2>
-			<p>Start your profile in under a minute.</p>
-		</div>
+  <section
+    class="auth-card animate__animated animate__fadeInUp"
+    style="animation-delay: 0.08s; animation-duration: 0.45s"
+  >
+    <div class="auth-head">
+      <h2>Create Account</h2>
+      <p>Start your profile in under a minute.</p>
+    </div>
 
-		<button
-			class="google-btn"
-			type="button"
-			aria-label="Sign up with Google"
-			[disabled]="googleLoading"
-			(click)="signUpWithGoogle()"
-		>
-			<i class="fa fa-spin fa-spinner me-2" *ngIf="googleLoading"></i>
-			<img src="/svg/google.svg" alt="" height="16"/>
-			Continue with Google
-		</button>
+    <button
+      class="google-btn"
+      type="button"
+      aria-label="Sign up with Google"
+      [disabled]="googleLoading"
+      (click)="signUpWithGoogle()"
+    >
+      <i class="fa fa-spin fa-spinner me-2" *ngIf="googleLoading"></i>
+      <img src="/svg/google.svg" alt="" height="16" />
+      Continue with Google
+    </button>
 
-		<div class="divider">or register with email</div>
+    <div class="divider">or register with email</div>
 
-		@if (errorMessage) {
-			<div class="form-error-banner">{{ errorMessage }}</div>
-		}
+    @if (errorMessage) {
+      <div class="form-error-banner">{{ errorMessage }}</div>
+    }
 
-		<form class="form-grid" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
-			<div class="inline-grid">
-				<div class="field" [class.field--error]="firstName.invalid && firstName.touched">
-					<label for="firstName">First Name</label>
-					<input id="firstName" type="text" formControlName="firstName" placeholder="Juan" />
-					@if (firstName.touched && firstName.hasError('required')) {
-						<span class="field__error">First name is required.</span>
-					}
-				</div>
-				<div class="field" [class.field--error]="lastName.invalid && lastName.touched">
-					<label for="lastName">Last Name</label>
-					<input id="lastName" type="text" formControlName="lastName" placeholder="Dela Cruz" />
-					@if (lastName.touched && lastName.hasError('required')) {
-						<span class="field__error">Last name is required.</span>
-					}
-				</div>
-			</div>
+    <form
+      class="form-grid"
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+      novalidate
+    >
+      <div class="inline-grid">
+        <div
+          class="field"
+          [class.field--error]="firstName.invalid && firstName.touched"
+        >
+          <label for="firstName">First Name</label>
+          <input
+            id="firstName"
+            type="text"
+            formControlName="firstName"
+            placeholder="Juan"
+          />
+          @if (firstName.touched && firstName.hasError("required")) {
+            <span class="field__error">First name is required.</span>
+          } @else if (firstName.touched && firstName.hasError("profane")) {
+            <span class="field__error"
+              >First name contains inappropriate content.</span
+            >
+          }
+        </div>
+        <div
+          class="field"
+          [class.field--error]="lastName.invalid && lastName.touched"
+        >
+          <label for="lastName">Last Name</label>
+          <input
+            id="lastName"
+            type="text"
+            formControlName="lastName"
+            placeholder="Dela Cruz"
+          />
+          @if (lastName.touched && lastName.hasError("required")) {
+            <span class="field__error">Last name is required.</span>
+          } @else if (lastName.touched && lastName.hasError("profane")) {
+            <span class="field__error"
+              >Last name contains inappropriate content.</span
+            >
+          }
+        </div>
+      </div>
 
-			<div class="field" [class.field--error]="emailAddress.invalid && emailAddress.touched">
-				<label for="regEmail">Email</label>
-				<input id="regEmail" type="email" formControlName="emailAddress" placeholder="you@example.com" autocomplete="email" />
-				@if (emailAddress.touched && emailAddress.hasError('required')) {
-					<span class="field__error">Email is required.</span>
-				} @else if (emailAddress.touched && emailAddress.hasError('email')) {
-					<span class="field__error">Enter a valid email address.</span>
-				}
-			</div>
+      <div
+        class="field"
+        [class.field--error]="emailAddress.invalid && emailAddress.touched"
+      >
+        <label for="regEmail">Email</label>
+        <input
+          id="regEmail"
+          type="email"
+          formControlName="emailAddress"
+          placeholder="you@example.com"
+          autocomplete="email"
+        />
+        @if (emailAddress.touched && emailAddress.hasError("required")) {
+          <span class="field__error">Email is required.</span>
+        } @else if (emailAddress.touched && emailAddress.hasError("email")) {
+          <span class="field__error">Enter a valid email address.</span>
+        } @else if (emailAddress.touched && emailAddress.hasError("profane")) {
+          <span class="field__error"
+            >Email contains inappropriate content.</span
+          >
+        }
+      </div>
 
-			<div class="inline-grid">
-				<div class="field" [class.field--error]="password.invalid && password.touched">
-					<label for="regPassword">Password</label>
-					<input
-						id="regPassword"
-						type="password"
-						formControlName="password"
-						placeholder="Create password"
-						autocomplete="new-password"
-					/>
-					@if (password.touched && password.hasError('required')) {
-						<span class="field__error">Password is required.</span>
-					}
-				</div>
-				<div
-					class="field"
-					[class.field--error]="(confirmPassword.invalid && confirmPassword.touched) || (form.hasError('passwordMismatch') && confirmPassword.touched)"
-				>
-					<label for="confirmPassword">Confirm Password</label>
-					<input
-						id="confirmPassword"
-						type="password"
-						formControlName="confirmPassword"
-						placeholder="Re-enter password"
-						autocomplete="new-password"
-					/>
-					@if (confirmPassword.touched && confirmPassword.hasError('required')) {
-						<span class="field__error">Confirm password is required.</span>
-					} @else if (form.hasError('passwordMismatch') && confirmPassword.touched) {
-						<span class="field__error">Passwords do not match.</span>
-					}
-				</div>
-			</div>
+      <div class="inline-grid">
+        <div
+          class="field"
+          [class.field--error]="password.invalid && password.touched"
+        >
+          <label for="regPassword">Password</label>
+          <input
+            id="regPassword"
+            type="password"
+            formControlName="password"
+            placeholder="Create password"
+            autocomplete="new-password"
+          />
+          @if (password.touched && password.hasError("required")) {
+            <span class="field__error">Password is required.</span>
+          } @else if (password.touched && password.hasError("minlength")) {
+            <span class="field__error"
+              >Password must be at least 8 characters.</span
+            >
+          } @else if (password.touched && password.hasError("missingDigit")) {
+            <span class="field__error"
+              >Password must include at least one number.</span
+            >
+          } @else if (
+            password.touched && password.hasError("missingLowercase")
+          ) {
+            <span class="field__error"
+              >Password must include at least one lowercase letter.</span
+            >
+          } @else if (
+            password.touched && password.hasError("missingUppercase")
+          ) {
+            <span class="field__error"
+              >Password must include at least one uppercase letter.</span
+            >
+          } @else if (
+            password.touched && password.hasError("missingSpecialChar")
+          ) {
+            <span class="field__error"
+              >Password must include at least one special character.</span
+            >
+          } @else if (password.touched && password.hasError("maxlength")) {
+            <span class="field__error"
+              >Password cannot exceed 128 characters.</span
+            >
+          }
+        </div>
+        <div
+          class="field"
+          [class.field--error]="
+            (confirmPassword.invalid && confirmPassword.touched) ||
+            (form.hasError('passwordMismatch') && confirmPassword.touched)
+          "
+        >
+          <label for="confirmPassword">Confirm Password</label>
+          <input
+            id="confirmPassword"
+            type="password"
+            formControlName="confirmPassword"
+            placeholder="Re-enter password"
+            autocomplete="new-password"
+          />
+          @if (
+            confirmPassword.touched && confirmPassword.hasError("required")
+          ) {
+            <span class="field__error">Confirm password is required.</span>
+          } @else if (
+            form.hasError("passwordMismatch") && confirmPassword.touched
+          ) {
+            <span class="field__error">Passwords do not match.</span>
+          }
+        </div>
+      </div>
 
-			<label class="check" [class.field--error]="terms.invalid && terms.touched">
-				<input type="checkbox" formControlName="terms" />
-				I agree to the platform Terms and Community Guidelines.
-			</label>
-			@if (terms.touched && terms.hasError('required')) {
-				<span class="field__error">You must agree before registering.</span>
-			}
+      <label
+        class="check"
+        [class.field--error]="terms.invalid && terms.touched"
+      >
+        <input type="checkbox" formControlName="terms" style="height: unset;"/>
+        <span>
+          I agree to the platform
+          <button
+            type="button"
+            class="terms-link"
+            (click)="openTermsCommunityModal($event)"
+          >
+            Terms and Community Guidelines</button
+          >.
+        </span>
+      </label>
+      @if (terms.touched && terms.hasError("required")) {
+        <span class="field__error">You must agree before registering.</span>
+      }
 
-			<button class="btn btn-solid btn-block" type="submit" [disabled]="loading">
-				<i class="fa fa-spin fa-spinner me-2" *ngIf="loading"></i>
-				Create Account with Email
-			</button>
-		</form>
+      <button
+        class="btn btn-solid btn-block"
+        type="submit"
+        [disabled]="loading || terms.value === false || form.invalid"
+      >
+        <i class="fa fa-spin fa-spinner me-2" *ngIf="loading"></i>
+        Create Account with Email
+      </button>
+    </form>
 
-		<p class="auth-foot">
-			Already have an account? <a routerLink="/login">Sign in here</a>.
-		</p>
-	</section>
+    <p class="auth-foot">
+      Already have an account? <a routerLink="/login">Sign in here</a>.
+    </p>
+  </section>
 </main>

@@ -1,64 +1,108 @@
 <nav class="cap-navbar">
-  <a class="cap-navbar__logo" [routerLink]="['/']" (click)="closeMenu()">CEPH<em>.</em></a>
+  <a class="cap-navbar__logo" [routerLink]="['/']" (click)="closeMenu()"
+    >CEPH<em>.</em></a
+  >
 
   <div class="cap-navbar__collapse" [class.is-open]="menuOpen">
     <div class="cap-navbar__links">
-      <a class="cap-navbar__link" [routerLink]="['/']" (click)="closeMenu()">Home</a>
-      <a class="cap-navbar__link" [routerLink]="['/browse-builds']" (click)="closeMenu()">Browse Builds</a>
+      <a class="cap-navbar__link" [routerLink]="['/']" (click)="closeMenu()"
+        >Home</a
+      >
+      <a
+        class="cap-navbar__link"
+        [routerLink]="['/browse-builds']"
+        (click)="closeMenu()"
+        >Browse Builds</a
+      >
       @if (userInfo) {
-        <a class="cap-navbar__link" [routerLink]="['/build-share']" (click)="closeMenu()">My Builds</a>
-        <a class="cap-navbar__link" [routerLink]="['/build-share']" (click)="closeMenu()">Saved Builds</a>
-        <a class="cap-navbar__link" [routerLink]="['/build-share']" (click)="closeMenu()">Followed Users</a>
+        <a
+          class="cap-navbar__link"
+          [routerLink]="['/build-share']"
+          (click)="closeMenu()"
+          >My Builds</a
+        >
+        <a
+          class="cap-navbar__link"
+          [routerLink]="['/build-share']"
+          (click)="closeMenu()"
+          >Saved Builds</a
+        >
+        <a
+          class="cap-navbar__link"
+          [routerLink]="['/build-share']"
+          (click)="closeMenu()"
+          >Followed Users</a
+        >
       }
     </div>
 
     <div class="cap-navbar__cta">
       @if (userInfo) {
-        <a class="btn btn-solid" [routerLink]="['/build-share']" (click)="closeMenu()">Share Your Build</a>
+        <a
+          class="btn btn-solid"
+          [routerLink]="['/build-share']"
+          (click)="closeMenu()"
+          >Share Your Build</a
+        >
       } @else {
-        <a class="btn btn-outline" [routerLink]="['/login']" (click)="closeMenu()">Join Community</a>
-        <a class="btn btn-solid" [routerLink]="['/build-share']" (click)="closeMenu()">Share Your Build</a>
+        <a
+          class="btn btn-outline"
+          [routerLink]="['/login']"
+          (click)="closeMenu()"
+          >Join Community</a
+        >
+        <a
+          class="btn btn-solid"
+          [routerLink]="['/build-share']"
+          (click)="closeMenu()"
+          >Share Your Build</a
+        >
       }
     </div>
   </div>
 
   <div class="cap-navbar__right">
-    <div class="cap-navbar__profile-dropdown" dropdown placement="left">
-      <button
-        class="cap-navbar__profile-icon"
-        type="button"
-        dropdownToggle
-        aria-controls="profile-menu"
-        aria-label="Open profile menu"
-      >
-        <img
-          *ngIf="userInfo?.profilePhotoUrl"
-          class="cap-navbar__profile-image"
-          [src]="userInfo?.profilePhotoUrl"
-          alt="User profile icon"
-        />
-        <div
-          *ngIf="!userInfo?.profilePhotoUrl && userInfo?.userInitials"
-          class="cap-navbar__avatar"
-          aria-label="Profile initials"
+    @if (userInfo) {
+      <div class="cap-navbar__profile-dropdown" dropdown placement="left">
+        <button
+          class="cap-navbar__profile-icon"
+          type="button"
+          dropdownToggle
+          aria-controls="profile-menu"
+          aria-label="Open profile menu"
         >
-          {{ userInfo?.userInitials }}
-        </div>
-      </button>
+          <img
+            *ngIf="userInfo?.profilePhotoUrl"
+            class="cap-navbar__profile-image"
+            [src]="userInfo?.profilePhotoUrl"
+            alt="User profile icon"
+          />
+          <div
+            *ngIf="!userInfo?.profilePhotoUrl && userInfo?.userInitials"
+            class="cap-navbar__avatar"
+            aria-label="Profile initials"
+          >
+            {{ userInfo?.userInitials }}
+          </div>
+        </button>
 
-      <ul
-        id="profile-menu"
-        *dropdownMenu
-        class="dropdown-menu cap-navbar__profile-menu dropdown-menu-left"
-        role="menu"
-      >
-        <li role="menuitem"><a class="dropdown-item" routerLink="/user/profile">Profile</a></li>
-        <li role="menuitem">
-          <a class="dropdown-item cap-navbar__logout-item" routerLink="/login">Logout</a>
-        </li>
-      </ul>
-    </div>
-
+        <ul
+          id="profile-menu"
+          *dropdownMenu
+          class="dropdown-menu cap-navbar__profile-menu dropdown-menu-left"
+          role="menu"
+        >
+          <li role="menuitem">
+            <a class="dropdown-item" routerLink="/user/profile">Profile</a>
+          </li>
+          <li role="menuitem">
+            <a class="dropdown-item cap-navbar__logout-item" (click)="logout()"
+              >Logout</a
+            >
+          </li>
+        </ul>
+      </div>
+    }
     <button
       class="cap-navbar__hamburger"
       type="button"

@@ -105,6 +105,18 @@
 	box-shadow: var(--shadow-sm);
 }
 
+.terms-link {
+	border: 0;
+	background: transparent;
+	padding: 0;
+	font: inherit;
+	font-weight: 700;
+	color: var(--accent);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+	cursor: pointer;
+}
+
 :host-context(body[data-theme='dark']) .side-panel::after {
 	background: radial-gradient(circle, rgba(255, 155, 61, 0.14) 0%, transparent 72%);
 }

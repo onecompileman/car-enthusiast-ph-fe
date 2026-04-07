@@ -1,0 +1,32 @@
+<main class="cap-not-found">
+  <section class="cap-not-found__container">
+    <div class="cap-not-found__content">
+      <div class="cap-not-found__code">404</div>
+      <h1 class="cap-not-found__title">Page Not Found</h1>
+      <p class="cap-not-found__description">
+        Sorry, we couldn't find the page you're looking for. This might have been removed, renamed, or doesn't exist.
+      </p>
+
+      <div class="cap-not-found__actions">
+        <button class="btn btn-solid" (click)="goHome()">Back to Home</button>
+        <button class="btn btn-outline" (click)="goBack()">Go Back</button>
+      </div>
+
+      <div class="cap-not-found__suggestions">
+        <h3>What you can try:</h3>
+        <ul>
+          <li><a routerLink="/">Home</a> — Return to the main page</li>
+          <li><a routerLink="/browse-builds">Browse Builds</a> — Explore community builds</li>
+          <li><a routerLink="/">Featured Build</a> — Check out featured projects</li>
+          <li>Check the URL and try again</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cap-not-found__visual">
+      <div class="cap-not-found__icon">
+        <i class="fa fa-exclamation-triangle"></i>
+      </div>
+    </div>
+  </section>
+</main>

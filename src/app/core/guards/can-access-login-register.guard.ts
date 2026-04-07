@@ -6,7 +6,7 @@ import { AuthService } from '../services/auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate, CanActivateChild {
+export class CanAccessLoginRegisterGuard implements CanActivate, CanActivateChild {
   constructor(private readonly router: Router, private readonly authService: AuthService) {}
 
   canActivate(): boolean | UrlTree {
@@ -21,11 +21,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     const token = localStorage.getItem(LocalStorageKey.AUTH_TOKEN);
 
     if (token) {
-      return true;
+      return this.router.createUrlTree(['/user/profile']);
     }
 
-    this.authService.clearAuthData();
-
-    return this.router.createUrlTree(['/login']);
+     return true;
   }
 }

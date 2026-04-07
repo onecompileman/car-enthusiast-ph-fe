@@ -5,7 +5,7 @@ import {
   Validators,
 } from '@angular/forms';
 
-function passwordComplexityValidator(
+export function passwordComplexityValidator(
   control: AbstractControl,
 ): ValidationErrors | null {
   const value = (control.value ?? '') as string;

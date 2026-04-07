@@ -11,7 +11,7 @@
 
 .divider::before,
 .divider::after {
-  content: '';
+  content: "";
   flex: 1;
   height: 1px;
   background: var(--border);
@@ -22,8 +22,34 @@
   gap: 12px;
 }
 
+.field__error {
+  font-size: 11px;
+  line-height: 1.35;
+  color: color-mix(in srgb, #ef5350 75%, var(--accent));
+}
+
+.form-error-banner,
+.form-success-banner {
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 12px;
+  line-height: 1.55;
+  border: 1px solid;
+}
+
+.form-error-banner {
+  color: #fecaca;
+  border-color: color-mix(in srgb, #ef4444 70%, var(--border));
+  background: color-mix(in srgb, #ef4444 18%, transparent);
+}
+
+.form-success-banner {
+  color: #bbf7d0;
+  border-color: color-mix(in srgb, #22c55e 58%, var(--border));
+  background: color-mix(in srgb, #22c55e 16%, transparent);
+}
+
 .field {
-  display: grid;
   gap: 7px;
 }
 
@@ -129,4 +155,10 @@ select.ng-invalid.ng-touched {
 
 input {
   height: 48px;
+}
+
+.input[readonly] {
+  background: var(--surface-2);
+  color: var(--text-2);
+  cursor: not-allowed;
 }

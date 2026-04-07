@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
 import { ActiveUserResolver } from './core/resolvers/active-user.resolver';
+import { NotFoundComponent } from './shared/components/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -11,12 +12,15 @@ const routes: Routes = [
   },
   {
     path: 'user',
-    loadChildren: () =>
-      import('./user/user.module').then((m) => m.UserModule),
+    loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
     canActivate: [AuthGuard],
     resolve: {
-      user: ActiveUserResolver
-    }
+      user: ActiveUserResolver,
+    },
+  },
+  {
+    path: '**',
+    component: NotFoundComponent,
   },
 ];
 

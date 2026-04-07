@@ -6,8 +6,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { BuildCarouselSlide } from '../../shared/components/builds-carousel/builds-carousel.component';
 import { AuthService } from '../../core/services/auth.service';
+import { TextFilterService } from '../../core/services/text-filter.service';
+import { TermsCommunityModalComponent } from '../../shared/components/terms-community-modal/terms-community-modal.component';
+import { passwordComplexityValidator } from '../../shared/validators/password-complexity.validator';
 
 @Component({
   selector: 'cap-register',
@@ -25,13 +29,36 @@ export class RegisterComponent {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
+    private textFilter: TextFilterService,
+    private modalService: BsModalService,
   ) {
     this.form = this.fb.group(
       {
-        firstName: ['', Validators.required],
-        lastName: ['', Validators.required],
-        emailAddress: ['', [Validators.required, Validators.email]],
-        password: ['', Validators.required],
+        firstName: [
+          '',
+          [Validators.required, this.textFilter.profanityValidator],
+        ],
+        lastName: [
+          '',
+          [Validators.required, this.textFilter.profanityValidator],
+        ],
+        emailAddress: [
+          '',
+          [
+            Validators.required,
+            Validators.email,
+            this.textFilter.profanityValidator,
+          ],
+        ],
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(8),
+            Validators.maxLength(128),
+            passwordComplexityValidator,
+          ],
+        ],
         confirmPassword: ['', Validators.required],
         terms: [false, Validators.requiredTrue],
       },
@@ -59,7 +86,7 @@ export class RegisterComponent {
   }
 
   onSubmit() {
-    if (this.form.invalid || this.loading) {
+    if (this.form.invalid || this.loading || this.terms.value === false) {
       this.form.markAllAsTouched();
       return;
     }
@@ -76,19 +103,20 @@ export class RegisterComponent {
       password: formValue.password,
     };
 
-    this.authService.register(payload).subscribe({
+    this.authService.register({ user: payload }).subscribe({
       next: (res) => {
         this.loading = false;
         if (res.success) {
-          this.router.navigate(['/login']);
+          this.router.navigate(['/login'], { queryParams: { registered: 'true' } });
         } else {
           this.errorMessage =
             res.errors?.[0] ?? 'Registration failed. Please try again.';
         }
       },
-      error: () => {
+      error: (error) => {
         this.loading = false;
-        this.errorMessage = 'Something went wrong. Please try again.';
+        console.log(error);
+        this.errorMessage = error.error?.toString() || 'Something went wrong. Please try again.';
       },
     });
   }
@@ -101,12 +129,21 @@ export class RegisterComponent {
     try {
       await this.authService.signInWithGoogle();
       this.router.navigate(['/user/add-build']);
-    } catch(e) {
+    } catch (e) {
       console.error('Google sign-up error:', e);
       this.errorMessage = 'Google sign-up failed. Please try again.';
     } finally {
       this.googleLoading = false;
     }
+  }
+
+  openTermsCommunityModal(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    this.modalService.show(TermsCommunityModalComponent, {
+      class: 'modal-lg modal-dialog-scrollable',
+      ignoreBackdropClick: true,
+    });
   }
 
   private passwordsMatchValidator(control: AbstractControl) {

@@ -35,7 +35,7 @@ export class BuildInfoStepComponent implements OnInit, OnChanges, OnDestroy {
 
   form!: FormGroup;
   private readonly minYear = 1980;
-  private readonly maxYear = 2035;
+  private readonly maxYear = new Date().getFullYear() + 1;
   private readonly maxTitleLength = 200;
   private readonly maxTextLength = 80;
   private readonly maxSummaryLength = 800;

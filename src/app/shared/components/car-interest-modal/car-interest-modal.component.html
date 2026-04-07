@@ -45,7 +45,8 @@
           <div class="cap-car-interest-modal__field">
             <label for="manualMake">Make</label>
             <input id="manualMake" type="text" formControlName="manualMake" placeholder="e.g. Toyota" />
-          </div>
+            
+        </div>
 
           <div class="cap-car-interest-modal__field">
             <label for="manualModel">Model</label>
@@ -54,8 +55,8 @@
         </div>
       }
 
-      @if (errorMessage) {
-        <span class="cap-car-interest-modal__error">{{ errorMessage }}</span>
+      @if (displayErrorMessage) {
+        <span class="cap-car-interest-modal__error">{{ displayErrorMessage }}</span>
       }
 
       <div class="cap-car-interest-modal__actions">

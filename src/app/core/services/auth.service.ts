@@ -46,23 +46,26 @@ export class AuthService {
   }
 
   signIn(credentials: {
-    emailAddress: string;
+    email: string;
     password: string;
   }): Observable<Result<TokenResponse>> {
     return this.authDataService.signIn(credentials).pipe(tap(this.saveToken));
   }
 
-  register(userData: RegisterModel): Observable<Result<User>> {
+  register(userData: { user: RegisterModel }): Observable<Result<User>> {
     return this.authDataService.register(userData);
   }
 
   signOut(): Observable<void> {
-    return this.authDataService.signOut().pipe(
-      tap(() => {
-        localStorage.removeItem(LocalStorageKey.AUTH_TOKEN);
-        localStorage.removeItem(LocalStorageKey.USER_INFO);
-      }),
-    );
+    return this.authDataService.signOut().pipe(tap(this.clearAuthData));
+  }
+
+  getActiveUserFromLocalStorage(): User | null {
+    const userInfoStr = localStorage.getItem(LocalStorageKey.USER_INFO);
+    if (userInfoStr) {
+      return JSON.parse(userInfoStr) as User;
+    }
+    return null;
   }
 
   getActiveUser(): Observable<Result<User>> {
@@ -82,6 +85,31 @@ export class AuthService {
         }
       }),
     );
+  }
+
+  updateProfile(formData: FormData): Observable<Result<User>> {
+    return this.authDataService.updateProfile(formData).pipe(
+      tap((res) => {
+        if (res.success && res.data) {
+          const userInfo = {
+            ...res.data,
+            userInitials: getInitials(res.data.fullName),
+          };
+
+          localStorage.setItem(
+            LocalStorageKey.USER_INFO,
+            JSON.stringify(userInfo),
+          );
+          this.activeUser.next(userInfo);
+        }
+      }),
+    );
+  }
+
+  clearAuthData() {
+    localStorage.removeItem(LocalStorageKey.AUTH_TOKEN);
+    localStorage.removeItem(LocalStorageKey.USER_INFO);
+    this.activeUser.next(null);
   }
 
   private saveToken(res: Result<TokenResponse>) {

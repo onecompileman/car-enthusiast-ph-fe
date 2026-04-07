@@ -9,7 +9,16 @@ export interface User {
   profilePhotoUrl?: string;
   coverPhotoUrl?: string;
   userInterests?: string;
+  receiveEmailNotifications?: boolean;
+  userCarInterests?: UserCarInterest[];
 
   // Add any additional fields as needed
   userInitials?: string; // Optional field for storing user initials
+}
+
+export interface UserCarInterest {
+  id: number;
+  userId: number;
+  make: string;
+  model: string;
 }
