@@ -9,7 +9,7 @@ export class AuthTokenInterceptor implements HttpInterceptor {
   constructor() {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = localStorage.getItem(LocalStorageKey.AUTH_TOKEN);
+    const token = typeof localStorage !== 'undefined' ? localStorage.getItem(LocalStorageKey.AUTH_TOKEN) : null;
 
     if (token) {
       request = request.clone({

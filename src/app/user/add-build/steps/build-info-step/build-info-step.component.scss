@@ -1,5 +1,41 @@
 .cap-build-info-step {
   display: block;
+
+  &__car-section-header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  &__car-section-label {
+    color: var(--text-3);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  &__manual-check {
+    align-items: center;
+    color: var(--text-2, #5b6472);
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 13px;
+    gap: 6px;
+
+    input[type='checkbox'] {
+      cursor: pointer;
+      height: 15px;
+      width: 15px;
+    }
+  }
+
+  &__car-hint {
+    color: var(--text-3);
+    display: block;
+    margin-bottom: 8px;
+  }
 }
 
 .cap-build-info-step__tags-box {

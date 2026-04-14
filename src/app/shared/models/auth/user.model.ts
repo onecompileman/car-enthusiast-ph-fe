@@ -11,6 +11,7 @@ export interface User {
   userInterests?: string;
   receiveEmailNotifications?: boolean;
   userCarInterests?: UserCarInterest[];
+  role: string;
 
   // Add any additional fields as needed
   userInitials?: string; // Optional field for storing user initials

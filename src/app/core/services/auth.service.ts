@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Result } from '../../shared/models/result.model';
 import { TokenResponse } from '../../shared/models/auth/token-response.model';
@@ -22,7 +23,19 @@ export class AuthService {
   constructor(
     private authDataService: AuthDataService,
     private afAuth: AngularFireAuth,
-  ) {}
+    @Inject(PLATFORM_ID) private platformId: object,
+  ) {
+    this.initActiveUserFromLocalStorage();
+  }
+
+  private get storage(): Storage | null {
+    return isPlatformBrowser(this.platformId) ? localStorage : null;
+  }
+
+  isAdmin(): boolean {
+    const user = this.activeUser.value;
+    return user?.role === 'Admin';
+  }
 
   async signInWithGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -30,7 +43,7 @@ export class AuthService {
 
     if (credential.user) {
       const token = await credential.user.getIdToken();
-      localStorage.setItem(LocalStorageKey.GOOGLE_TOKEN, token);
+      this.storage?.setItem(LocalStorageKey.GOOGLE_TOKEN, token);
 
       const tokenResponse = await this.signInViaGoogleToken(token).toPromise();
 
@@ -61,7 +74,7 @@ export class AuthService {
   }
 
   getActiveUserFromLocalStorage(): User | null {
-    const userInfoStr = localStorage.getItem(LocalStorageKey.USER_INFO);
+    const userInfoStr = this.storage?.getItem(LocalStorageKey.USER_INFO);
     if (userInfoStr) {
       return JSON.parse(userInfoStr) as User;
     }
@@ -77,7 +90,7 @@ export class AuthService {
             userInitials: getInitials(res.data.fullName),
           };
 
-          localStorage.setItem(
+          this.storage?.setItem(
             LocalStorageKey.USER_INFO,
             JSON.stringify(userInfo),
           );
@@ -96,7 +109,7 @@ export class AuthService {
             userInitials: getInitials(res.data.fullName),
           };
 
-          localStorage.setItem(
+          this.storage?.setItem(
             LocalStorageKey.USER_INFO,
             JSON.stringify(userInfo),
           );
@@ -107,8 +120,8 @@ export class AuthService {
   }
 
   clearAuthData() {
-    localStorage.removeItem(LocalStorageKey.AUTH_TOKEN);
-    localStorage.removeItem(LocalStorageKey.USER_INFO);
+    this.storage?.removeItem(LocalStorageKey.AUTH_TOKEN);
+    this.storage?.removeItem(LocalStorageKey.USER_INFO);
     this.activeUser.next(null);
   }
 
@@ -117,7 +130,16 @@ export class AuthService {
     if (res.success && res.data) {
       console.log('AuthService - Save Token:', res.data.token);
 
-      localStorage.setItem(LocalStorageKey.AUTH_TOKEN, res.data.token);
+      if (isPlatformBrowser(this.platformId)) {
+        localStorage.setItem(LocalStorageKey.AUTH_TOKEN, res.data.token);
+      }
+    }
+  }
+
+  private initActiveUserFromLocalStorage(): void {
+    const userInfoStr = this.storage?.getItem(LocalStorageKey.USER_INFO);
+    if (userInfoStr) {
+     this.activeUser.next(JSON.parse(userInfoStr) as User);
     }
   }
 }

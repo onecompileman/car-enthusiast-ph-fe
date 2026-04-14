@@ -1,4 +1,4 @@
-<article class="cap-build-card">
+<article class="cap-build-card" [routerLink]="['/build-info', build.id]">
   <div class="cap-build-card__media">
     <img [src]="build.image" [alt]="build.make + ' ' + build.model" loading="lazy" />
     <span class="cap-build-card__save-pill">{{ build.saves }} saves</span>

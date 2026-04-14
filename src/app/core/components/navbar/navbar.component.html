@@ -17,7 +17,7 @@
       @if (userInfo) {
         <a
           class="cap-navbar__link"
-          [routerLink]="['/build-share']"
+          [routerLink]="['/user/my-builds']"
           (click)="closeMenu()"
           >My Builds</a
         >
@@ -33,6 +33,14 @@
           (click)="closeMenu()"
           >Followed Users</a
         >
+        @if(isAdmin) {
+          <a
+            class="cap-navbar__link"
+            [routerLink]="['/admin']"
+            (click)="closeMenu()"
+            >Admin Dashboard</a
+          >
+        }
       }
     </div>
 
@@ -40,7 +48,7 @@
       @if (userInfo) {
         <a
           class="btn btn-solid"
-          [routerLink]="['/build-share']"
+          [routerLink]="['/user/add-build']"
           (click)="closeMenu()"
           >Share Your Build</a
         >
@@ -53,7 +61,7 @@
         >
         <a
           class="btn btn-solid"
-          [routerLink]="['/build-share']"
+          [routerLink]="['/login']"
           (click)="closeMenu()"
           >Share Your Build</a
         >
@@ -72,17 +80,17 @@
           aria-label="Open profile menu"
         >
           <img
-            *ngIf="userInfo?.profilePhotoUrl"
+            *ngIf="userInfo.profilePhotoUrl"
             class="cap-navbar__profile-image"
-            [src]="userInfo?.profilePhotoUrl"
+            [src]="userInfo.profilePhotoUrl"
             alt="User profile icon"
           />
           <div
-            *ngIf="!userInfo?.profilePhotoUrl && userInfo?.userInitials"
+            *ngIf="!userInfo.profilePhotoUrl && userInfo.userInitials"
             class="cap-navbar__avatar"
             aria-label="Profile initials"
           >
-            {{ userInfo?.userInitials }}
+            {{ userInfo.userInitials }}
           </div>
         </button>
 

@@ -4,6 +4,8 @@ import type { BuildWizardState } from './build-wizard.model';
 import { ImageFilterService } from '../../core/services/image-filter.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { ConfirmationModalComponent } from '../../shared/components/confirmation-modal/confirmation-modal.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Build } from '../../shared/models/build/build.model';
 
 @Component({
   selector: 'cap-add-build',
@@ -52,23 +54,34 @@ export class AddBuildComponent implements OnInit {
       num: 5,
       label: 'Review',
       sub: 'Save / Publish',
-      isValid: false,
+      isValid: true,
       isTouched: false,
       showErrorMessage: false,
     },
   ];
 
   statusMessage = '';
+  build: Build | null = null;
 
   constructor(
     private wizardService: BuildWizardService,
     private imageFilter: ImageFilterService,
     private bsModalService: BsModalService,
+    private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
     this.imageFilter.loadModel();
-    this.wizardService.initBuild();
+    this.build = this.route.snapshot.data['build'];
+
+    if (this.build) {
+      this.wizardService.setIndexDbPersistenceEnabled(false);
+      this.wizardService.loadStateFromBuild(this.build);
+    } else {
+      this.wizardService.setIndexDbPersistenceEnabled(true);
+      this.wizardService.initBuild();
+    }
   }
 
   cancelBuild() {
@@ -95,7 +108,10 @@ export class AddBuildComponent implements OnInit {
   }
 
   onNext(): void {
-    if (this.steps[this.currentStep - 1].isValid) {
+    const isCurrentStepValid = this.steps[this.currentStep - 1].isValid;
+    const canBypassPhotosStepValidation = !!this.build && this.currentStep === 2;
+
+    if (isCurrentStepValid || canBypassPhotosStepValidation) {
       this.steps[this.currentStep - 1].showErrorMessage = false;
       this.goTo(this.currentStep + 1);
     } else {

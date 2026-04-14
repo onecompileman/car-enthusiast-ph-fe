@@ -1,4 +1,14 @@
 <div class="cap-review-step">
+  <div *ngIf="!isStepsAllValid" class="alert alert-danger">
+    <strong>Error!</strong> Please fix the errors in the following form, before
+    proceeding.
+    <ul class="mb-0">
+      <li *ngFor="let step of invalidSteps">{{ step }}</li>
+    </ul>
+  </div>
+  <div *ngIf="saveErrorMessage" class="alert alert-danger">
+    <strong>Error!</strong> {{ saveErrorMessage }}
+  </div>
   <div class="cap-review-step__grid">
     <div class="cap-review-step__card">
       <h3>Build Overview</h3>
@@ -33,7 +43,11 @@
   </div>
 
   <div class="cap-review-step__actions">
-      <button type="button" class="btn btn-outline" (click)="saveDraft()">Save as Draft</button>
-      <button type="button" class="btn btn-accent" (click)="publish()">Publish Build</button>
+    <button type="button" class="btn btn-outline" [disabled]="!isStepsAllValid" (click)="saveDraft()">
+      Save as Draft
+    </button>
+    <button type="button" class="btn btn-accent" [disabled]="!isStepsAllValid" (click)="publish()">
+      Publish Build
+    </button>
   </div>
 </div>

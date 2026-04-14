@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { BuildHighlight } from '../../models/build-highlight.model';
+import { BuildHighlight } from '../../models/build/build-highlight.model';
 
 @Component({
   selector: 'cap-build-highlight',

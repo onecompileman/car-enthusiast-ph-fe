@@ -52,6 +52,7 @@
 
     <cap-review-step
       *ngIf="currentStep === 5"
+      [stepsStatus]="steps"
       (statusChange)="onStatusMessage($event)"
     ></cap-review-step>
 

@@ -1,8 +1,15 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { TextFilterService } from '../../../core/services/text-filter.service';
 import { RequiredPhoto } from '../../../user/add-build/build-wizard.model';
+import { convertHeicToJpeg } from '../../../core/utils/convert-heic-to-jpg.utilt';
+
+interface VisualModGroup {
+  group: string;
+  mods: string[];
+}
 
 export interface VisualModModalFormValue {
   name: string;
@@ -39,6 +46,7 @@ export class VisualModModalComponent implements OnInit {
   modImageFile: File | null = null;
   modImageName = '';
   modImageUrl = '';
+  visualModGroups: VisualModGroup[] = [];
 
   maxFileSizeMB = 3;
   imageTypesAllowed = ['image/png', 'image/jpeg', 'image/webp', 'image/heic'];
@@ -48,6 +56,7 @@ export class VisualModModalComponent implements OnInit {
     private fb: FormBuilder,
     public bsModalRef: BsModalRef,
     private textFilter: TextFilterService,
+    private http: HttpClient,
   ) {
     this.form = this.fb.group({
       name: [
@@ -60,11 +69,7 @@ export class VisualModModalComponent implements OnInit {
       ],
       part: [
         '',
-        [
-          this.textFilter.profanityValidator,
-          Validators.required,
-          Validators.maxLength(100),
-        ],
+        [Validators.required],
       ],
       description: [
         '',
@@ -90,6 +95,8 @@ export class VisualModModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadModTypes();
+
     if (!this.initialMod) {
       return;
     }
@@ -110,14 +117,16 @@ export class VisualModModalComponent implements OnInit {
     }
   }
 
-  onImageChange(event: Event): void {
+  async onImageChange(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
+    let file = input.files?.[0];
     this.imageErrorMessage = '';
 
     if (!file) {
       return;
     }
+
+    file = await convertHeicToJpeg(file);
 
     if (!this.imageTypesAllowed.includes(file.type)) {
       this.imageErrorMessage =
@@ -141,6 +150,17 @@ export class VisualModModalComponent implements OnInit {
     this.modImageFile = file;
     this.modImageName = file.name;
     this.modImageUrl = URL.createObjectURL(file);
+  }
+
+  private loadModTypes(): void {
+    this.http.get<{ visualMods: VisualModGroup[] }>('json/mod-types.json').subscribe({
+      next: (data) => {
+        this.visualModGroups = data?.visualMods || [];
+      },
+      error: () => {
+        this.visualModGroups = [];
+      },
+    });
   }
 
   removeSelectedImage(): void {

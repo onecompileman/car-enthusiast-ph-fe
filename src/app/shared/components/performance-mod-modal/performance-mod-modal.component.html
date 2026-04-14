@@ -9,24 +9,48 @@
       <div class="cap-wizard-field">
         <label>Mod Name</label>
         <input type="text" formControlName="name" placeholder="Hondata FlashPro" />
+        <div class="cap-wizard-field__message">
+          <small class="cap-wizard-field__error" *ngIf="fieldError('name')">{{ fieldError("name") }}</small>
+        </div>
+      </div>
+      <div class="cap-wizard-field">
+        <label>Part Type</label>
+        <select formControlName="part">
+          <option value="">Select part type</option>
+          <optgroup *ngFor="let group of performanceModGroups" [label]="group.group">
+            <option *ngFor="let mod of group.mods" [value]="mod">{{ mod }}</option>
+          </optgroup>
+        </select>
+        <div class="cap-wizard-field__message">
+          <small class="cap-wizard-field__error" *ngIf="fieldError('part')">{{ fieldError("part") }}</small>
+        </div>
       </div>
       <div class="cap-wizard-field">
         <label>Price Range Estimate (PHP)</label>
         <input type="text" formControlName="priceEstimate" placeholder="35,000 - 42,000" />
+        <div class="cap-wizard-field__message">
+          <small class="cap-wizard-field__error" *ngIf="fieldError('priceEstimate')">{{ fieldError("priceEstimate") }}</small>
+        </div>
       </div>
       <div class="cap-wizard-field cap-performance-mod-modal__full-width">
         <label>Description</label>
         <textarea formControlName="description" placeholder="What this mod improved and current setup notes."></textarea>
+        <div class="cap-wizard-field__message">
+          <small class="cap-wizard-field__error" *ngIf="fieldError('description')">{{ fieldError("description") }}</small>
+        </div>
       </div>
       <div class="cap-wizard-field cap-performance-mod-modal__full-width">
         <label>Shop / Source</label>
         <input type="text" formControlName="shop" placeholder="SpeedLab" />
+        <div class="cap-wizard-field__message">
+          <small class="cap-wizard-field__error" *ngIf="fieldError('shop')">{{ fieldError("shop") }}</small>
+        </div>
       </div>
     </form>
   </div>
 
   <div class="modal-footer cap-performance-mod-modal__footer">
     <button type="button" class="btn btn-outline" (click)="cancel()">Cancel</button>
-    <button type="button" class="btn btn-outline" (click)="save()">Add Performance Mod</button>
+    <button type="button" class="btn btn-outline" [disabled]="form.invalid" (click)="save()">Add Performance Mod</button>
   </div>
 </div>

@@ -1,0 +1,35 @@
+<article class="cap-build-status-card">
+  <img
+    class="cap-build-status-card__cover"
+    [src]="getCoverImage()"
+    alt="Build cover"
+    (load)="imageLoaded = true"
+    (error)="onImageError()"
+    [class.hidden]="!imageLoaded"
+  />
+  <div *ngIf="!imageLoaded" class="skeleton" style="height: 240px"></div>
+  <div class="cap-build-status-card__body">
+    <div class="cap-build-status-card__head">
+      <a
+        [routerLink]="['/user/edit-build', build.id]"
+        class="cap-build-status-card__title"
+        >{{ build.title }}</a
+      >
+      <span
+        class="cap-build-status-card__badge"
+        [class.cap-build-status-card__badge--published]="
+          build.status === 'published'
+        "
+        [class.cap-build-status-card__badge--draft]="build.status === 'draft'"
+      >
+        {{ build.status }}
+      </span>
+    </div>
+    <p class="cap-build-status-card__meta">{{ getVehicleLabel() }}</p>
+    <p class="cap-build-status-card__desc">
+      {{ build.summary || "No summary added." }}
+    </p>
+    <p class="cap-build-status-card__meta">Cost: {{ formatCost() }}</p>
+    <p class="cap-build-status-card__meta">Created: {{ formatDate() }}</p>
+  </div>
+</article>

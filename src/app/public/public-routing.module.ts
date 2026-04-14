@@ -5,10 +5,11 @@ import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { BuildListComponent } from './build-list/build-list.component';
-import { BuildInfoComponent } from './build-info/build-info.component';
+import { BuildInfoComponent } from '../shared/components/build-info/build-info.component';
 import { UserBuildProfileComponent } from './user-build-profile/user-build-profile.component';
 import { NotFoundComponent } from '../shared/components/not-found/not-found.component';
 import { CanAccessLoginRegisterGuard } from '../core/guards/can-access-login-register.guard';
+import { BuildPublicInfoResolver } from '../core/resolvers/build-public-info.resolver';
 
 const routes: Routes = [{
   path: '',
@@ -33,8 +34,11 @@ const routes: Routes = [{
       component: BuildListComponent
     },
     {
-      path: 'build-info',
-      component: BuildInfoComponent
+      path: 'build-info/:buildId',
+      component: BuildInfoComponent,
+      resolve: {
+        build: BuildPublicInfoResolver,
+      },
     },
     {
       path: 'build-share',

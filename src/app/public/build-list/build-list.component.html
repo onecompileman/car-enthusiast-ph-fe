@@ -44,11 +44,11 @@
       <div class="cap-build-list__results-head">
         <div class="cap-build-list__results-meta">
           <h2>Available Builds</h2>
-          <p>{{ filteredBuilds.length }} builds matching your filters</p>
+          <p>{{ loading ? 'Loading…' : (totalCount + ' builds matching your filters') }}</p>
         </div>
         <div class="cap-build-list__sort">
           <label for="sortSelect">Sort by</label>
-          <select id="sortSelect" [(ngModel)]="sort">
+          <select id="sortSelect" [(ngModel)]="sort" (ngModelChange)="onSortChange()">
             <option value="saved">Most Saved</option>
             <option value="cost-high">Build Cost: High to Low</option>
             <option value="cost-low">Build Cost: Low to High</option>
@@ -57,14 +57,18 @@
         </div>
       </div>
 
-      <div class="cap-build-list__grid" *ngIf="filteredBuilds.length > 0">
+      <div class="cap-build-list__loading" *ngIf="loading">
+        <i class="fa fa-spin fa-spinner"></i>
+      </div>
+
+      <div class="cap-build-list__grid" *ngIf="!loading && filteredBuilds.length > 0">
         <cap-build-card
           *ngFor="let build of filteredBuilds"
           [build]="build"
         ></cap-build-card>
       </div>
 
-      <div class="cap-build-list__empty" *ngIf="filteredBuilds.length === 0">
+      <div class="cap-build-list__empty" *ngIf="!loading && filteredBuilds.length === 0">
         <h3>No builds found</h3>
         <p>
           Try a different make or model keyword, switch the build style, or use

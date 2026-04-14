@@ -17,6 +17,11 @@ import { PerformanceModModalComponent } from './components/performance-mod-modal
 import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
 import { CarInterestModalComponent } from './components/car-interest-modal/car-interest-modal.component';
 import { TermsCommunityModalComponent } from './components/terms-community-modal/terms-community-modal.component';
+import { BuildStatusCardComponent } from './components/build-status-card/build-status-card.component';
+import { RouterModule } from '@angular/router';
+import { PopoverModule } from 'ngx-bootstrap/popover';
+import { BuildInfoComponent } from './components/build-info/build-info.component';
+import { RejectReasonModalComponent } from './components/reject-reason-modal/reject-reason-modal.component';
 
 @NgModule({
   declarations: [
@@ -33,13 +38,18 @@ import { TermsCommunityModalComponent } from './components/terms-community-modal
     ConfirmationModalComponent,
     CarInterestModalComponent,
     TermsCommunityModalComponent,
+    BuildStatusCardComponent,
+    BuildInfoComponent,
+    RejectReasonModalComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
+    RouterModule,
     ReactiveFormsModule,
     CarouselModule,
     ModalModule.forRoot(),
+    PopoverModule,
   ],
   exports: [
     BuildsCarouselComponent,
@@ -55,6 +65,9 @@ import { TermsCommunityModalComponent } from './components/terms-community-modal
     ConfirmationModalComponent,
     CarInterestModalComponent,
     TermsCommunityModalComponent,
+    BuildStatusCardComponent,
+    BuildInfoComponent,
+    RejectReasonModalComponent,
     FormsModule,
     ReactiveFormsModule,
   ],

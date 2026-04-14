@@ -118,12 +118,59 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  &__avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   &__build-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
+  }
+
+  &__admin-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__admin-btn {
+    border: 1px solid var(--border);
+    border-radius: var(--r-pill);
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    transition: all 0.18s ease;
+
+    &--approve {
+      background: color-mix(in srgb, #16a34a 16%, var(--surface));
+      border-color: color-mix(in srgb, #16a34a 42%, var(--border));
+      color: color-mix(in srgb, #14532d 78%, var(--text));
+
+      &:hover {
+        background: color-mix(in srgb, #16a34a 24%, var(--surface));
+      }
+    }
+
+    &--reject {
+      background: color-mix(in srgb, #dc2626 13%, var(--surface));
+      border-color: color-mix(in srgb, #dc2626 40%, var(--border));
+      color: color-mix(in srgb, #7f1d1d 80%, var(--text));
+
+      &:hover {
+        background: color-mix(in srgb, #dc2626 20%, var(--surface));
+      }
+    }
   }
 
   &__section {
@@ -136,7 +183,7 @@
     overflow: hidden;
     display: grid;
     grid-template-columns: 180px 1fr 280px;
-    min-height: 440px;
+    min-height: 60vh;
   }
 
   &__viewer-left,
@@ -223,13 +270,15 @@
 
   &__car-wrap {
     position: relative;
-    width: min(78%, 760px);
+    max-height: 60vh;
+    height: 100%;
 
     img {
       width: 100%;
       display: block;
       border-radius: 8px;
       border: 1px solid rgba(255, 255, 255, 0.09);
+      max-height: 60vh;
     }
   }
 
@@ -381,7 +430,7 @@
     }
 
     &--active {
-      background: var(--text);
+      background: var(--accent-orange);
       border-color: var(--text);
       color: #fff;
     }
@@ -389,7 +438,7 @@
 
   &__mods-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 12px;
   }
 }
@@ -422,6 +471,7 @@
     line-height: 1.6;
     color: var(--text-2);
     padding: 9px 12px 11px;
+    white-space: pre-line;
   }
 
   &.bs-popover-top > .popover-arrow::before,
@@ -490,6 +540,12 @@
 
     &__gallery-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    &__admin-actions {
+      margin-left: 0;
+      width: 100%;
+      justify-content: flex-end;
     }
 
     &__car-wrap {

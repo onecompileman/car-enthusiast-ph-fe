@@ -36,10 +36,36 @@
     </div>
   </div>
 
+  <div class="cap-build-info-step__car-section-header">
+    <span class="cap-build-info-step__car-section-label"></span>
+    <label class="cap-build-info-step__manual-check">
+      <input
+        type="checkbox"
+        [checked]="useManualEntry"
+        [disabled]="!carOptions.length"
+        (change)="setCarEntryMode(!useManualEntry)"
+      />
+      Enter manually
+    </label>
+  </div>
+  <small class="cap-build-info-step__car-hint" *ngIf="!carOptions.length">
+    Cars list unavailable. Enter make and model manually.
+  </small>
+
   <div class="cap-wizard-grid-2">
     <div class="cap-wizard-field">
       <label for="make">Make</label>
-      <input id="make" type="text" formControlName="make" placeholder="Honda" />
+      <ng-container *ngIf="!useManualEntry; else manualMakeField">
+        <select id="make" formControlName="make">
+          <option value="">Select make</option>
+          <option *ngFor="let car of carOptions" [value]="car.make">
+            {{ car.make }}
+          </option>
+        </select>
+      </ng-container>
+      <ng-template #manualMakeField>
+        <input id="make" type="text" formControlName="make" placeholder="Honda" />
+      </ng-template>
       <div class="cap-wizard-field__message">
         <small class="cap-wizard-field__error" *ngIf="fieldError('make')">{{
           fieldError("make")
@@ -48,12 +74,22 @@
     </div>
     <div class="cap-wizard-field">
       <label for="model">Model</label>
-      <input
-        id="model"
-        type="text"
-        formControlName="model"
-        placeholder="Civic Type R FK8"
-      />
+      <ng-container *ngIf="!useManualEntry; else manualModelField">
+        <select id="model" formControlName="model" [disabled]="!fC('make')?.value">
+          <option value="">Select model</option>
+          <option *ngFor="let model of availableModels" [value]="model">
+            {{ model }}
+          </option>
+        </select>
+      </ng-container>
+      <ng-template #manualModelField>
+        <input
+          id="model"
+          type="text"
+          formControlName="model"
+          placeholder="Civic Type R FK8"
+        />
+      </ng-template>
       <div class="cap-wizard-field__message">
         <small class="cap-wizard-field__error" *ngIf="fieldError('model')">{{
           fieldError("model")

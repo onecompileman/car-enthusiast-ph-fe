@@ -1,18 +1,25 @@
 <article class="cap-build-mod-card">
   <div class="cap-build-mod-card__image-wrap">
-    <img class="cap-build-mod-card__image" [src]="mod.image" [alt]="mod.name" loading="lazy" />
+    <img
+      *ngIf="hasImage"
+      class="cap-build-mod-card__image"
+      [src]="mod.image"
+      [alt]="mod.name"
+      loading="lazy"
+    />
+    <div *ngIf="!hasImage" class="cap-build-mod-card__image cap-build-mod-card__image--gradient"></div>
     <span class="tag" [ngClass]="mod.categoryTagClass">{{ mod.categoryLabel }}</span>
   </div>
 
   <div class="cap-build-mod-card__body">
     <h3>{{ mod.name }}</h3>
-    <p class="cap-build-mod-card__brand">{{ mod.brand }}</p>
+    <!-- <p class="cap-build-mod-card__brand">{{ mod.brand }}</p> -->
     <p class="cap-build-mod-card__type" *ngIf="mod.partType">Type: {{ mod.partType }}</p>
     <p class="cap-build-mod-card__description">{{ mod.description }}</p>
   </div>
 
   <footer class="cap-build-mod-card__footer">
-    <div class="cap-build-mod-card__price">{{ mod.price }}</div>
+    <div class="cap-build-mod-card__price" [class.cap-build-mod-card__price--highlight]="highlightPrice">{{ mod.price }}</div>
     <div class="cap-build-mod-card__source">Source: {{ mod.source }}</div>
   </footer>
 </article>

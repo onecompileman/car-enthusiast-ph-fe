@@ -8,20 +8,18 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BuildWizardService } from '../../build-wizard.service';
 import { TextFilterService } from '../../../../core/services/text-filter.service';
-import {
-  combineLatest,
-  debounceTime,
-  filter,
-  startWith,
-  Subscription,
-  switchMap,
-  take,
-} from 'rxjs';
+import { combineLatest, debounceTime, startWith, Subscription } from 'rxjs';
 import { IndexDbService } from '../../../../core/services/index-db.service';
 import { BuildInfoForm, BuildWizardState } from '../../build-wizard.model';
+
+interface CarOption {
+  make: string;
+  models: string[];
+}
 
 @Component({
   selector: 'cap-build-info-step',
@@ -34,6 +32,8 @@ export class BuildInfoStepComponent implements OnInit, OnChanges, OnDestroy {
   @Output() formChange = new EventEmitter<FormGroup>();
 
   form!: FormGroup;
+  carOptions: CarOption[] = [];
+  availableModels: string[] = [];
   private readonly minYear = 1980;
   private readonly maxYear = new Date().getFullYear() + 1;
   private readonly maxTitleLength = 200;
@@ -48,6 +48,7 @@ export class BuildInfoStepComponent implements OnInit, OnChanges, OnDestroy {
     private wizard: BuildWizardService,
     private textFilter: TextFilterService,
     private indexDb: IndexDbService,
+    private http: HttpClient,
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -57,6 +58,7 @@ export class BuildInfoStepComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadCarOptions();
     this.initForm();
   }
 
@@ -66,6 +68,10 @@ export class BuildInfoStepComponent implements OnInit, OnChanges, OnDestroy {
 
   get tags(): string[] {
     return this.wizard.state.tags;
+  }
+
+  get useManualEntry(): boolean {
+    return !!this.fC('useManualEntry')?.value;
   }
 
   isTagsHasProfanity(): boolean {
@@ -116,6 +122,19 @@ export class BuildInfoStepComponent implements OnInit, OnChanges, OnDestroy {
     this.wizard.setTags(tags);
   }
 
+  setCarEntryMode(useManualEntry: boolean): void {
+    if (this.useManualEntry === useManualEntry) {
+      return;
+    }
+
+    this.fC('useManualEntry')?.patchValue(useManualEntry);
+
+    if (!useManualEntry) {
+      this.syncAvailableModels();
+      this.clearInvalidSelectedCar();
+    }
+  }
+
   private initForm() {
     this.createForm();
 
@@ -127,6 +146,7 @@ export class BuildInfoStepComponent implements OnInit, OnChanges, OnDestroy {
 
       const info = state.info;
       this.createForm(info);
+  this.reconcileCarEntryMode(info);
 
       this.formChange.emit(this.form);
       this.listenToFormChanges();
@@ -145,10 +165,36 @@ export class BuildInfoStepComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private listenToFormChanges() {
+    this.subscriptions['formChanges']?.unsubscribe();
+    this.subscriptions['carFieldChanges']?.unsubscribe();
+
+    this.subscriptions['carFieldChanges'] = combineLatest([
+      this.fC('useManualEntry')!.valueChanges.pipe(
+        startWith(this.fC('useManualEntry')!.value),
+      ),
+      this.fC('make')!.valueChanges.pipe(startWith(this.fC('make')!.value)),
+    ]).subscribe(([useManualEntry]) => {
+      if (useManualEntry) {
+        this.syncAvailableModels();
+        return;
+      }
+
+      this.syncAvailableModels();
+      this.clearInvalidSelectedCar();
+    });
+
     this.subscriptions['formChanges'] = this.form.valueChanges
       .pipe(debounceTime(300))
       .subscribe((val) => {
-        this.wizard.patchInfo(val);
+        this.wizard.patchInfo({
+          title: val.title,
+          year: val.year,
+          make: val.make,
+          model: val.model,
+          summary: val.summary,
+          approxCost: val.approxCost,
+          useManualEntry: val.useManualEntry,
+        });
         this.formChange.emit(this.form);
       });
   }
@@ -171,6 +217,7 @@ export class BuildInfoStepComponent implements OnInit, OnChanges, OnDestroy {
           Validators.max(this.maxYear),
         ],
       ],
+      useManualEntry: [info?.useManualEntry ?? false],
       make: [
         info?.make,
         [
@@ -199,5 +246,71 @@ export class BuildInfoStepComponent implements OnInit, OnChanges, OnDestroy {
         [Validators.required, Validators.min(0), Validators.max(this.maxCost)],
       ],
     });
+  }
+
+  private loadCarOptions(): void {
+    this.subscriptions['carOptions'] = this.http
+      .get<CarOption[]>('json/cars.json')
+      .subscribe({
+        next: (cars) => {
+          this.carOptions = cars || [];
+          this.reconcileCarEntryMode(this.form?.value);
+        },
+        error: () => {
+          this.carOptions = [];
+          this.availableModels = [];
+          this.fC('useManualEntry')?.patchValue(true, { emitEvent: false });
+        },
+      });
+  }
+
+  private reconcileCarEntryMode(info?: Partial<BuildInfoForm>): void {
+    if (!this.form) {
+      return;
+    }
+
+    if (!this.carOptions.length) {
+      this.availableModels = [];
+      this.fC('useManualEntry')?.patchValue(true, { emitEvent: false });
+      return;
+    }
+
+    const make = `${info?.make ?? this.fC('make')?.value ?? ''}`.trim();
+    const model = `${info?.model ?? this.fC('model')?.value ?? ''}`.trim();
+    const selectedMake = this.carOptions.find((item) => item.make === make);
+    const isKnownMakeModel = !!selectedMake && (!model || selectedMake.models.includes(model));
+
+    if (make && !isKnownMakeModel && info?.useManualEntry == null) {
+      this.fC('useManualEntry')?.patchValue(true, { emitEvent: false });
+    }
+
+    this.syncAvailableModels();
+
+    if (!this.useManualEntry) {
+      this.clearInvalidSelectedCar();
+    }
+  }
+
+  private syncAvailableModels(): void {
+    const make = `${this.fC('make')?.value ?? ''}`.trim();
+    const selectedMake = this.carOptions.find((item) => item.make === make);
+    this.availableModels = selectedMake?.models || [];
+  }
+
+  private clearInvalidSelectedCar(): void {
+    const make = `${this.fC('make')?.value ?? ''}`.trim();
+    const model = `${this.fC('model')?.value ?? ''}`.trim();
+    const selectedMake = this.carOptions.find((item) => item.make === make);
+
+    if (!selectedMake) {
+      if (make || model) {
+        this.form.patchValue({ make: '', model: '' }, { emitEvent: false });
+      }
+      return;
+    }
+
+    if (model && !selectedMake.models.includes(model)) {
+      this.fC('model')?.patchValue('', { emitEvent: false });
+    }
   }
 }

@@ -35,6 +35,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.loadUserInfo();
   }
 
+  get isAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
+
   toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
   }

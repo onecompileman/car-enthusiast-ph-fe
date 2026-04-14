@@ -529,8 +529,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
         return 'Unable to read image dimensions.';
       }
 
-      if (aspectRatio < 1.5 || aspectRatio > 4) {
-        return 'Cover photo aspect ratio must be between 1.5 and 4.';
+      if (aspectRatio < 1.2 || aspectRatio > 4) {
+        return 'Cover photo aspect ratio must be between 1.2 and 4.';
       }
     }
 

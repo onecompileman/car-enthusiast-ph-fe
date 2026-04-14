@@ -14,8 +14,10 @@
 @import './components/shell';
 @import './components/tag';
 @import './components/wizard';
+@import './components/skeleton';
 
 // Vendors
 @import './vendors/bootstrap-modal';
 @import './vendors/bootstrap-popover';
 @import './vendors/bootstrap-alert';
+@import './vendors/swal';

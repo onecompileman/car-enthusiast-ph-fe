@@ -1,6 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, PLATFORM_ID } from '@angular/core';
-import { BuildListing } from '../../shared/models/build-listing.model';
+import { BuildListing } from '../../shared/models/build/build-listing.model';
 
 @Component({
   selector: 'cap-user-build-profile',

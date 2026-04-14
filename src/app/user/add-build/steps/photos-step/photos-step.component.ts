@@ -14,6 +14,8 @@ import {
 } from '../../build-wizard.model';
 import { ImageFilterService } from '../../../../core/services/image-filter.service';
 import { Subscription } from 'rxjs';
+import { convertHeicToJpeg } from '../../../../core/utils/convert-heic-to-jpg.utilt';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 interface PhotoSlot {
   view: WizardView;
@@ -100,6 +102,7 @@ export class PhotosStepComponent implements OnInit, OnDestroy {
   constructor(
     private wizard: BuildWizardService,
     private imageFilter: ImageFilterService,
+    private ngxSpinner: NgxSpinnerService,
   ) {}
 
   ngOnInit(): void {
@@ -160,38 +163,61 @@ export class PhotosStepComponent implements OnInit, OnDestroy {
   }
 
   async onRequiredPhoto(view: WizardView, event: Event): Promise<void> {
-    const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
-    if (!file) return;
-    const photo: RequiredPhoto = {
-      file,
-      blob: file,
-      url: URL.createObjectURL(file),
-      name: file.name,
-    };
+    try {
+      this.ngxSpinner.show();
+      const input = event.target as HTMLInputElement;
+      let file = input.files?.[0];
+      if (!file) return;
 
-    const validation = await this.validateRequiredPhoto(file);
-    console.log(validation);
-    const image = await this.getFileAsImage(file);
-    this.requiredPhotoMetaByName.set(photo.name, {
-      width: image.width,
-      height: image.height,
-      type: file.type,
-      sizeMB: file.size / (1024 * 1024),
-    });
+      console.log(file);
+      file = await convertHeicToJpeg(file);
+      console.log('here', file);
 
-    this.wizard.setRequiredPhoto(view, {
-      photo,
-      ...validation,
-    });
+      const photo: RequiredPhoto = {
+        file,
+        blob: file,
+        url: URL.createObjectURL(file),
+        name: file.name,
+      };
 
-    this.checkIfValidStep();
+      const validation = await this.validateRequiredPhoto(file);
+      console.log(validation);
+      const image = await this.getFileAsImage(file);
+      this.requiredPhotoMetaByName.set(photo.name, {
+        width: image.width,
+        height: image.height,
+        type: file.type,
+        sizeMB: file.size / (1024 * 1024),
+      });
+
+      this.wizard.setRequiredPhoto(view, {
+        photo,
+        ...validation,
+      });
+
+      this.checkIfValidStep();
+      this.ngxSpinner.hide();
+    } catch (err) {
+      console.error('Error processing required photo:', err);
+      this.ngxSpinner.hide();
+    }
   }
 
   async onGalleryChange(event: Event): Promise<void> {
-    const input = event.target as HTMLInputElement;
-    await this.processGalleryFiles(Array.from(input.files ?? []));
-    input.value = '';
+    try {
+      this.ngxSpinner.show();
+      const input = event.target as HTMLInputElement;
+      const files = Array.from(input.files ?? []);
+      for (let i = 0; i < files.length; i++) {
+        files[i] = await convertHeicToJpeg(files[i]);
+      }
+      await this.processGalleryFiles(files);
+      input.value = '';
+      this.ngxSpinner.hide();
+    } catch (err) {
+      this.ngxSpinner.hide();
+      console.error('Error processing gallery photos:', err);
+    }
   }
 
   onGalleryDragOver(event: DragEvent): void {
@@ -208,6 +234,9 @@ export class PhotosStepComponent implements OnInit, OnDestroy {
     event.preventDefault();
     this.isGalleryDragging = false;
     const files = Array.from(event.dataTransfer?.files ?? []);
+    for (let i = 0; i < files.length; i++) {
+      files[i] = await convertHeicToJpeg(files[i]);
+    }
     await this.processGalleryFiles(files);
   }
 
@@ -370,7 +399,7 @@ export class PhotosStepComponent implements OnInit, OnDestroy {
     });
     const galleryItems = await Promise.all(galleryItems$);
 
-    this.wizard.setGallery(galleryItems);
+    this.wizard.setGallery([...galleryItems, ...this.wizard.state.gallery]);
 
     this.checkIfValidStep();
   }

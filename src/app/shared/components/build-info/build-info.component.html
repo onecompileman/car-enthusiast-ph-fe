@@ -1,0 +1,305 @@
+<div class="cap-build-info">
+  <section
+    class="cap-build-info__header animate__animated animate__fadeInDown"
+    style="animation-duration: 0.4s"
+  >
+    <div>
+      <h1>{{ buildTitle }}</h1>
+      <p>
+        by <a [routerLink]="['/']">{{ ownerHandle }}</a> · {{ ownerLocation }}
+      </p>
+      <div class="cap-build-info__header-tags">
+        <span class="tag tag-blue" *ngFor="let tag of buildTags">{{
+          tag
+        }}</span>
+      </div>
+    </div>
+    <div class="cap-build-info__kpis">
+      <article class="cap-build-info__kpi">
+        <div
+          class="cap-build-info__kpi-value cap-build-info__kpi-value--accent"
+        >
+          {{ totalBuildCost }}
+        </div>
+        <div class="cap-build-info__kpi-label">Total Build</div>
+      </article>
+      <article class="cap-build-info__kpi">
+        <div class="cap-build-info__kpi-value">{{ visualMods.length }}</div>
+        <div class="cap-build-info__kpi-label">Visual Mods</div>
+      </article>
+      <article class="cap-build-info__kpi">
+        <div class="cap-build-info__kpi-value">{{ totalFollows }}</div>
+        <div class="cap-build-info__kpi-label">Saves</div>
+      </article>
+    </div>
+  </section>
+
+  <section
+    class="cap-build-info__meta animate__animated animate__fadeIn"
+    style="animation-delay: 0.1s; animation-duration: 0.45s"
+  >
+    <div class="cap-build-info__owner">
+      <div class="cap-build-info__avatar">
+        <img
+          *ngIf="ownerPhotoUrl"
+          [src]="ownerPhotoUrl"
+          [alt]="ownerName"
+          class="cap-build-info__avatar-img"
+        />
+        <span *ngIf="!ownerPhotoUrl">{{
+          ownerName.slice(0, 2).toUpperCase()
+        }}</span>
+      </div>
+      <div>
+        <h3>{{ ownerName }}</h3>
+        <p>{{ ownerMeta }}</p>
+      </div>
+    </div>
+    <div class="cap-build-info__build-tags">
+      <span class="tag tag-blue" *ngFor="let tag of buildTags">{{ tag }}</span>
+    </div>
+
+    <div class="cap-build-info__admin-actions" *ngIf="isAdminPage">
+      <button
+        type="button"
+        class="cap-build-info__admin-btn cap-build-info__admin-btn--approve"
+        (click)="onApproveBuild()"
+      >
+        Approve
+      </button>
+      <button
+        type="button"
+        class="cap-build-info__admin-btn cap-build-info__admin-btn--reject"
+        (click)="onRejectBuild()"
+      >
+        Reject
+      </button>
+    </div>
+  </section>
+
+  <section
+    class="cap-build-info__viewer animate__animated animate__fadeIn"
+    style="animation-delay: 0.12s; animation-duration: 0.45s"
+  >
+    <aside class="cap-build-info__viewer-left">
+      <p class="cap-build-info__mini-label">Angle</p>
+      <button
+        *ngFor="let angle of angles"
+        type="button"
+        class="cap-build-info__mini-pill"
+        [class.cap-build-info__mini-pill--active]="selectedAngle === angle.key"
+        (click)="setAngle(angle.key)"
+      >
+        {{ angle.label }}
+      </button>
+
+      <p class="cap-build-info__mini-label cap-build-info__mini-label--spaced">
+        Show Parts
+      </p>
+      <button
+        *ngFor="let filter of visualGroups"
+        type="button"
+        class="cap-build-info__mini-pill cap-build-info__mini-pill--count"
+        [class.cap-build-info__mini-pill--active]="
+          selectedPartFilter === filter.key
+        "
+        (click)="setPartFilter(filter.key)"
+      >
+        <span>{{ filter.label }}</span>
+        <span>{{ partCountMap[filter.key] }}</span>
+      </button>
+
+      <p class="cap-build-info__mini-label cap-build-info__mini-label--spaced">
+        Hotspots
+      </p>
+      <button
+        type="button"
+        class="cap-build-info__mini-pill cap-build-info__mini-pill--count"
+        [class.cap-build-info__mini-pill--active]="showHotspots"
+        (click)="toggleHotspots()"
+        [attr.aria-pressed]="showHotspots"
+        [attr.aria-label]="showHotspots ? 'Hide hotspots' : 'Show hotspots'"
+      >
+        <span>Show Dots</span>
+        <span>{{ showHotspots ? 'On' : 'Off' }}</span>
+      </button>
+    </aside>
+
+    <div class="cap-build-info__viewer-stage">
+      <div class="cap-build-info__car-wrap">
+        <div *ngIf="!currentAngleImage || !imageLoaded" class="skeleton"></div>
+        <img
+          *ngIf="currentAngleImage"
+          class="cap-build-info__clickable-image"
+          [src]="currentAngleImage"
+          [alt]="buildTitle + ' ' + activeAngleLabel"
+          (click)="
+            openPhotoViewer(
+              currentAngleImage,
+              buildTitle + ' ' + activeAngleLabel,
+              activeAngleLabel
+            )
+          "
+          (load)="imageLoaded = true"
+          (error)="onAngleImageError()"
+        />
+
+        @if (currentAngleImage && imageLoaded && showHotspots) {
+          <button
+            *ngFor="let hotspot of visibleHotspots"
+            type="button"
+            class="cap-build-info__hotspot"
+            [class.cap-build-info__hotspot--active]="
+              selectedHotspotId === hotspot.id
+            "
+            [style.left.%]="hotspot.x"
+            [style.top.%]="hotspot.y"
+            (click)="selectHotspot(hotspot.id)"
+            [popoverTitle]="hotspot.part"
+            [popover]="getHotspotPopoverContent(hotspot)"
+            triggers="mouseenter:mouseleave focus:blur"
+            placement="top"
+            popoverClass="cap-build-info__hotspot-popover"
+            containerClass="cap-build-info__hotspot-popover"
+            [attr.aria-label]="'Inspect ' + hotspot.part"
+          >
+            <span></span>
+          </button>
+        }
+      </div>
+    </div>
+
+    <aside class="cap-build-info__viewer-right">
+      <p class="cap-build-info__mini-label">Selected Part</p>
+
+      <div class="cap-build-info__part-state" *ngIf="!showHotspots">
+        Hotspots are hidden. Turn on "Show Dots" to inspect parts.
+      </div>
+
+      <div class="cap-build-info__part-state" *ngIf="showHotspots && !selectedHotspot">
+        Tap a hotspot dot to inspect a part.
+      </div>
+
+      <div class="cap-build-info__part-state" *ngIf="showHotspots && selectedHotspot">
+        <h4>{{ selectedHotspot.part }}</h4>
+        <p>{{ selectedHotspot.detail }}</p>
+        <p><strong>Price:</strong> {{ selectedHotspot.price }}</p>
+        <p><strong>Source:</strong> {{ selectedHotspot.source }}</p>
+      </div>
+
+      <p class="cap-build-info__mini-label cap-build-info__mini-label--spaced">
+        Performance
+      </p>
+      <div class="cap-build-info__perf-grid">
+        <article>
+          <strong>{{ totalHearts }}</strong>
+          <span>Hearts</span>
+        </article>
+        <article>
+          <strong>{{ totalFollows }}</strong>
+          <span>Saves</span>
+        </article>
+        <article>
+          <strong>{{ visualMods.length }}</strong>
+          <span>Visual</span>
+        </article>
+        <article>
+          <strong>{{ performanceMods.length }}</strong>
+          <span>Perf</span>
+        </article>
+      </div>
+    </aside>
+  </section>
+
+  <section
+    class="cap-build-info__gallery animate__animated animate__fadeInUp"
+    style="animation-delay: 0.15s; animation-duration: 0.45s"
+  >
+    <cap-build-section-head
+      title="Build Gallery"
+      subtitle="Additional detail shots from this setup"
+      rightLabel="More photos"
+    ></cap-build-section-head>
+
+    <div class="cap-build-info__gallery-grid">
+      <article
+        class="cap-build-info__gallery-card"
+        *ngFor="let item of gallery"
+      >
+        <img
+          class="cap-build-info__clickable-image"
+          [src]="item.image"
+          [alt]="item.title"
+          (click)="openPhotoViewer(item.image, item.title, item.title)"
+        />
+        <p>{{ item.title }}</p>
+      </article>
+    </div>
+  </section>
+
+  <section
+    class="cap-build-info__section animate__animated animate__fadeInUp"
+    style="animation-delay: 0.18s; animation-duration: 0.45s"
+  >
+    <cap-build-section-head
+      title="Visual Modifications"
+      subtitle="Exterior, aero, wheels, and lighting updates"
+      [rightLabel]="filteredVisualMods.length + ' item(s)'"
+    ></cap-build-section-head>
+
+    <div class="cap-build-info__tabs">
+      <button
+        type="button"
+        class="cap-build-info__tab"
+        *ngFor="let category of visualGroups"
+        [class.cap-build-info__tab--active]="selectedVisualCategory === category.key"
+        (click)="selectVisualCategory(category.key)"
+      >
+        {{ category.label }}
+      </button>
+    </div>
+
+    <div class="cap-build-info__mods-grid">
+      <cap-build-mod-card
+        *ngFor="let mod of filteredVisualMods"
+        [mod]="mod"
+        [highlightPrice]="true"
+      ></cap-build-mod-card>
+    </div>
+  </section>
+
+  <section
+    class="cap-build-info__section animate__animated animate__fadeInUp"
+    style="animation-delay: 0.22s; animation-duration: 0.45s"
+  >
+    <cap-build-section-head
+      title="Performance and Chassis"
+      subtitle="Engine, cooling, and suspension parts"
+      [rightLabel]="performanceMods.length + ' item(s)'"
+    ></cap-build-section-head>
+
+    <div class="cap-build-info__tabs">
+      <button
+        type="button"
+        class="cap-build-info__tab"
+        *ngFor="let category of performanceGroups"
+        [class.cap-build-info__tab--active]="selectedPerformanceCategory === category.key"
+        (click)="selectPerformanceCategory(category.key)"
+      >
+        {{ category.label }}
+      </button>
+    </div>
+
+    <div class="cap-build-info__mods-grid">
+      <cap-build-mod-card
+        *ngFor="let mod of filteredPerformanceMods"
+        [mod]="mod"
+      ></cap-build-mod-card>
+    </div>
+  </section>
+
+  <cap-photo-viewer
+    [photo]="activePhoto"
+    (close)="closePhotoViewer()"
+  ></cap-photo-viewer>
+</div>

@@ -1,0 +1,74 @@
+.cap-admin-sidebar {
+  border-right: 1px solid var(--border);
+  background: var(--surface);
+  padding: 18px;
+  position: sticky;
+  top: 58px;
+  height: calc(100vh - 58px);
+  overflow-y: auto;
+}
+
+.cap-admin-sidebar__group-title {
+  color: var(--text-3);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.cap-admin-sidebar__menu {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.cap-admin-sidebar__link {
+  display: block;
+  text-decoration: none;
+  color: var(--text-2);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.18s ease;
+
+  &:hover {
+    color: var(--text);
+    border-color: #bdbec2;
+    background: var(--surface-2);
+  }
+
+  &--active {
+    color: #fff;
+    background: var(--accent-orange);
+  }
+}
+
+@media (max-width: 1040px) {
+  .cap-admin-sidebar {
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+    height: auto;
+    position: static;
+  }
+
+  .cap-admin-sidebar__menu {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .cap-admin-sidebar__link {
+    min-width: 140px;
+  }
+}
+
+@media (max-width: 720px) {
+  .cap-admin-sidebar {
+    padding: 14px;
+  }
+}

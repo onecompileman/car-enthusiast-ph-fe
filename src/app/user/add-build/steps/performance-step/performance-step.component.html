@@ -32,6 +32,7 @@
       <article class="cap-performance-step__mod-item" *ngFor="let mod of performanceMods">
         <div class="cap-performance-step__mod-row">
           <strong>{{ mod.name }}</strong>
+          <span class="cap-performance-step__mod-part">{{ mod.part }}</span>
           <span>{{ mod.priceEstimate || 'No price set' }}</span>
         </div>
         <div class="cap-performance-step__mod-row">

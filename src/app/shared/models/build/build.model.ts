@@ -1,18 +1,18 @@
-import { User } from "./auth/user.model";
+import { User } from "../auth/user.model";
 
 
 export enum BuildStatus {
-  Draft = 0,
-  Published = 1,
-  ForApproval = 2,
-  Approved = 3,
-  Rejected = 4
+  Draft = 'Draft',
+  Published = 'Published',
+  ForApproval = 'ForApproval',
+  Approved = 'Approved',
+  Rejected = 'Rejected'
 }
 
 export enum BuildPhotoType {
-  FrontSlant = 0,
-  RearSlant = 1,
-  Side = 2
+  FrontSlant = 'FrontSlant',
+  RearSlant = 'RearSlant',
+  Side = 'Side'
 }
 
 export interface BuildHotspot {
@@ -45,6 +45,7 @@ export interface BuildPerformanceMod {
   id: number;
   buildId: number;
   modName: string;
+  partType?: string;
   description: string;
   source: string;
   price: number;

@@ -8,8 +8,6 @@ import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { BuildListComponent } from './build-list/build-list.component';
 import { SharedModule } from '../shared/shared.module';
-import { BuildInfoComponent } from './build-info/build-info.component';
-import { PopoverModule } from 'ngx-bootstrap/popover';
 import { UserBuildProfileComponent } from './user-build-profile/user-build-profile.component';
 import { NotFoundComponent } from '../shared/components/not-found/not-found.component';
 
@@ -20,7 +18,6 @@ import { NotFoundComponent } from '../shared/components/not-found/not-found.comp
     RegisterComponent,
     LoginComponent,
     BuildListComponent,
-    BuildInfoComponent,
     UserBuildProfileComponent,
     NotFoundComponent,
   ],
@@ -28,7 +25,6 @@ import { NotFoundComponent } from '../shared/components/not-found/not-found.comp
     CommonModule,
     PublicRoutingModule,
     SharedModule,
-    PopoverModule,
   ],
 })
 export class PublicModule {}

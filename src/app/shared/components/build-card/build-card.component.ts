@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { BuildListing } from '../../models/build-listing.model';
+import { BuildListing } from '../../models/build/build-listing.model';
 
 @Component({
   selector: 'cap-build-card',

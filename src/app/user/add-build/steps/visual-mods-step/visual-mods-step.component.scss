@@ -152,6 +152,13 @@
     margin-top: 10px;
     display: grid;
     gap: 8px;
+    max-height: 65vh;
+    overflow: auto;
+    scrollbar-width: thin;
+
+    @media (max-width: 900px) {
+      max-height: unset;
+    }
   }
 
   @media (max-width: 900px) {

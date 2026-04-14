@@ -1,0 +1,108 @@
+<section class="cap-admin-builds__hero">
+  <div>
+    <h1 class="cap-admin-builds__title">All Builds</h1>
+    <p class="cap-admin-builds__copy">
+      Review community submissions and keep the published feed high quality. Use
+      status filters to focus on pending approvals and rejected items quickly.
+    </p>
+  </div>
+  <div class="cap-admin-builds__stats">
+    <div class="cap-admin-builds__stat">
+      <span class="cap-admin-builds__stat-value">{{ totalCount }}</span>
+      <span class="cap-admin-builds__stat-label">Total</span>
+    </div>
+    <div class="cap-admin-builds__stat">
+      <span class="cap-admin-builds__stat-value">{{
+        countByStatus("ForApproval")
+      }}</span>
+      <span class="cap-admin-builds__stat-label">Pending</span>
+    </div>
+    <div class="cap-admin-builds__stat">
+      <span class="cap-admin-builds__stat-value">{{
+        countByStatus("Published")
+      }}</span>
+      <span class="cap-admin-builds__stat-label">Published</span>
+    </div>
+  </div>
+</section>
+
+<section class="cap-admin-builds__filters" aria-label="Build status filters">
+  @for (f of filters; track f.value) {
+    <button
+      type="button"
+      class="cap-admin-builds__filter-btn"
+      [class.cap-admin-builds__filter-btn--active]="activeFilter === f.value"
+      (click)="selectFilter(f.value)"
+    >
+      {{ f.label }}
+    </button>
+  }
+</section>
+
+@if (loading) {
+  <div class="cap-admin-builds__state">Loading builds…</div>
+} @else if (errorMessage) {
+  <div class="cap-admin-builds__state">
+    <p>{{ errorMessage }}</p>
+    <button type="button" class="btn btn-outline" (click)="loadBuilds()">
+      Retry
+    </button>
+  </div>
+} @else {
+  <section class="cap-admin-builds__table-card">
+    <div class="cap-admin-builds__table-wrap">
+      <table class="cap-admin-builds__table" aria-label="Build list table">
+        <thead>
+          <tr>
+            <th>Build</th>
+            <th>Owner</th>
+            <th>Submitted</th>
+            <th>Status</th>
+            <th>Likes</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (build of builds; track build.id) {
+            <tr>
+              <td>
+                <div class="cap-admin-builds__car">
+                  <div class="cap-admin-builds__thumb">
+                    <img [src]="getCoverPhoto(build)" [alt]="build.title" />
+                  </div>
+                  <div>
+                    <p class="cap-admin-builds__name">{{ build.title }}</p>
+                    <p class="cap-admin-builds__meta">
+                      {{ build.year }} {{ build.make }} {{ build.model }}
+                    </p>
+                  </div>
+                </div>
+              </td>
+              <td>&#64;{{ build.user.firstName }}{{ build.user.lastName }}</td>
+              <td>{{ formatDate(build.createdAt) }}</td>
+              <td>
+                <span
+                  class="cap-admin-builds__badge"
+                  [attr.data-status]="getStatusKey(build.status)"
+                  >{{ getStatusLabel(build.status) }}</span
+                >
+              </td>
+              <td>{{ build.totalHearts }}</td>
+              <td>
+                <a [routerLink]="['/admin/build', build.id]" class="cap-admin-builds__action">
+                  {{ build.status === "ForApproval" ? "Review" : "View" }}
+                </a>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6" class="cap-admin-builds__empty">
+                No builds match this filter.
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+}

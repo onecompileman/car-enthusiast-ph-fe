@@ -2,7 +2,10 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Observable, finalize, isObservable, of } from 'rxjs';
 
-export type ConfirmationCallback = () => Observable<unknown> | Promise<unknown> | void;
+export type ConfirmationCallback = () =>
+  | Observable<unknown>
+  | Promise<unknown>
+  | void;
 
 @Component({
   selector: 'cap-confirmation-modal',
@@ -43,19 +46,27 @@ export class ConfirmationModalComponent {
     this.isSubmitting = true;
 
     this.resolveToObservable(this.confirmCallback())
-      .pipe(finalize(() => (this.isSubmitting = false)))
+      .pipe(
+        finalize(() => {
+          this.isSubmitting = false;
+          this.bsModalRef.hide();
+        }),
+      )
       .subscribe({
         next: () => {
           this.confirmed.emit();
           this.bsModalRef.hide();
         },
         error: (err: unknown) => {
+          this.bsModalRef.hide();
           this.errorMessage = this.getErrorMessage(err);
         },
       });
   }
 
-  private resolveToObservable(result: Observable<unknown> | Promise<unknown> | void): Observable<unknown> {
+  private resolveToObservable(
+    result: Observable<unknown> | Promise<unknown> | void,
+  ): Observable<unknown> {
     if (!result) return of(true);
     if (isObservable(result)) return result;
     return new Observable((subscriber) => {

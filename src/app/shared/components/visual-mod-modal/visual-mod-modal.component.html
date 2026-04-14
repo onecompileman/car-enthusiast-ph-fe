@@ -19,11 +19,14 @@
       </div>
       <div class="cap-wizard-field">
         <label>Part Type</label>
-        <input type="text" formControlName="part" placeholder="Spoiler" />
+        <select formControlName="part">
+          <option value="">Select part type</option>
+          <optgroup *ngFor="let group of visualModGroups" [label]="group.group">
+            <option *ngFor="let mod of group.mods" [value]="mod">{{ mod }}</option>
+          </optgroup>
+        </select>
         <div class="cap-wizard-field__message">
-          <small class="cap-wizard-field__error" *ngIf="fieldError('part')">{{
-            fieldError("part")
-          }}</small>
+          <small class="cap-wizard-field__error" *ngIf="fieldError('part')">{{ fieldError("part") }}</small>
         </div>
       </div>
       <div class="cap-wizard-field cap-visual-mod-modal__full-width">

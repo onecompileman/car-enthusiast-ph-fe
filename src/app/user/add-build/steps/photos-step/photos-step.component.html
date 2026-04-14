@@ -10,7 +10,7 @@
         #requiredInput
         class="cap-photos-step__hidden-input"
         type="file"
-        accept=".jpg,.jpeg,image/jpeg"
+        accept="image/jpeg,image/png,image/webp,image/heic,.heic"
         (change)="onRequiredPhoto(slot.view, $event)"
       />
 
@@ -68,7 +68,7 @@
       class="cap-photos-step__hidden-input"
       id="galleryInput"
       type="file"
-      accept="image/*"
+      accept="image/jpeg,image/png,image/webp,image/heic,.heic"
       multiple
       (change)="onGalleryChange($event)"
     />

@@ -1,0 +1,118 @@
+/* Global SweetAlert2 theming to match app tokens. */
+
+.swal2-container {
+  z-index: 1200;
+}
+
+.swal2-popup {
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: linear-gradient(
+    155deg,
+    color-mix(in srgb, var(--surface) 92%, #0b0e14) 0%,
+    color-mix(in srgb, var(--surface-2) 88%, #0b0e14) 100%
+  );
+  color: var(--text);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.44);
+  padding: 1.2rem;
+}
+
+.swal2-title {
+  color: var(--text);
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.swal2-html-container {
+  color: var(--text-2);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.swal2-icon {
+  border-width: 0.18em;
+}
+
+.swal2-icon.swal2-success {
+  border-color: color-mix(in srgb, #10b981 55%, var(--border));
+  color: #6ee7b7;
+}
+
+.swal2-icon.swal2-error {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+  color: #fca5a5;
+}
+
+.swal2-icon.swal2-warning {
+  border-color: color-mix(in srgb, var(--accent-orange) 55%, var(--border));
+  color: #fbbf24;
+}
+
+.swal2-actions {
+  gap: 8px;
+  margin-top: 1rem;
+}
+
+.swal2-styled {
+  border-radius: var(--r-pill);
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 0.56rem 1rem;
+  box-shadow: none;
+  transition: all 0.18s ease;
+}
+
+.swal2-confirm {
+  background: var(--accent) !important;
+  color: #fff !important;
+}
+
+.swal2-confirm:hover {
+  filter: brightness(1.05);
+}
+
+.swal2-cancel {
+  background: transparent !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-2) !important;
+}
+
+.swal2-cancel:hover {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border)) !important;
+}
+
+.swal2-close {
+  color: var(--text-3);
+}
+
+.swal2-close:hover {
+  color: var(--text);
+}
+
+.swal2-timer-progress-bar {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--accent) 88%, #f97316) 0%,
+    color-mix(in srgb, var(--accent-orange) 78%, #f59e0b) 100%
+  );
+}
+
+body[data-theme="dark"] .swal2-confirm {
+  background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-2) 100%) !important;
+  color: #1a1205 !important;
+}
+
+body[data-theme="dark"] .swal2-cancel {
+  color: var(--accent-orange-2) !important;
+  border-color: color-mix(in srgb, var(--accent-orange) 45%, var(--border)) !important;
+  background: color-mix(in srgb, var(--accent-orange) 10%, transparent) !important;
+}
+
+body[data-theme="dark"] .swal2-cancel:hover {
+  color: #1a1205 !important;
+  border-color: var(--accent-orange-2) !important;
+  background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-2) 100%) !important;
+}

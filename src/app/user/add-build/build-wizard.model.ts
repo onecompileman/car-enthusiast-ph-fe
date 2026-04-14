@@ -1,6 +1,7 @@
 export interface HotspotPoint {
   x: number;
   y: number;
+  id?: number;
 }
 
 export interface HotspotMap {
@@ -23,6 +24,7 @@ export interface VisualMod {
 export interface PerformanceMod {
   id: string;
   name: string;
+  part: string;
   description: string;
   shop: string;
   priceEstimate: string;
@@ -33,6 +35,7 @@ export interface RequiredPhoto {
   blob: Blob;
   url: string;
   name: string;
+  isExistingUrl?: boolean;
 }
 
 export interface GalleryPhoto {
@@ -49,9 +52,11 @@ export interface BuildInfoForm {
   model: string;
   summary: string;
   approxCost: string;
+  useManualEntry?: boolean;
 }
 
 export interface BuildWizardState {
+  id?: number | null;
   info: BuildInfoForm;
   tags: string[];
   requiredPhotos: {
@@ -72,6 +77,9 @@ export interface ValidatedPhoto {
     isValidType: boolean;
     isValidDimensions: boolean;
     isValidAspectRatio: boolean;
+    isExistingUrl?: boolean;
+  galleryItemId?: number;
+  galleryBuildId?: number;
 }
 
 export type WizardView = 'front' | 'side' | 'rear';

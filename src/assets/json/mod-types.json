@@ -1,0 +1,94 @@
+{
+    "performanceMods": [
+        {
+            "group": "Engine & Power",
+            "mods": [
+                "Turbocharger",
+                "Supercharger",
+                "Air Intake",
+                "Intercoolers",
+                "Oil Cooler",
+                "BOV",
+                "BPV",
+                "Air Filters",
+                "Thermostat",
+                "Fuel Pump",
+                "Headers",
+                "Exhaust", 
+                "ECU"
+            ]
+        },
+        {
+            "group": "Drivetrain & Transmission",
+            "mods": [
+                "Clutch",
+                "Shifters",
+                "LSD",
+                "Transmission",
+                "Differentials"               
+            ]
+        },
+        {
+            "group": "Suspension & Handling",
+            "mods": [
+                "Coilovers",
+                "Lowering Spring",
+                "Swaybars",
+                "Strutbar",
+                "Brakes",
+                "Rotors"
+            ]
+        }
+    ],
+    "visualMods": [
+         {
+            "group": "Bodykits",
+            "mods": [
+                "Front Bumper",
+                "Rear Bumper",
+                "Diffuser",
+                "Side skirts",
+                "Splitter",
+                "Chin",
+                "Hood",
+                "Trunk",
+                "Side mirror",
+                "Front Fender",
+                "Rear Fender"
+            ]
+        },
+        {
+            "group": "Aero",
+            "mods": [
+                "Spoiler",
+                "Ducktail",
+                "Canards",
+                "Vortex Generators"
+            ]
+        },
+        {
+            "group": "Paint & Decals",
+            "mods": [
+                "Custom Paintjob",
+                "Livery",
+                "Wraps",
+                "Windshield banner"
+            ]
+        },
+        {
+            "group": "Wheels",
+            "mods": [
+                "Tires",
+                "Rims"
+            ]
+        },
+        {
+            "group": "Others Visual Mods",
+            "mods": [
+                "Louvers",
+                "Rear Spat",
+                "Other"
+            ]
+        }
+    ]
+}

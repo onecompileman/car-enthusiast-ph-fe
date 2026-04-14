@@ -14,6 +14,7 @@ import { PhotosStepComponent } from './add-build/steps/photos-step/photos-step.c
 import { ReviewStepComponent } from './add-build/steps/review-step/review-step.component';
 import { provideHttpClient } from '@angular/common/http';
 import { ProfileComponent } from './profile/profile.component';
+import { MyBuildsComponent } from './my-builds/my-builds.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { ProfileComponent } from './profile/profile.component';
     PhotosStepComponent,
     ReviewStepComponent,
     ProfileComponent,
+    MyBuildsComponent,
   ],
   imports: [CommonModule, ReactiveFormsModule, SharedModule, UserRoutingModule],
   providers: [provideHttpClient()],

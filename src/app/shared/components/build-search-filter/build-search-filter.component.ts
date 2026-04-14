@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { BuildFilter } from '../../models/build-listing.model';
+import { BuildFilter } from '../../models/build/build-listing.model';
 
 @Component({
   selector: 'cap-build-search-filter',
@@ -15,7 +15,6 @@ export class BuildSearchFilterComponent {
   readonly popularMakes = ['Honda', 'Toyota', 'Nissan', 'BMW', 'Subaru'];
 
   onChange(): void {
-    this.filterChange.emit({ ...this.filter });
   }
 
   selectMake(make: string): void {
@@ -26,6 +25,10 @@ export class BuildSearchFilterComponent {
 
   reset(): void {
     this.filter = { make: '', model: '', style: 'all' };
+    this.filterChange.emit({ ...this.filter });
+  }
+
+  search(): void {
     this.filterChange.emit({ ...this.filter });
   }
 }

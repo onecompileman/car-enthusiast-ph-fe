@@ -1,0 +1,66 @@
+<main class="cap-my-builds">
+  <section class="cap-my-builds__header">
+    <div>
+      <h1>My Builds</h1>
+      <p>Manage all your draft and published builds in one place.</p>
+    </div>
+  </section>
+
+  <section class="cap-my-builds__toolbar">
+    <div class="cap-my-builds__tabs">
+      <button
+        type="button"
+        class="cap-my-builds__tab"
+        [class.cap-my-builds__tab--active]="activeTab === 'all'"
+        (click)="selectTab('all')"
+      >
+        All
+      </button>
+      <button
+        type="button"
+        class="cap-my-builds__tab"
+        [class.cap-my-builds__tab--active]="activeTab === 'draft'"
+        (click)="selectTab('draft')"
+      >
+        Draft
+      </button>
+      <button
+        type="button"
+        class="cap-my-builds__tab"
+        [class.cap-my-builds__tab--active]="activeTab === 'published'"
+        (click)="selectTab('published')"
+      >
+        Published
+      </button>
+    </div>
+    <div class="cap-my-builds__stat">{{ buildCount }} build(s)</div>
+  </section>
+
+  @if (loading) {
+    <section class="cap-my-builds__empty">
+      <p>Loading your builds...</p>
+    </section>
+  } @else if (errorMessage) {
+    <section class="cap-my-builds__empty">
+      <p>{{ errorMessage }}</p>
+      <button type="button" class="btn btn-outline" (click)="loadBuilds()">
+        Retry
+      </button>
+    </section>
+  } @else if (filteredBuilds.length > 0) {
+    <section class="cap-my-builds__grid">
+      @for (build of filteredBuilds; track build.id) {
+        <cap-build-status-card
+          [build]="build"
+        ></cap-build-status-card>
+      }
+    </section>
+  } @else {
+    <section class="cap-my-builds__empty">
+      <p>No builds in this tab yet.</p>
+      <a routerLink="/user/add-build" class="btn btn-outline">
+        Create Your First Build
+      </a>
+    </section>
+  }
+</main>

@@ -1,7 +1,12 @@
 ﻿.cap-build-list {
   padding-bottom: 28px;
 
-  /* â”€â”€ Hero overrides â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  &__loading {
+    padding: 40px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+  }
   &__hero-copy h1 {
     max-width: 16ch;
   }

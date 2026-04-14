@@ -1,11 +1,12 @@
 export type BuildModCategory =
-  | 'exterior'
-  | 'aero'
-  | 'wheels'
-  | 'lighting'
-  | 'performance'
-  | 'cooling'
-  | 'suspension';
+  | 'Bodykits'
+  | 'Aero'
+  | 'Paint & Decals'
+  | 'Wheels'
+  | 'Others Visual Mods'
+  | 'Engine & Power'
+  | 'Drivetrain & Transmission'
+  | 'Suspension & Handling';
 
 export interface BuildModSpec {
   key: string;

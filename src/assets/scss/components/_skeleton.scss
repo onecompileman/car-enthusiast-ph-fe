@@ -1,0 +1,30 @@
+.skeleton {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    #2a2a2a 25%,
+    #4a4a4a 50%,   /* lighter gray for contrast */
+    #2a2a2a 75%
+  );
+  background-size: 300% 100%;
+  animation: shimmer 2.2s linear infinite;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -300% 0;
+  }
+  100% {
+    background-position: 300% 0;
+  }
+}
+
+.image-wrapper {
+  background-color: #1a1a1a; /* dark container background */
+  color: #fff;              /* text stays readable */
+}

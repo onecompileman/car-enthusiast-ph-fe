@@ -81,8 +81,7 @@ export class LoginComponent implements OnInit {
       setTimeout(() => {
         this.googleLoading = false;
         this.router.navigate(['/user/add-build']);
-        this.ngxSpinner.hide();
-      }, 1000);
+      }, 200);
     } catch {
       this.errorMessage = 'Google sign-in failed. Please try again.';
       this.ngxSpinner.hide();

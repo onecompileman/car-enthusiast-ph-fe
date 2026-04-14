@@ -1,0 +1,56 @@
+<div class="cap-reject-reason-modal">
+  <div class="modal-header cap-reject-reason-modal__header">
+    <h5 class="modal-title">{{ title }}</h5>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      [disabled]="isSubmitting"
+      (click)="cancel()"
+    ></button>
+  </div>
+
+  <div class="modal-body cap-reject-reason-modal__body">
+    <p>{{ message }}</p>
+
+    <label class="cap-reject-reason-modal__label" for="rejectReasonTextarea">
+      Reject Reason
+    </label>
+    <textarea
+      id="rejectReasonTextarea"
+      class="cap-reject-reason-modal__textarea"
+      [placeholder]="reasonPlaceholder"
+      [maxLength]="maxLength"
+      [disabled]="isSubmitting"
+      [(ngModel)]="reason"
+      rows="5"
+    ></textarea>
+    <div class="cap-reject-reason-modal__meta">
+      <span>{{ reasonLength }}/{{ maxLength }}</span>
+    </div>
+
+    <div class="cap-reject-reason-modal__error" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <div class="modal-footer cap-reject-reason-modal__footer">
+    <button
+      type="button"
+      class="btn btn-outline"
+      [disabled]="isSubmitting"
+      (click)="cancel()"
+    >
+      {{ cancelText }}
+    </button>
+    <button
+      type="button"
+      class="btn btn-danger"
+      [disabled]="isSubmitting"
+      (click)="reject()"
+    >
+      <i class="fa fa-spin fa-spinner me-2" *ngIf="isSubmitting"></i>
+      {{ confirmText }}
+    </button>
+  </div>
+</div>

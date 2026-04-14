@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { BuildMod } from '../../models/build-mod.model';
+import { BuildMod } from '../../models/build/build-mod.model';
 
 @Component({
   selector: 'cap-build-mod-card',
@@ -9,4 +9,9 @@ import { BuildMod } from '../../models/build-mod.model';
 })
 export class BuildModCardComponent {
   @Input() mod!: BuildMod;
+  @Input() highlightPrice = false;
+
+  get hasImage(): boolean {
+    return !!this.mod?.image?.trim();
+  }
 }

@@ -1,0 +1,129 @@
+.cap-my-builds {
+  display: grid;
+  gap: 14px;
+  padding: 40px;
+}
+
+.cap-my-builds__header {
+  h1 {
+    font-size: clamp(30px, 4vw, 44px);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    font-weight: 800;
+    margin: 0 0 8px;
+  }
+
+  p {
+    margin: 0;
+    color: var(--text-2);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+}
+
+.cap-my-builds__toolbar {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 10px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.cap-my-builds__tabs {
+  display: inline-flex;
+  gap: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  background: var(--bg);
+  padding: 3px;
+}
+
+.cap-my-builds__tab {
+  border: none;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--text-2);
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.cap-my-builds__tab--active {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-sm);
+}
+
+.cap-my-builds__stat {
+  font-size: 12px;
+  color: var(--text-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  padding: 8px 12px;
+  background: color-mix(in srgb, var(--surface) 84%, var(--bg));
+}
+
+.cap-my-builds__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.cap-my-builds__empty {
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  text-align: center;
+  color: var(--text-3);
+  background: color-mix(in srgb, var(--surface) 86%, var(--bg));
+  font-size: 13px;
+  display: grid;
+  gap: 12px;
+
+  p {
+    margin: 0;
+  }
+
+  .btn {
+    width: fit-content;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 980px) {
+  .cap-my-builds__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .cap-my-builds__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cap-my-builds__header h1 {
+    font-size: 28px;
+  }
+
+  .cap-my-builds__toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cap-my-builds__tabs {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .cap-my-builds__stat {
+    width: 100%;
+    text-align: center;
+  }
+}

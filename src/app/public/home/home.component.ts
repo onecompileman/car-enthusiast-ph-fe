@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BuildHighlight } from '../../shared/models/build-highlight.model';
+import { BuildHighlight } from '../../shared/models/build/build-highlight.model';
 
 @Component({
   selector: 'cap-home',

@@ -2,11 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Result } from '../../shared/models/result.model';
+import { Build, BuildStatus } from '../../shared/models/build/build.model';
+import { PaginatedRequest } from '../../shared/models/paginated-request.model';
 import { PaginatedResult } from '../../shared/models/paginated-result.model';
-import { BuildDto } from '../../shared/models/build/build-dto.model';
-import { AddBuildCommand } from '../../shared/models/build/add-build-command.model';
-import { GetAllUserBuildsQuery } from '../../shared/models/build/get-all-user-builds-query.model';
-import { DeleteBuildCommand } from '../../shared/models/build/delete-build-command.model';
 
 @Injectable({
   providedIn: 'root',
@@ -16,38 +14,72 @@ export class BuildDataService {
 
   constructor(private http: HttpClient) {}
 
-  shareBuild(formData: FormData): Observable<Result<BuildDto>> {
-    return this.http.post<Result<BuildDto>>(
+  shareBuild(formData: FormData): Observable<Result<Build>> {
+    return this.http.post<Result<Build>>(
       `${this.baseUrl}/ShareBuild`,
-      formData
+      formData,
     );
   }
 
-  searchBuilds(query: GetAllUserBuildsQuery): Observable<PaginatedResult<BuildDto>> {
-    return this.http.post<PaginatedResult<BuildDto>>(
+  searchBuilds(query: {
+    request: PaginatedRequest;
+  }): Observable<PaginatedResult<Build>> {
+    return this.http.post<PaginatedResult<Build>>(
       `${this.baseUrl}/SearchBuild`,
-      query
+      query,
     );
   }
 
-  myBuilds(query: GetAllUserBuildsQuery): Observable<PaginatedResult<BuildDto>> {
-    return this.http.post<PaginatedResult<BuildDto>>(
-      `${this.baseUrl}/MyBuilds`,
-      query
-    );
+  myBuilds(query: { status: BuildStatus | null }): Observable<Result<Build>> {
+    return this.http.post<Result<Build>>(`${this.baseUrl}/MyBuilds`, query);
   }
 
-  deleteBuild(command: DeleteBuildCommand): Observable<Result<BuildDto>> {
-    return this.http.delete<Result<BuildDto>>(
-      `${this.baseUrl}/DeleteBuild`,
-      { body: command }
-    );
+  deleteBuild(): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}/DeleteBuild`);
   }
 
-  updateBuild(formData: FormData): Observable<Result<BuildDto>> {
-    return this.http.post<Result<BuildDto>>(
+  updateBuild(formData: FormData): Observable<Result<Build>> {
+    return this.http.post<Result<Build>>(
       `${this.baseUrl}/UpdateBuild`,
-      formData
+      formData,
     );
+  }
+
+  getBuildById(buildId: number): Observable<Result<Build>> {
+    return this.http.get<Result<Build>>(`${this.baseUrl}/GetBuild/${buildId}`);
+  }
+
+  getUserBuildById(buildId: number): Observable<Result<Build>> {
+    return this.http.get<Result<Build>>(
+      `${this.baseUrl}/GetUserBuild/${buildId}`,
+    );
+  }
+
+  getAdminUserBuildById(buildId: number): Observable<Result<Build>> {
+    return this.http.get<Result<Build>>(
+      `${this.baseUrl}/GetAdminBuild/${buildId}`,
+    );
+  }
+
+  getAllBuildsByAdmin(query: {
+    request: PaginatedRequest;
+  }): Observable<PaginatedResult<Build>> {
+    return this.http.post<PaginatedResult<Build>>(
+      `${this.baseUrl}/AllBuildsForAdmin`,
+      query,
+    );
+  }
+
+  rejectBuild(buildId: number, reason: string): Observable<Result<Build>> {
+    return this.http.post<Result<Build>>(`${this.baseUrl}/RejectBuild`, {
+      buildId,
+      reason,
+    });
+  }
+
+   approveBuild(buildId: number): Observable<Result<Build>> {
+    return this.http.post<Result<Build>>(`${this.baseUrl}/ApproveBuild`, {
+      buildId,
+    });
   }
 }

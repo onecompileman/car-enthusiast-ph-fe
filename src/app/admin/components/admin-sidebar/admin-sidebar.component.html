@@ -1,0 +1,38 @@
+<aside class="cap-admin-sidebar">
+  <p class="cap-admin-sidebar__group-title">Navigation</p>
+  <ul class="cap-admin-sidebar__menu p-0">
+    <li>
+      <a
+        class="cap-admin-sidebar__link"
+        routerLink="/admin/builds"
+        routerLinkActive="cap-admin-sidebar__link--active"
+      >Builds List</a>
+    </li>
+    <li>
+      <a
+        class="cap-admin-sidebar__link"
+        routerLink="/admin/users"
+        routerLinkActive="cap-admin-sidebar__link--active"
+      >User Lists</a>
+    </li>
+    <li>
+      <a
+        class="cap-admin-sidebar__link"
+        routerLink="/admin/config"
+        routerLinkActive="cap-admin-sidebar__link--active"
+      >App Config</a>
+    </li>
+  </ul>
+
+  <p class="cap-admin-sidebar__group-title">Moderation</p>
+  <ul class="cap-admin-sidebar__menu p-0">
+    <li>
+      <a
+        class="cap-admin-sidebar__link"
+        routerLink="/admin/builds"
+        [queryParams]="{ status: 'ForApproval' }"
+        routerLinkActive="cap-admin-sidebar__link--active"
+      >Needs Review</a>
+    </li>
+  </ul>
+</aside>

@@ -10,7 +10,7 @@ export class ApiBaseUrlInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     console.log('API Base URL Interceptor - Original Request URL:', req.url);
     const apiReq =
-      req.url.startsWith('http') || req.url.indexOf('assets') !== -1
+      req.url.startsWith('http') || req.url.indexOf('assets') !== -1 ||  req.url.indexOf('json') !== -1
         ? req
         : req.clone({ url: `${this.baseUrl}${req.url.charAt(0) !== '/' ? '/' : ''}${req.url}` });
 
